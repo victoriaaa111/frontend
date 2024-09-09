@@ -1,13 +1,13 @@
 import React from "react";
 import "./Header.css";
 
-const HeaderElem = () => {
+const Header = () => {
     return (
         <section className="header-wrapper">
             <div className="flexCenter paddings innerWidth header-container">
                 <div className="move-logo">
                        
-                    <img src="logo3.png" alt="logo" className="logo" width={100} />
+                    <img src="./logo3.png" alt="logo" className="logo" width={100} />
                 
                 
                     <div className="logo-name">
@@ -30,4 +30,4 @@ const HeaderElem = () => {
     )
 }
 
-export default HeaderElem;
+export default Header;

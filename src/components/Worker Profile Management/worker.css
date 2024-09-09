@@ -1,0 +1,26 @@
+.profile-edit-page {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  button {
+    padding: 10px;
+    margin: 5px;
+  }
+  
+  input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+  }
+  
+  @media (max-width: 600px) {
+    .profile-edit-page {
+      padding: 10px;
+    }
+  }
+  

@@ -1,6 +1,6 @@
 import React from "react";
 import "./chooserole.css";
-import LoginForm from "./loginform";
+import LoginForm from "../Log In Form/loginform";
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { useState } from "react";
 
@@ -16,7 +16,7 @@ const ChooseRole = () =>{
 
     return(
     <div className="cover-2 container main-font">
-    <h1>Alege-ți rolul:</h1>
+    <h1 className="titlu">Alege-ți rolul:</h1>
 
     <div className="option-cards">
         <label className ="card" for="client">

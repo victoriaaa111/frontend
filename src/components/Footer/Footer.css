@@ -1,0 +1,135 @@
+footer{
+    margin-top: 15px;
+    width: 100%;
+    height:  auto;
+    /* position: fixed; */
+    bottom: 0;
+    left: 0;
+    /* background: white; */
+    margin-bottom: 0 !important;
+  }
+  footer .content{
+    max-width: 1350px;
+    margin: auto;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  footer .content p,a{
+    color: black;
+  }
+  footer .content .part{
+    width: 33%;
+    transition: all 0.4s ease;
+  }
+  footer .content .title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--blue);
+    margin-bottom: 16px;
+  
+  }
+  footer .content p{
+    text-align: justify;
+  }
+  footer .content .lower .title {
+    margin: 24px 0 5px 0;
+  }
+  footer .content .lower i{
+    padding-right: 16px;
+  }
+  footer .content .middle{
+    padding-left: 80px;
+  }
+  footer .content .middle a{
+    line-height: 32px;
+  }
+  footer .content .right input[type="text"]{
+    height: 45px;
+    width: 95%;
+    outline: none;
+    color: #d9d9d9;
+    background: white;
+    border-radius: 5px;
+    padding-left: 10px;
+    font-size: 17px;
+    border: 2px solid var(--blue);
+  }
+  footer .content .right input[type="submit"]{
+    height: 50px;
+    width: 95%;
+    font-size: 18px;
+    color: white;
+    font-weight: bolder;
+    background: var(--blue);
+    outline: none;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 12px;
+    border: 2px solid var(--blue);
+    transition: all 0.3s ease-in-out;
+  }
+  .content .right input[type="submit"]:hover{
+    background: none;
+    color:  var(--blue);
+  }
+  .media-icons{
+    display: flex;
+    gap: 10px;
+  }
+  .media-icons a{
+    font-size: 30px;
+    height: 60px;
+    width: 60px;
+    display: inline-block;
+    text-align: center;
+    line-height: 60px;
+    border-radius: 50%;
+    border: 2px solid var(--blue);
+    /* margin: 30px 9px 0 0; */
+    transition: all 0.3s ease;
+    margin-top: 10px;
+  }
+  .media-icons a:hover{
+    border-color: var(--blue);
+    transform: scale(1.2);
+  }
+  
+  /* footer a{
+    color: aqua;
+  } */
+  footer a{
+    transition: all 0.3s ease;
+  }
+  footer a:hover{
+    color: var(--blue);
+    margin-left: 10px;
+  } 
+  @media (max-width:1100px) {
+    footer .content .middle{
+      padding-left: 50px;
+    }
+  }
+  @media (max-width:950px){
+    footer .content .part{
+      width: 50%;
+    }
+    .content .right{
+      margin-top: 40px;
+    }
+  }
+  @media (max-width:560px){
+    footer{
+      position: relative;
+    }
+    footer .content .part{
+      margin-top: 30px;
+      width: 100%;
+    }
+    footer .content .middle{
+      padding-left: 0;
+    }
+  }
+  

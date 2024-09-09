@@ -1,7 +1,7 @@
-body {
+/* body {
     margin: 0;
     box-sizing: border-box;
-}
+} */
 
 .title{
     color: rgb(105,127,249);
@@ -26,6 +26,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    background-color: white;
     padding: 2em 1em;
 }
 
@@ -102,10 +103,6 @@ button {
     background-size: contain;
     background-repeat: no-repeat;
     cursor: pointer;
-}
-
-.gmail {
-    background-image: url("../icons/gmail_icon.png");
 }
 
 .description-field{
