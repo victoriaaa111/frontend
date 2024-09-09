@@ -10,4 +10,17 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+} 
+
+.main-font{
+  font-family: "Unbounded", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: light;
+    font-style: normal;
+}
+.bolder-font{
+  font-family: "Unbounded", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: bold;
+    font-style: normal;
 }
