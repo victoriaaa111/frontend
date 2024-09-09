@@ -1,10 +1,9 @@
 import React from "react";
 import "./signup_client.css";
 import { useState, useRef, useEffect } from "react";
-import HeaderElem from "./headerelem";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "../api/axios";
+import axios from "../../api/axios";
 
 const NAME_REGEX = /^[A-Z][a-zA-Z]{1,24}$/;
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;

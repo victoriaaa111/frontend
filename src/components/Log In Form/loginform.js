@@ -1,6 +1,6 @@
 import React from "react";
 import "./loginform.css";
-import ChooseRole from "./chooserole";
+import ChooseRole from "../Chooserole/chooserole";
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { useState } from "react";
 
@@ -23,7 +23,7 @@ const LoginForm = () => {
                 <input id = "password" className="main-font" type="password" placeholder="" />
             </div>
             <div className="fgtpass-btn">
-            <a href="#" className="forgot-password">Forgot Password?</a>
+            <Link to="/forgotpassword" className="forgot-password">Forgot Password?</Link>
             </div>
             <div>
                 <button className="login-btn">LOG IN</button>
