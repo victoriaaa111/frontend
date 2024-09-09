@@ -1,0 +1,132 @@
+.cover-signup{
+            width: 40em;
+            height: 51em;
+            position: relative;
+            border-radius: 2em;
+            border: 0.15em solid rgb(255, 203, 67);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content:center;
+            padding: 2em 1em;
+            background-color: white;
+}
+.signup-client-btn{
+        background-color: rgb(198, 153, 254);
+        color: white;
+        width: 10em;
+        margin-top: 3em;
+}
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+}
+.signupw-btn {
+    width: 10em;
+    color:rgb(53,53,53);
+    background: white;
+    font-size: 0.8em;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 0.2em;
+}
+
+.hide {
+    display: none;
+}
+
+
+.valid {
+    color: green;
+    margin-left: 8px;
+}
+
+
+.invalid {
+    color: red;
+    margin-left: 8px;
+    margin-bottom:3px;
+}
+
+
+.instructions {
+    color: rgb(53, 53, 53);
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+
+.offscreen {
+    position: absolute;
+    left: -9999px;
+}
+
+.invalid-input {
+    border: 2px solid red;
+}
+
+@media(max-width: 800px){
+    .cover-signup{
+        width:30em;
+    }
+}
+
+@media(max-width: 560px) {
+    .cover-signup {
+        width: 22em;
+    }
+    .title{
+        font-size: 2.3em;
+    }
+    input {
+            width: 93%;
+            padding: 0.5em;
+            margin-top: 0.2em;
+            border-radius: 0.15em;
+        }
+    .description-field {
+            color: rgb(53, 53, 53);
+            font-size: 0.85em;
+            margin-bottom: 0.08em;
+            margin-top: 0.5em;
+        }
+    .forgot-password {
+            text-decoration: none;
+            color: rgb(198, 153, 254);
+            font-size: 0.7em;
+            cursor: pointer;
+        }
+    
+    .fgtpass-btn {
+            margin-top: 0.09em;
+        }
+    .login-btn {
+            background-color: rgb(198, 153, 254);
+            color: white;
+            width: 7em;
+            font-size: 0.8em;
+        }
+    .signup-btn {
+            width: 80%;
+            color: rgb(53, 53, 53);
+            background: none;
+            font-size: 0.7em;
+            cursor: pointer;
+        }
+    .cover {
+            height: 30em;
+            position: relative;
+            padding-bottom: 1.2em;
+        }
+}
+
+@media(max-width:380px){
+    .cover-signup{
+        width:18em;
+    }
+}
