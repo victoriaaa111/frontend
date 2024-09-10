@@ -19,9 +19,11 @@ const ProfilePictureUpload = ({ profile, setProfile }) => {
   };
 
   return (
-    <div className="profile-picture-upload">
-      <img src={preview} alt="Profile Preview" />
-      <button onClick={() => fileInputRef.current.click()}>Change Picture</button>
+    <div className="profile-picture-container">
+      <div className="profile-picture-frame">
+      <img src="/officer-worker.png" alt="" className="profile-picture" />
+      </div>
+      <button className="change-picture-btn" onClick={() => fileInputRef.current.click()}>Change Picture</button>
       <input
         type="file"
         ref={fileInputRef}

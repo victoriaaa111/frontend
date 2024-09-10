@@ -3,6 +3,7 @@ import "./signup_client.css";
 import { useState, useRef, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom"; 
 import axios from "../../api/axios";
 
 const NAME_REGEX = /^[A-Z][a-zA-Z]{1,24}$/;
@@ -165,6 +166,7 @@ const SignUpClient = () => {
                      2 to 24 characters. <br />
                     Must contain only letters and begin with a uppercase letter.
                 </p>
+
 
 
 

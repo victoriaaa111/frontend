@@ -3,7 +3,7 @@ import ProfileForm from './ProfileForm';
 import ProfilePictureUpload from './ProfilePictureUpload';
 import ServiceOfferings from './ServiceOfferings';
 import RatingsDisplay from './RatingsDisplay';
-import './worker.css'; // Add your styling here
+import './worker.css';
 
 const ProfileEditPage = () => {
   const [profile, setProfile] = useState({
@@ -36,7 +36,7 @@ const ProfileEditPage = () => {
 
   return (
     <div className="profile-edit-page">
-      <h1>Edit Profile</h1>
+      <h1 className="titlu">Worker Profile Management</h1>
       <ProfilePictureUpload profile={profile} setProfile={setProfile} />
       <ProfileForm profile={profile} setProfile={setProfile} />
       <ServiceOfferings profile={profile} setProfile={setProfile} />
