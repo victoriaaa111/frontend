@@ -13,7 +13,7 @@ const ProfileForm = ({ profile, setProfile }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>
-        Name:
+        Name and Surname :
         <input {...register('name', { required: true })} />
         {errors.name && <span>Name is required</span>}
       </label>

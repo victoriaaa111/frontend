@@ -1,15 +1,13 @@
 .cover-signup{
-            width: 40em;
-            height: 50em;
-            position: relative;
-            border-radius: 2em;
-            border: 0.15em solid rgb(255, 203, 67);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content:center;
-            padding: 2em 1em;
-            background-color: white;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 2px solid var(--orange);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 .signup-client-btn{
         background-color: rgb(198, 153, 254);
