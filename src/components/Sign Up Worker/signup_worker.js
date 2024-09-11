@@ -8,7 +8,7 @@ const NAME_REGEX = /^[A-Z][a-zA-Z]{1,24}$/;
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const SIGNUP_WORKER_URL = 'http://3.70.72.246:3001/worker/66de0492e489a3e530a6ff5e';
+const SIGNUP_CLIENT_URL = 'http://3.70.72.246:3001/auth/signup';
 
 
 const SignUpWorker = () => {
@@ -25,11 +25,15 @@ const SignUpWorker = () => {
 
     const [last, setLast] = useState('');
     const[validLast, setValidLast] = useState(false);
-    const[lastFocus, setLastFocus] = useState(false);
+    const [lastFocus, setLastFocus] = useState(false);
+    
+    const [contact, setContact] = useState('');
+    const [validContact, setValidContact] = useState(false);
+    const[contactFocus, setContactFocus] = useState(false);
 
     const [email, setEmail] = useState('');
     const[validEmail, setValidEmail] = useState(false);
-    const[emailFocus, setEmailFocus] = useState(false);
+    const [emailFocus, setEmailFocus] = useState(false);
 
     const [password, setPwd] = useState('');
     const[validPwd, setValidPwd] = useState(false);
@@ -49,7 +53,12 @@ const SignUpWorker = () => {
     useEffect(()=>{
         const result = NAME_REGEX.test(first);
         setValidFirst(result);
-    },[first])
+    }, [first])
+    
+    useEffect(()=>{
+        const result = NAME_REGEX.test(contact);
+        setValidContact(result);
+    },[contact])
 
     useEffect(()=>{
         const result = EMAIL_REGEX.test(email);
@@ -93,7 +102,7 @@ const SignUpWorker = () => {
             return;
         }
         try{
-            const response = await clientSignUpApi.post(SIGNUP_WORKER_URL,
+            const response = await clientSignUpApi.post(SIGNUP_CLIENT_URL,
                 JSON.stringify({ firstName: first, lastName: last, username: user, email, password }),
                 {
                     headers: { 'Content-Type': 'application/json' },
@@ -146,7 +155,7 @@ const SignUpWorker = () => {
                 <input
                     id ="firstname" 
                     ref={userRef}
-                    autocomplete="on"
+                    autoComplete="on"
                     required
                     aria-invalid={validFirst ? "false" : "true"}
                     aria-describedby="firstnote"
@@ -176,7 +185,7 @@ const SignUpWorker = () => {
                 </label>
                 <input 
                     id ="lastname" 
-                    autocomplete="on"
+                    autoComplete="on"
                     className="main-font input-admin" 
                     type="text" 
                     placeholder="" 
@@ -202,7 +211,7 @@ const SignUpWorker = () => {
                 </label>
                 <input 
                     id="username" 
-                    autocomplete="on"
+                    autoComplete="on"
                     className="main-font input-admin"
                     type="text" 
                     placeholder=""
@@ -233,7 +242,7 @@ const SignUpWorker = () => {
                     id ="email" 
                     ref={userRef}
                     required
-                    autocomplete="on"
+                    autoComplete="on"
                     aria-invalid={validFirst ? "false" : "true"}
                     aria-describedby="emailnote"
                     onFocus = {() => setEmailFocus(true)}
