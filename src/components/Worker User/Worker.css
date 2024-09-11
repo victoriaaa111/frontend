@@ -1,0 +1,114 @@
+.worker-profile-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #6c63ff;
+}
+
+.profile-picture {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; 
+    overflow: hidden; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e0e0e0;
+    margin: 0 auto;
+}
+
+.profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.change-picture-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.worker-info label,
+.services-offered h2,
+.ratings h2 {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.worker-info input,
+.worker-info textarea,
+.services-offered input,
+.ratings input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.update-details-btn,
+.add-service-btn,
+.save-changes-btn,
+.cancel-btn {
+    padding: 10px;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.save-changes-btn {
+    background-color: #2ecc71;
+    padding: 15px;
+}
+
+.cancel-btn {
+    background-color: #e74c3c;
+    padding: 15px;
+}
+
+.service-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.service-list li {
+    margin-bottom: 10px;
+}
+
+.actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+.devider{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    
+}
+
+.rating{
+    margin-top: 10px;
+}

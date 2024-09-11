@@ -1,21 +1,21 @@
 .contact-container {
     display: flex;
     justify-content: center;
-    /* padding: 50px; */
-    max-width: 1280px;
+    
+    max-width: 880px;
     margin: auto;
     margin-bottom: 50px;
   }
   
   .form-container {
     background: white;
-    width: 100%;
-    padding: 20px;
+    max-width: 100%;
+    /* padding: 20px; */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
-  .contact-container, .title {
+  .contact-container, .title3 {
     text-align: center;
     color: #fff;
   }
@@ -95,7 +95,7 @@
   }
 
   .form-container,
-  .title{
+  .title3{
     color: #3b065e;
     padding-bottom: 20px;
   }
