@@ -5,8 +5,8 @@
   }
   
   .user-management {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     padding: 20px;
   }
@@ -62,7 +62,7 @@
   th {
     background-color: #f1f1f1;
   }
-  
+    
   @media (max-width: 480px) {
     table, thead, tbody, th, td, tr {
       display: block;
@@ -101,17 +101,20 @@
   }
   
   .new-user-form {
-    margin-top: 20px;
+    margin-top: 10px;
+
     align-items: center;
     justify-content: center;
+    display: flex;
   }
   
-  .new-user-form h2 {
+  .new-user-form h1,
+  .left-section h1 {
     margin-bottom: 10px;
   }
   
   .new-user-form input, .new-user-form select {
-    width: 50%;
+    width: 100%;
     margin-bottom: 15px;
     padding: 10px;
     border: 1px solid #ddd;
@@ -131,3 +134,23 @@
     width: 50%;
   }
   
+  /* .new-user-form label{
+    display: flex;
+    align-self: start;
+  } */
+
+  .form-control{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    
+  }
+  .password-input{
+    width: 80% !important;
+  }
+
+  .actions button{
+    font-size: 12px ;
+    margin: 5px 5px;
+  }

@@ -17,7 +17,7 @@ const Footer = () => {
               <a href="#"><i className="fas fa-phone-volume"></i>+123 45 67 89</a>
             </div>
             <div className="email">
-              <a href="#"><i className="fas fa-envelope"></i>someone@gmail.com</a>
+              <a href="#"><i className="fas fa-envelope"></i>fixer.md@gmail.com</a>
             </div>
           </div>
         </div>

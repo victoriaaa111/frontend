@@ -86,14 +86,14 @@ const NewUserForm = ({ onSave }) => {
 
   return (
     <form className="new-user-form" onSubmit={handleSubmit}>
-      <h2>Creează Utilizator Nou</h2>
+      <h1>Utilizator Nou</h1>
       {success ? (
         <p>Utilizatorul a fost creat cu succes!</p>
       ) : (
         <>
           <p ref={errRef} className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">{errMsg}</p>
-
-          <label htmlFor="firstName">Prenume
+        <div className='form-control'>
+        <label htmlFor="firstName">Prenume
             <span className={validFirstName ? "valid" : "hide"}>
               <FontAwesomeIcon icon={faCheck} />
             </span>
@@ -116,6 +116,7 @@ const NewUserForm = ({ onSave }) => {
             <FontAwesomeIcon icon={faInfoCircle} />
             2 to 24 characters. Must begin with an uppercase letter.
           </p>
+          
 
           <label htmlFor="lastName">Nume
             <span className={validLastName ? "valid" : "hide"}>
@@ -191,6 +192,7 @@ const NewUserForm = ({ onSave }) => {
               onBlur={() => setPasswordFocus(false)}
               aria-invalid={validPassword ? "false" : "true"}
               aria-describedby="passwordnote"
+              className='password-input'
             />
             <button
               type="button"
@@ -207,6 +209,8 @@ const NewUserForm = ({ onSave }) => {
           </p>
 
           <button className='btn' type="submit" disabled={!validLastName || !validFirstName || !validEmail || !validPassword}>Salvează</button>
+        </div>
+          
         </>
       )}
     </form>
