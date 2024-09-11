@@ -242,4 +242,3 @@ const LogInAdmin = () => {
 };
 
 export default LogInAdmin;
-

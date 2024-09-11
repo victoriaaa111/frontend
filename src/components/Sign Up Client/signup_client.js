@@ -147,7 +147,7 @@ const SignUpClient = () => {
                 <input
                     id ="firstname" 
                     ref={userRef}
-                    autocomplete="on"
+                    autoComplete="on"
                     required
                     aria-invalid={validFirst ? "false" : "true"}
                     aria-describedby="firstnote"
@@ -177,7 +177,7 @@ const SignUpClient = () => {
                 </label>
                 <input 
                     id ="lastname" 
-                    autocomplete="on"
+                    autoComplete="on"
                     className="main-font input-admin" 
                     type="text" 
                     placeholder="" 
@@ -203,7 +203,7 @@ const SignUpClient = () => {
                 </label>
                 <input 
                     id="username" 
-                    autocomplete="on"
+                    autoComplete="on"
                     className="main-font input-admin"
                     type="text" 
                     placeholder=""
@@ -234,7 +234,7 @@ const SignUpClient = () => {
                     id ="email" 
                     ref={userRef}
                     required
-                    autocomplete="on"
+                    autoComplete="on"
                     aria-invalid={validFirst ? "false" : "true"}
                     aria-describedby="emailnote"
                     onFocus = {() => setEmailFocus(true)}

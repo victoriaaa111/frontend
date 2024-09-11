@@ -1,14 +1,15 @@
 import React from "react";
-import "./signup_worker.css";
 import { useState, useRef, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "../../api/axios";
+import { clientSignUpApi } from "../../api/axios";
 
 const NAME_REGEX = /^[A-Z][a-zA-Z]{1,24}$/;
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const SIGNUP_WORKER_URL = 'http://3.70.72.246:3001/worker/66de0492e489a3e530a6ff5e';
+
 
 const SignUpWorker = () => {
     const userRef = useRef();
@@ -18,10 +19,6 @@ const SignUpWorker = () => {
     const[validName, setValidName] = useState(false);
     const[userFocus, setUserFocus] = useState(false);
 
-    const [email, setEmail] = useState('');
-    const[validEmail, setValidEmail] = useState(false);
-    const[emailFocus, setEmailFocus] = useState(false);
-
     const [first, setFirst] = useState('');
     const[validFirst, setValidFirst] = useState(false);
     const[firstFocus, setFirstFocus] = useState(false);
@@ -30,7 +27,11 @@ const SignUpWorker = () => {
     const[validLast, setValidLast] = useState(false);
     const[lastFocus, setLastFocus] = useState(false);
 
-    const [pwd, setPwd] = useState('');
+    const [email, setEmail] = useState('');
+    const[validEmail, setValidEmail] = useState(false);
+    const[emailFocus, setEmailFocus] = useState(false);
+
+    const [password, setPwd] = useState('');
     const[validPwd, setValidPwd] = useState(false);
     const[pwdFocus, setPwdFocus] = useState(false);
 
@@ -47,24 +48,18 @@ const SignUpWorker = () => {
 
     useEffect(()=>{
         const result = NAME_REGEX.test(first);
-        console.log(result);
-        console.log(first);
         setValidFirst(result);
     },[first])
 
     useEffect(()=>{
-        const result = NAME_REGEX.test(last);
-        console.log(result);
-        console.log(last);
-        setValidLast(result);
-    },[last])
-
-    useEffect(()=>{
         const result = EMAIL_REGEX.test(email);
-        console.log(result);
-        console.log(email);
         setValidEmail(result);
     },[email])
+
+    useEffect(()=>{
+        const result = NAME_REGEX.test(last);
+        setValidLast(result);
+    },[last])
 
     useEffect(()=>{
         const result = USER_REGEX.test(user);
@@ -74,56 +69,57 @@ const SignUpWorker = () => {
     },[user])
 
     useEffect(()=>{
-        const result = PWD_REGEX.test(pwd);
+        const result = PWD_REGEX.test(password);
         console.log(result);
-        console.log(pwd);
+        console.log(password);
         setValidPwd(result);
-        const match = pwd === matchPwd;
+        const match = password === matchPwd;
         setValidMatchPwd(match);
 
-    }, [pwd, matchPwd])
+    }, [password, matchPwd])
 
     useEffect(()=>{
         setErrMsg('');
-    },[user,pwd, matchPwd])
+    },[user, first, last, email, password, matchPwd])
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
         const v1 = USER_REGEX.test(user);
-        const v2 = PWD_REGEX.test(pwd);
+        const v2 = PWD_REGEX.test(password);
         const v3 = NAME_REGEX.test(first);
         const v4 = NAME_REGEX.test(last);
-        const v5 = EMAIL_REGEX.test(email);
-        if(!v1 || !v2 || !v3 || !v4 || !v5){
+        if(!v1 || !v2 || !v3 || !v4){
             setErrMsg("Invalid Entry");
             return;
         }
-        {
-            /*
-            try{
-                const response = await axios.post(REGISTER_URL, JSON.stringify({first, last, user, pwd}),
+        try{
+            const response = await clientSignUpApi.post(SIGNUP_WORKER_URL,
+                JSON.stringify({ firstName: first, lastName: last, username: user, email, password }),
                 {
-                headers:{'Content-Type': 'application/json'},
-                withCredentials:true            
-                })
-        };
-        console.log(response.data);
-        console.log(response.accessToken);
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            );
+        console.log(response?.data);
+        console.log(response?.accessToken);
         console.log(JSON.stringify(response))
-        setSuccess(true);
+            setSuccess(true);
+            setUser('');
+            setEmail('');
+            setFirst('');
+            setLast('');
+            setPwd('');
+            setMatchPwd('');
             }catch(err){
                 if(!err?.response){
                 setErrMsg('No Server Response');
-        }else if (err.response?.status === 409{
+        }else if (err.response?.status === 409){
                 setErrMsg('Username Taken');
         }else{
                 setErrMsg('Registration Failed');
         }
                 errRef.current.focus()
             }
-            */
-        }
-        setSuccess(true);
     }
 
     return (
@@ -135,8 +131,8 @@ const SignUpWorker = () => {
         ):(
         <div className="page-s">
         <div className="cover-signup main-font">
-            <h1 className ="title">Sign Up</h1>
-            <form className="form-container" onSubmit={handleSubmit}>
+            <h1 className ="title-signup">Sign Up</h1>
+            <form className="form-container-signup" onSubmit={handleSubmit}>
             <p ref={errRef} className={errMsg ? 'errmsg':"offscreen"} aria-live="assertive">{errMsg}</p>
             <div className="form-group" >
                 <label htmlFor = "firstname" className="description-field">First Name
@@ -150,14 +146,14 @@ const SignUpWorker = () => {
                 <input
                     id ="firstname" 
                     ref={userRef}
-                    autoComplete="on"
+                    autocomplete="on"
                     required
                     aria-invalid={validFirst ? "false" : "true"}
                     aria-describedby="firstnote"
                     onFocus = {() => setFirstFocus(true)}
                     onBlur={()=> setFirstFocus(false)}
                     onChange= {(e)=> setFirst(e.target.value)} 
-                    className="main-font" 
+                    className="main-font input-admin" 
                     type="text" 
                     placeholder="" />
 
@@ -166,6 +162,7 @@ const SignUpWorker = () => {
                      2 to 24 characters. <br />
                     Must contain only letters and begin with a uppercase letter.
                 </p>
+
 
 
 
@@ -179,10 +176,10 @@ const SignUpWorker = () => {
                 </label>
                 <input 
                     id ="lastname" 
-                    className="main-font" 
+                    autocomplete="on"
+                    className="main-font input-admin" 
                     type="text" 
                     placeholder="" 
-                    autoComplete="on"
                     required
                     aria-invalid={validLast ? "false" : "true"}
                     aria-describedby="lastnote"
@@ -205,11 +202,11 @@ const SignUpWorker = () => {
                 </label>
                 <input 
                     id="username" 
-                    className="main-font"
+                    autocomplete="on"
+                    className="main-font input-admin"
                     type="text" 
                     placeholder=""
                     ref={userRef}
-                    autoComplete="on"
                     required
                     aria-invalid={validName ? "false" : "true"}
                     aria-describedby="uidnote"
@@ -235,14 +232,14 @@ const SignUpWorker = () => {
                 <input
                     id ="email" 
                     ref={userRef}
-                    autoComplete="on"
                     required
+                    autocomplete="on"
                     aria-invalid={validFirst ? "false" : "true"}
                     aria-describedby="emailnote"
                     onFocus = {() => setEmailFocus(true)}
                     onBlur={()=> setEmailFocus(false)}
                     onChange= {(e)=> setEmail(e.target.value)} 
-                    className="main-font" 
+                    className="main-font input-admin" 
                     type="text" 
                     placeholder="" />
 
@@ -251,18 +248,17 @@ const SignUpWorker = () => {
                     Please enter a valid email address (e.g., example@domain.com).
                 </p>
 
-
                 <label htmlFor="password" className="description-field">Password
                     <span className={validPwd? "valid" : "hide"}>
                         <FontAwesomeIcon icon={faCheck} />
                     </span>
-                    <span className={validPwd || !pwd ? "hide" : "invalid"}>
+                    <span className={validPwd || !password ? "hide" : "invalid"}>
                         <FontAwesomeIcon icon={faTimes} />
                     </span>
                 </label>
                 <input 
                     id="password" 
-                    className="main-font" 
+                    className="main-font input-admin" 
                     type="password" 
                     placeholder=""
                     required
@@ -272,7 +268,7 @@ const SignUpWorker = () => {
                     onBlur={() => setPwdFocus(false)}
                     onChange={(e) => setPwd(e.target.value)} 
                     />
-                <p id="pwdnote" className={pwdFocus && pwd && !validPwd ? "instructions" : "offscreen"}>
+                <p id="pwdnote" className={pwdFocus && password && !validPwd ? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
                     8 to 24 characters. <br />
                     Must include uppercase and lowercase letters, a number and a special character <br />
@@ -291,7 +287,7 @@ const SignUpWorker = () => {
                 </label>
                 <input 
                     id="matchpassword" 
-                    className="main-font" 
+                    className="main-font input-admin" 
                     type="password" 
                     placeholder="" 
                     required
@@ -316,7 +312,7 @@ const SignUpWorker = () => {
             </div>
             */}
             </form>
-            <button className="signupw-btn">Log In</button>
+            <button className="signup-btn">Log In</button>
         </div>
         </div>
         )}

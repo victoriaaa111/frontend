@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import LoginForm from './components/Log In Form/loginform';
 import SignUpClient from './components/Sign Up Client/signup_client';
 import ChooseRole from './components/Chooserole/chooserole';
 import SignUpWorker from './components/Sign Up Worker/signup_worker';
@@ -9,10 +8,10 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Hero from "./components/Hero/Hero";
 import Contact from "./components/Contact/Contact";
-import LogInAdmin from './components/Admin Login/adminlogin';
+import LogInAdmin from './components/AdminLogin/adminlogin';
 import LogInClient from './components/Log In Form/loginform';
 import UserManagement from './components/Admin User/AdminManagement';
-import ProtectedRoute from './components/Admin Login/ProtectedRoute'; 
+import ProtectedRoute from './components/AdminLogin/ProtectedRoute';
 import LogInWorker from './components/Log In Worker/loginworker';
 import ChooseLogin from './components/Log In Worker/chooselogin';
 
