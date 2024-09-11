@@ -1,5 +1,5 @@
 import React from "react";
-import "./loginform.css";
+import "/Users/victoriamutruc/Desktop/internship_pentalog_minions/frontend/src/components/Log In Form/loginform.js";
 import { useState, useRef, useEffect, useContext} from "react";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,7 +8,7 @@ import clientApi from "axios";
 const LOGIN_CLIENT_URL='http://3.70.72.246:3001/auth/login'
 
 
-const LogInClient = () => {
+const LogInWorker = () => {
     const { setAuth } = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
@@ -67,16 +67,10 @@ const LogInClient = () => {
 
 
     return (
-
-        <div className="cover main-font">
-            <h1 className ="title">Login</h1>
-        
-            <div className="form-group">
-                <label htmlFor = "username" className="description-field">Username</label>
-                <input id ="username" className="main-font" type="text" value={username} onChange= {updateUsername}/>
-
-                <label htmlFor="password" className="description-field">Password</label>
-                <input id = "password" className="main-font" type="password" placeholder="" />
+        <>
+        {success?(
+            <div>
+                <h1 className ="title">Success!!</h1>
             </div>
         ):(
         <div className="page-s">
@@ -126,13 +120,17 @@ const LogInClient = () => {
             
             </div>
             <div>
-                <button className="login-btn">LOG IN</button>
+                <button type="submit"className="login-btn-admin">LOG IN</button>
             </div>
-            <Link to ="/choose">
-            <button className="signup-btn">Sign Up</button>
-            </Link>
+        
+            </form>
+            <button className="forgot-password fgtpass-btn">Forgot Password?</button>                 
         </div>
+        </div>
+        )}
+    </>
     );
 }
 
-export default LoginForm;
+
+export default LogInWorker;

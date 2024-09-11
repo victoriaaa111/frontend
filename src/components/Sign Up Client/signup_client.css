@@ -1,13 +1,29 @@
 .cover-signup{
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    border: 2px solid var(--orange);
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 40em;
+   height: 45em;
+   position: relative;
+   border-radius: 2em;
+   border: 0.15em solid rgb(255, 203, 67);
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content:center;
+   padding: 2em 1em;
+   background-color: white;
+   margin:auto;
+}
+.input-admin{
+   background-color: white;
+   font-size: 0.8em;
+   height: 1.8em;
+   border: 1px solid rgb(198, 153, 254);
+   padding: 0.5em;
+   margin-top: 0.1em;
+   border-radius: 0.15em;
+   flex-shrink: 0;
+   width: 100%;
+   box-sizing: border-box;
+
 }
 .signup-client-btn{
         background-color: rgb(198, 153, 254);
@@ -15,7 +31,7 @@
         width: 10em;
         margin-top: 3em;
 }
-.form-container {
+.form-container-signup {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,9 +39,14 @@
     width: 100%;
     max-width: 600px;
     padding: 20px;
+    box-shadow: none;
 }
 
-
+.title-signup{
+   color: rgb(105,127,249);
+   margin-bottom: none;
+   font-size: 2.5em;
+}
 .hide {
     display: none;
 }
