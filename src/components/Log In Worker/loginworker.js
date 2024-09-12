@@ -1,5 +1,5 @@
 import React from "react";
-import "/Users/victoriamutruc/Desktop/internship_pentalog_minions/frontend/src/components/Log In Form/loginform.js";
+import LoginForm from '../Log In Form/loginform.js';
 import { useState, useRef, useEffect, useContext} from "react";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

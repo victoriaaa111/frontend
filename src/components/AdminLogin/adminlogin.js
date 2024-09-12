@@ -120,7 +120,7 @@
 
 
 // export default LogInAdmin;
-import "./adminlogin.css";
+import "./AdminLogIn.css";
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";  
 import AuthContext from "../../context/AuthProvider"; 

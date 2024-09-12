@@ -3,21 +3,23 @@ import './Worker.css';
 
 const WorkerProfile = () => {
     const [worker, setWorker] = useState({
-        name: '',
-        surname: '',
+        fullName: '',
+        username: '',
         email: '',
-        phoneNumber: '',
-        ratings: '',
-        profilePicture: null // To store the uploaded picture
+        contact: '',
+        password: '',
+        profilePicture: null,
+        services: []
     });
 
     const [newService, setNewService] = useState({
         serviceName: '',
+        moreService: '',
         serviceDescription: '',
         hourlyRate: ''
     });
 
-    const [errors, setErrors] = useState({}); // To store validation errors
+    const [errors, setErrors] = useState({});
 
     const handlePictureChange = (e) => {
         const file = e.target.files[0];
@@ -26,7 +28,7 @@ const WorkerProfile = () => {
             reader.onload = (e) => {
                 setWorker((prevWorker) => ({
                     ...prevWorker,
-                    profilePicture: e.target.result // Store the image data URL
+                    profilePicture: e.target.result
                 }));
             };
             reader.readAsDataURL(file);
@@ -38,21 +40,28 @@ const WorkerProfile = () => {
         return emailRegex.test(email);
     };
 
-    const validatePhone = (phoneNumber) => {
-        const phoneRegex = /^[0-9]{9}$/;
-        return phoneRegex.test(phoneNumber);
+    const validatePhone = (contact) => {
+        const phoneRegex = /^\+?[0-9]{9,14}$/; // Actualizat pentru a permite numere cu prefixul '+'
+        return phoneRegex.test(contact);
     };
 
-    const validateFields = () => {
+    const validatePassword = (password) => {
+        return password.length >= 6;
+    };
+
+    const validateFields = (isServiceValidation = false) => {
         const newErrors = {};
 
-        if (!worker.name) newErrors.name = 'Name is required';
-        if (!worker.surname) newErrors.surname = 'Surname is required';
+        if (!worker.fullName) newErrors.fullName = 'Full name is required';
+        if (!worker.username) newErrors.username = 'Username is required';
         if (!worker.email || !validateEmail(worker.email)) newErrors.email = 'Invalid email';
-        if (!worker.phoneNumber || !validatePhone(worker.phoneNumber)) newErrors.phoneNumber = 'Invalid phone number';
+        if (!worker.contact || !validatePhone(worker.contact)) newErrors.contact = 'Invalid contact number';
+        if (!worker.password || !validatePassword(worker.password)) newErrors.password = 'Password must be at least 6 characters';
 
-        if (!newService.serviceName) newErrors.serviceName = 'Service name is required';
-        if (!newService.hourlyRate || isNaN(newService.hourlyRate)) newErrors.hourlyRate = 'Hourly rate must be a number';
+        if (isServiceValidation) {
+            if (!newService.serviceName) newErrors.serviceName = 'Service name is required';
+            if (!newService.hourlyRate || isNaN(newService.hourlyRate)) newErrors.hourlyRate = 'Hourly rate must be a number';
+        }
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -74,23 +83,51 @@ const WorkerProfile = () => {
         }));
     };
 
-    const addService = () => {
+    const updateWorkerDetails = () => {
         if (validateFields()) {
-            setWorker((prevWorker) => ({
-                ...prevWorker,
-                services: [...prevWorker.services, newService]
-            }));
-            setNewService({
-                serviceName: '',
-                serviceDescription: '',
-                hourlyRate: ''
-            });
+            const details = {
+                fullName: worker.fullName,
+                username: worker.username,
+                email: worker.email,
+                contact: worker.contact,
+                password: worker.password,
+            };
+
+            const jsonData = JSON.stringify(details, null, 2);
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'worker_personal_details.json';
+            link.click();
+
+            console.log('Worker details updated:', details);
         }
     };
 
-    const updateWorkerDetails = () => {
-        if (validateFields()) {
-            console.log('Worker details updated:', worker);
+    const addService = () => {
+        if (validateFields(true)) {
+            const updatedWorker = {
+                ...worker,
+                services: [...worker.services, newService]
+            };
+
+            setWorker(updatedWorker);
+
+            const jsonData = JSON.stringify(updatedWorker, null, 2);
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'worker_services.json';
+            link.click();
+
+            setNewService({
+                serviceName: '',
+                moreService: '',
+                serviceDescription: '',
+                hourlyRate: ''
+            });
         }
     };
 
@@ -99,13 +136,13 @@ const WorkerProfile = () => {
             <h1>Worker Profile Management</h1>
 
             <div className="profile-picture">
-            <div className="profile-image">
-                {worker.profilePicture ? (
-                    <img src={worker.profilePicture} alt="Profile" />
-                ) : (
-                    <div className="placeholder-image"></div>
-                )}
-            </div>
+                <div className="profile-image">
+                    {worker.profilePicture ? (
+                        <img src={worker.profilePicture} alt="Profile" />
+                    ) : (
+                        <div className="placeholder-image"></div>
+                    )}
+                </div>
 
                 <input
                     type="file"
@@ -125,45 +162,55 @@ const WorkerProfile = () => {
             <div className='devider'>
                 <div className='right'>
                     <div className="worker-info">
-                        <label>Name:</label>
+                        <label>Full Name:</label>
                         <input
                             type="text"
-                            name="name"
-                            placeholder="Vasile"
-                            value={worker.name}
+                            name="fullName"
+                            placeholder="Ion Berzedeanu"
+                            value={worker.fullName}
                             onChange={handleInputChange}
                         />
-                        {errors.name && <p className="error">{errors.name}</p>}
-
-                        <label>Surname:</label>
-                        <input
-                            type="text"
-                            name="surname"
-                            placeholder="Vasilev"
-                            value={worker.surname}
-                            onChange={handleInputChange}
-                        />
-                        {errors.surname && <p className="error">{errors.surname}</p>}
+                        {errors.fullName && <p className="error">{errors.fullName}</p>}
 
                         <label>Email:</label>
                         <input
                             type="email"
                             name="email"
-                            placeholder="vasile@vasilev.com"
+                            placeholder="ionberzedeanu@gmail.com"
                             value={worker.email}
                             onChange={handleInputChange}
                         />
                         {errors.email && <p className="error">{errors.email}</p>}
 
-                        <label>Phone Number:</label>
+                        <label>Username:</label>
                         <input
-                            type="tel"
-                            name="phoneNumber"
-                            placeholder="074123456"
-                            value={worker.phoneNumber}
+                            type="text"
+                            name="username"
+                            placeholder="ion!2"
+                            value={worker.username}
                             onChange={handleInputChange}
                         />
-                        {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
+                        {errors.username && <p className="error">{errors.username}</p>}
+
+                        <label>Contact Number:</label>
+                        <input
+                            type="tel"
+                            name="contact"
+                            placeholder="+37368126027"
+                            value={worker.contact}
+                            onChange={handleInputChange}
+                        />
+                        {errors.contact && <p className="error">{errors.contact}</p>}
+
+                        <label>Password:</label>
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Enter a password"
+                            value={worker.password}
+                            onChange={handleInputChange}
+                        />
+                        {errors.password && <p className="error">{errors.password}</p>}
 
                         <button className="update-details-btn" onClick={updateWorkerDetails}>
                             Update Details
@@ -182,6 +229,15 @@ const WorkerProfile = () => {
                             onChange={handleServiceChange}
                         />
                         {errors.serviceName && <p className="error">{errors.serviceName}</p>}
+
+                        <label>Add more service:</label>
+                        <input
+                            type="text"
+                            name="moreService"
+                            placeholder="Additional Service"
+                            value={newService.moreService}
+                            onChange={handleServiceChange}
+                        />
 
                         <label>Service Description: </label>
                         <input
@@ -207,16 +263,6 @@ const WorkerProfile = () => {
                         </button>
                     </div>
                     
-                    <div className="rating">
-                        <label><b>Ratings: </b></label>
-                        <input
-                            type="text"
-                            name="ratings"
-                            placeholder='5.0'
-                            value={worker.ratings}
-                            onChange={handleInputChange}
-                        />
-                    </div>
                     <ul className="service-list">
                         {worker.services && worker.services.map((service, index) => (
                             <li key={index}>
@@ -226,7 +272,7 @@ const WorkerProfile = () => {
                     </ul>
 
                     <div className="actions">
-                        <button className="save-changes-btn">Save</button>
+                        <button className="save-changes-btn" onClick={addService}>Save</button>
                         <button className="cancel-btn">Cancel</button>
                     </div>
                 </div>

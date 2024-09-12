@@ -17,7 +17,7 @@ const Header = () => {
                     <Link to="/about">Despre noi</Link>
                     <Link to="/contact">Contacte</Link>
                     <button className="button1">
-                        <Link to="/login" style={{color: "white"}}>Log In</Link>
+                        <Link to="/chooselogin" style={{color: "white"}}>Log In</Link>
                     </button>
                     <button className="button2">
                         <Link to="/signupclient" style={{color: "white"}}>Sign Up</Link>
