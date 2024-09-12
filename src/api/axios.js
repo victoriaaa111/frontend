@@ -14,8 +14,14 @@ const clientSignUpApi = axios.create({
     baseURL: 'http://3.70.72.246:3001/auth/signup'
 });
 
-const workerSignUpApi = axios.create({
-    baseURL: 'http://3.70.72.246:3001/worker/66de0492e489a3e530a6ff5e'
+const workerSignUpApi = (workerId) => {
+    return axios.create({
+        baseURL: `http://3.70.72.246:3001/worker/${workerId}`
+    });
+} 
+
+const workerPrfileAPI = axios.create({
+    baseURL: 'http://3.70.72.246:3001/worker/edit/:workerid'
 });
 
-export { adminApi, clientApi, clientSignUpApi, workerSignUpApi};
+export { adminApi, clientApi, clientSignUpApi, workerSignUpApi, workerPrfileAPI};

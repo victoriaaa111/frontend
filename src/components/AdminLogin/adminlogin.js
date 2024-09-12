@@ -152,10 +152,11 @@ const LogInAdmin = () => {
         if (token) {
             navigate('/usermanagement');
         }
-    }, [navigate]);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(e)
         try {
             const response = await adminApi.post(
                 LOGIN_ADMIN_URL,

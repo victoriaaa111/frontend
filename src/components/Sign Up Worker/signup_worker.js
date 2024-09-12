@@ -2,13 +2,16 @@ import React from "react";
 import { useState, useRef, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { clientSignUpApi } from "../../api/axios";
+import { clientSignUpApi, workerSignUpApi } from "../../api/axios";
 
-const NAME_REGEX = /^[A-Z][a-zA-Z]{1,24}$/;
+const NAME_REGEX = /^[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$/;
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const SIGNUP_CLIENT_URL = 'http://3.70.72.246:3001/auth/signup';
+const PHONE_REGEX = /^\+?(\d{1,3})?[-. (]?(\d{1,4})?[). -]?(\d{3})[-. ]?(\d{3,4})$/;
+
+const SIGNUP_WORKER_URL = 'http://3.70.72.246:3001/worker/66de0492e489a3e530a6ff5e';
+// const SIGNUP_WORKER_URL = workerSignUpApi("66de0492e489a3e530a6ff5e")
 
 
 const SignUpWorker = () => {
@@ -19,21 +22,18 @@ const SignUpWorker = () => {
     const[validName, setValidName] = useState(false);
     const[userFocus, setUserFocus] = useState(false);
 
-    const [first, setFirst] = useState('');
-    const[validFirst, setValidFirst] = useState(false);
-    const[firstFocus, setFirstFocus] = useState(false);
-
-    const [last, setLast] = useState('');
-    const[validLast, setValidLast] = useState(false);
-    const [lastFocus, setLastFocus] = useState(false);
+    const [fullName, setfullName] = useState('');
+    const[validFullName, setValidFullName] = useState(false);
+    const [fullNameFocus, setFullNameFocus] = useState(false);
     
     const [contact, setContact] = useState('');
-    const [validContact, setValidContact] = useState(false);
+    const[validContact, setValidContact] = useState(false);
     const[contactFocus, setContactFocus] = useState(false);
 
     const [email, setEmail] = useState('');
     const[validEmail, setValidEmail] = useState(false);
     const [emailFocus, setEmailFocus] = useState(false);
+    
 
     const [password, setPwd] = useState('');
     const[validPwd, setValidPwd] = useState(false);
@@ -51,31 +51,29 @@ const SignUpWorker = () => {
     },[])
 
     useEffect(()=>{
-        const result = NAME_REGEX.test(first);
-        setValidFirst(result);
-    }, [first])
-    
-    useEffect(()=>{
-        const result = NAME_REGEX.test(contact);
-        setValidContact(result);
-    },[contact])
+        const result = NAME_REGEX.test(fullName);
+        setValidFullName(result);
+    },[fullName])
 
     useEffect(()=>{
         const result = EMAIL_REGEX.test(email);
         setValidEmail(result);
     },[email])
 
-    useEffect(()=>{
-        const result = NAME_REGEX.test(last);
-        setValidLast(result);
-    },[last])
 
     useEffect(()=>{
         const result = USER_REGEX.test(user);
         console.log(result);
         console.log(user);
         setValidName(result);
-    },[user])
+    }, [user])
+    
+    useEffect(()=>{
+        const result = PHONE_REGEX.test(contact);
+        console.log(result);
+        console.log(contact);
+        setValidContact(result);
+    },[contact])
 
     useEffect(()=>{
         const result = PWD_REGEX.test(password);
@@ -89,21 +87,21 @@ const SignUpWorker = () => {
 
     useEffect(()=>{
         setErrMsg('');
-    },[user, first, last, email, password, matchPwd])
+    },[user, fullName, contact,  email, password, matchPwd])
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
         const v1 = USER_REGEX.test(user);
         const v2 = PWD_REGEX.test(password);
-        const v3 = NAME_REGEX.test(first);
-        const v4 = NAME_REGEX.test(last);
+        const v3 = NAME_REGEX.test(fullName);
+        const v4 = PHONE_REGEX.test(contact);
         if(!v1 || !v2 || !v3 || !v4){
             setErrMsg("Invalid Entry");
             return;
         }
         try{
-            const response = await clientSignUpApi.post(SIGNUP_CLIENT_URL,
-                JSON.stringify({ firstName: first, lastName: last, username: user, email, password }),
+            const response = await clientSignUpApi.post(SIGNUP_WORKER_URL,
+                JSON.stringify({ fullName ,contact, username: user, email, password }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -115,8 +113,8 @@ const SignUpWorker = () => {
             setSuccess(true);
             setUser('');
             setEmail('');
-            setFirst('');
-            setLast('');
+            setfullName('');
+            setContact('');
             setPwd('');
             setMatchPwd('');
             }catch(err){
@@ -144,29 +142,29 @@ const SignUpWorker = () => {
             <form className="form-container-signup" onSubmit={handleSubmit}>
             <p ref={errRef} className={errMsg ? 'errmsg':"offscreen"} aria-live="assertive">{errMsg}</p>
             <div className="form-group" >
-                <label htmlFor = "firstname" className="description-field">First Name
-                    <span className={validFirst? "valid" : "hide"}>
+                <label htmlFor = "fullname" className="description-field">Full Name
+                    <span className={validFullName? "valid" : "hide"}>
                         <FontAwesomeIcon icon={faCheck} />
                     </span>
-                    <span className={validFirst || !first ? "hide" : "invalid"}>
+                    <span className={validFullName || !fullName ? "hide" : "invalid"}>
                         <FontAwesomeIcon icon={faTimes} />
                     </span>
                 </label>
                 <input
-                    id ="firstname" 
+                    id ="fullname" 
                     ref={userRef}
-                    autoComplete="on"
+                    autocomplete="on"
                     required
-                    aria-invalid={validFirst ? "false" : "true"}
+                    aria-invalid={validFullName ? "false" : "true"}
                     aria-describedby="firstnote"
-                    onFocus = {() => setFirstFocus(true)}
-                    onBlur={()=> setFirstFocus(false)}
-                    onChange= {(e)=> setFirst(e.target.value)} 
+                    onFocus = {() => setFullNameFocus(true)}
+                    onBlur={()=> setFullNameFocus(false)}
+                    onChange= {(e)=> setfullName(e.target.value)} 
                     className="main-font input-admin" 
                     type="text" 
                     placeholder="" />
 
-                <p id="firstnote" className={firstFocus && first && !validFirst ? "instructions" : "offscreen"}>
+                <p id="firstnote" className={fullNameFocus && fullName && !validFullName ? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
                      2 to 24 characters. <br />
                     Must contain only letters and begin with a uppercase letter.
@@ -175,30 +173,30 @@ const SignUpWorker = () => {
 
 
 
-                <label htmlFor = "lastname" className="description-field">Last Name
-                    <span className={validLast? "valid" : "hide"}>
+                <label htmlFor = "contact" className="description-field">Contact
+                    <span className={validContact? "valid" : "hide"}>
                         <FontAwesomeIcon icon={faCheck} />
                     </span>
-                    <span className={validLast || !last ? "hide" : "invalid"}>
+                    <span className={validContact || !contact ? "hide" : "invalid"}>
                         <FontAwesomeIcon icon={faTimes} />
                     </span>
                 </label>
                 <input 
-                    id ="lastname" 
-                    autoComplete="on"
+                    id ="contact" 
+                    autocomplete="on"
                     className="main-font input-admin" 
                     type="text" 
                     placeholder="" 
                     required
-                    aria-invalid={validLast ? "false" : "true"}
+                    aria-invalid={validContact ? "false" : "true"}
                     aria-describedby="lastnote"
-                    onFocus = {() => setLastFocus(true)}
-                    onBlur={()=> setLastFocus(false)}
-                    onChange= {(e)=> setLast(e.target.value)} />
-                <p id="lastnote" className={lastFocus && last && !validLast ? "instructions" : "offscreen"}>
+                    onFocus = {() => setContactFocus(true)}
+                    onBlur={()=> setContactFocus(false)}
+                    onChange= {(e)=> setContact(e.target.value)} />
+                <p id="lastnote" className={contactFocus && contact && !validContact ? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
-                    2 to 24 characters. <br />
-                    Must contain only letters and begin with a uppercase letter.
+                                        Phone numbers must be 7 to 15 digits long and can include optional spaces, dashes, or parentheses. <br/>
+                                        International numbers can start with a + and country code, while local numbers can be entered without it.
                 </p>
 
                 <label htmlFor="username" className="description-field">Username
@@ -211,7 +209,7 @@ const SignUpWorker = () => {
                 </label>
                 <input 
                     id="username" 
-                    autoComplete="on"
+                    autocomplete="on"
                     className="main-font input-admin"
                     type="text" 
                     placeholder=""
@@ -242,8 +240,8 @@ const SignUpWorker = () => {
                     id ="email" 
                     ref={userRef}
                     required
-                    autoComplete="on"
-                    aria-invalid={validFirst ? "false" : "true"}
+                    autocomplete="on"
+                    aria-invalid={validEmail? "false" : "true"}
                     aria-describedby="emailnote"
                     onFocus = {() => setEmailFocus(true)}
                     onBlur={()=> setEmailFocus(false)}
@@ -312,7 +310,7 @@ const SignUpWorker = () => {
                 </p>
             </div>
             <div>
-                <button disabled = {(!validName || !validFirst || !validLast || !validPwd || !validMatchPwd || !validEmail) ? true: false} className="signup-client-btn">SIGN UP</button>
+                <button disabled = {(!validName || !validContact || !validFullName || !validPwd || !validMatchPwd || !validEmail) ? true: false} className="signup-client-btn">SIGN UP</button>
             </div>
 
             {/*<p className="text">Or login using</p>
