@@ -5,7 +5,7 @@ import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { clientSignUpApi } from "../../api/axios";
 
-const NAME_REGEX = /^[A-Z][a-zA-Z]{1,24}$/;
+const NAME_REGEX = /^[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$/;
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -20,13 +20,9 @@ const SignUpClient = () => {
     const[validName, setValidName] = useState(false);
     const[userFocus, setUserFocus] = useState(false);
 
-    const [first, setFirst] = useState('');
-    const[validFirst, setValidFirst] = useState(false);
-    const[firstFocus, setFirstFocus] = useState(false);
-
-    const [last, setLast] = useState('');
-    const[validLast, setValidLast] = useState(false);
-    const[lastFocus, setLastFocus] = useState(false);
+    const [fullName, setFullName] = useState('');
+    const[validFullName, setValidFullName] = useState(false);
+    const[fullNameFocus, setFullNameFocus] = useState(false);
 
     const [email, setEmail] = useState('');
     const[validEmail, setValidEmail] = useState(false);
@@ -48,19 +44,14 @@ const SignUpClient = () => {
     },[])
 
     useEffect(()=>{
-        const result = NAME_REGEX.test(first);
-        setValidFirst(result);
-    },[first])
+        const result = NAME_REGEX.test(fullName);
+        setValidFullName(result);
+    },[fullName])
 
     useEffect(()=>{
         const result = EMAIL_REGEX.test(email);
         setValidEmail(result);
     },[email])
-
-    useEffect(()=>{
-        const result = NAME_REGEX.test(last);
-        setValidLast(result);
-    },[last])
 
     useEffect(()=>{
         const result = USER_REGEX.test(user);
@@ -81,21 +72,20 @@ const SignUpClient = () => {
 
     useEffect(()=>{
         setErrMsg('');
-    },[user, first, last, email, password, matchPwd])
+    },[user, fullName, email, password, matchPwd])
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
         const v1 = USER_REGEX.test(user);
         const v2 = PWD_REGEX.test(password);
-        const v3 = NAME_REGEX.test(first);
-        const v4 = NAME_REGEX.test(last);
-        if(!v1 || !v2 || !v3 || !v4){
+        const v3 = NAME_REGEX.test(fullName);
+        if(!v1 || !v2 || !v3){
             setErrMsg("Invalid Entry");
             return;
         }
         try{
             const response = await clientSignUpApi.post(SIGNUP_CLIENT_URL,
-                JSON.stringify({ firstName: first, lastName: last, username: user, email, password }),
+                JSON.stringify({ fullName, username: user, email, password }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -107,8 +97,7 @@ const SignUpClient = () => {
             setSuccess(true);
             setUser('');
             setEmail('');
-            setFirst('');
-            setLast('');
+            setFullName('');
             setPwd('');
             setMatchPwd('');
             }catch(err){
@@ -136,62 +125,34 @@ const SignUpClient = () => {
             <form className="form-container-signup" onSubmit={handleSubmit}>
             <p ref={errRef} className={errMsg ? 'errmsg':"offscreen"} aria-live="assertive">{errMsg}</p>
             <div className="form-group" >
-                <label htmlFor = "firstname" className="description-field">First Name
-                    <span className={validFirst? "valid" : "hide"}>
+                <label htmlFor = "firstname" className="description-field">Full Name
+                    <span className={validFullName? "valid" : "hide"}>
                         <FontAwesomeIcon icon={faCheck} />
                     </span>
-                    <span className={validFirst || !first ? "hide" : "invalid"}>
+                    <span className={validFullName || !fullName ? "hide" : "invalid"}>
                         <FontAwesomeIcon icon={faTimes} />
                     </span>
                 </label>
                 <input
-                    id ="firstname" 
+                    id ="fullname" 
                     ref={userRef}
                     autoComplete="on"
                     required
-                    aria-invalid={validFirst ? "false" : "true"}
+                    aria-invalid={validFullName ? "false" : "true"}
                     aria-describedby="firstnote"
-                    onFocus = {() => setFirstFocus(true)}
-                    onBlur={()=> setFirstFocus(false)}
-                    onChange= {(e)=> setFirst(e.target.value)} 
+                    onFocus = {() => setFullNameFocus(true)}
+                    onBlur={()=> setFullNameFocus(false)}
+                    onChange= {(e)=> setFullName(e.target.value)} 
                     className="main-font input-admin" 
                     type="text" 
                     placeholder="" />
 
-                <p id="firstnote" className={firstFocus && first && !validFirst ? "instructions" : "offscreen"}>
+                <p id="firstnote" className={fullNameFocus && fullName && !validFullName ? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
                      2 to 24 characters. <br />
                     Must contain only letters and begin with a uppercase letter.
                 </p>
 
-
-
-
-                <label htmlFor = "lastname" className="description-field">Last Name
-                    <span className={validLast? "valid" : "hide"}>
-                        <FontAwesomeIcon icon={faCheck} />
-                    </span>
-                    <span className={validLast || !last ? "hide" : "invalid"}>
-                        <FontAwesomeIcon icon={faTimes} />
-                    </span>
-                </label>
-                <input 
-                    id ="lastname" 
-                    autoComplete="on"
-                    className="main-font input-admin" 
-                    type="text" 
-                    placeholder="" 
-                    required
-                    aria-invalid={validLast ? "false" : "true"}
-                    aria-describedby="lastnote"
-                    onFocus = {() => setLastFocus(true)}
-                    onBlur={()=> setLastFocus(false)}
-                    onChange= {(e)=> setLast(e.target.value)} />
-                <p id="lastnote" className={lastFocus && last && !validLast ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    2 to 24 characters. <br />
-                    Must contain only letters and begin with a uppercase letter.
-                </p>
 
                 <label htmlFor="username" className="description-field">Username
                     <span className={validName? "valid" : "hide"}>
@@ -235,7 +196,7 @@ const SignUpClient = () => {
                     ref={userRef}
                     required
                     autoComplete="on"
-                    aria-invalid={validFirst ? "false" : "true"}
+                    aria-invalid={validEmail ? "false" : "true"}
                     aria-describedby="emailnote"
                     onFocus = {() => setEmailFocus(true)}
                     onBlur={()=> setEmailFocus(false)}
@@ -304,7 +265,7 @@ const SignUpClient = () => {
                 </p>
             </div>
             <div>
-                <button disabled = {(!validName || !validFirst || !validLast || !validPwd || !validMatchPwd || !validEmail) ? true: false} className="signup-client-btn">SIGN UP</button>
+                <button disabled = {(!validName || !validFullName || !validPwd || !validMatchPwd || !validEmail) ? true: false} className="signup-client-btn">SIGN UP</button>
             </div>
 
             {/*<p className="text">Or login using</p>
