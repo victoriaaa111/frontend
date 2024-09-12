@@ -14,6 +14,9 @@ import UserManagement from './components/Admin User/AdminManagement';
 import ProtectedRoute from './components/AdminLogin/ProtectedRoute';
 import LogInWorker from './components/Log In Worker/loginworker';
 import ChooseLogin from './components/Log In Worker/chooselogin';
+import AdminManagement from './components/Admin User/AdminManagement';
+import WorkerManagement from './components/Worker User/WorkerManagement';
+import WorkerProfile from './components/WorkerManagement/WorkerProfile';
 
 function App() {
   return (
@@ -26,13 +29,15 @@ function App() {
             <Route path="/choose" element={<ChooseRole />} />
             <Route path="/chooselogin" element={<ChooseLogin />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/" element={<Hero />} />
-            <Route path="/loginclient" element={<LogInClient />} />
+            <Route path="/loginclient" element={<LogInClient />} /> 
             <Route path="/loginworker" element={<LogInWorker />} />
             <Route path="/signupclient" element={<SignUpClient />} />
             <Route path="/signupworker" element={<SignUpWorker />} />
             <Route path="/loginadmin" element={<LogInAdmin />} />
             <Route path="/usermanagement" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
+            <Route path="/admin-profile" element={<AdminManagement />} />
+            <Route path="/worker-profile" element={<WorkerManagement />} />
+            <Route path="/worker-profile-management" element={<WorkerProfile />} />
           </Routes>
         </main>
         <Footer />
