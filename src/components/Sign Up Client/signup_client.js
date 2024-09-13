@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { clientSignUpApi } from "../../api/axios";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const NAME_REGEX = /^[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$/;
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
@@ -15,6 +17,7 @@ const SIGNUP_CLIENT_URL = 'http://3.70.72.246:3001/auth/signup';
 const SignUpClient = () => {
     const userRef = useRef();
     const errRef = useRef();
+    const navigate = useNavigate();
 
     const [user, setUser] = useState('');
     const[validName, setValidName] = useState(false);
@@ -100,11 +103,12 @@ const SignUpClient = () => {
             setFullName('');
             setPwd('');
             setMatchPwd('');
+            navigate("/loginclient")
             }catch(err){
                 if(!err?.response){
                 setErrMsg('No Server Response');
         }else if (err.response?.status === 409){
-                setErrMsg('Username Taken');
+                setErrMsg('Invalid Input');
         }else{
                 setErrMsg('Registration Failed');
         }
@@ -274,7 +278,9 @@ const SignUpClient = () => {
             </div>
             */}
             </form>
-            <button className="signup-btn">Log In</button>
+                            <button className="signup-btn">
+                                <Link to="/loginclient">Log In</Link>
+                            </button>
         </div>
         </div>
         )}
