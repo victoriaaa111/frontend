@@ -1,21 +1,23 @@
 import React from "react";
-import LoginForm from '../Log In Form/loginform.js';
+import "./loginworker.css"
 import { useState, useRef, useEffect, useContext} from "react";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AuthContext from "../../context/AuthProvider";
-import clientApi from "axios";
-const LOGIN_CLIENT_URL='http://3.70.72.246:3001/auth/login'
+import workerSignInApi from "axios";
+const LOGIN_WORKER_URL='http://3.70.72.246:3001/auth/worker/login'
 
 
 const LogInWorker = () => {
     const { setAuth } = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPwd] = useState('');
-    const [visible, setVisible] = useState(true);
+    const [visible, setVisible] = useState(false);
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
@@ -34,7 +36,7 @@ const LogInWorker = () => {
     const handleSubmit = async(e)=>{
         e.preventDefault();
         try {
-            const response = await clientApi.post(LOGIN_CLIENT_URL,
+            const response = await workerSignInApi.post(LOGIN_WORKER_URL,
                 JSON.stringify({ email, password }),
                 {
                     headers: {
@@ -46,8 +48,8 @@ const LogInWorker = () => {
             );
             console.log(response);
             const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
-            setAuth({email, password, roles, accessToken})
+            const workerId = response?.data?.workerId;
+            setAuth({email, password, accessToken, workerId})
             setEmail('');
             setPwd('');
             setSuccess(true);
@@ -55,7 +57,7 @@ const LogInWorker = () => {
             if (!err?.response) {
                 setErrMsg('No Server Response');
             } else if(err.response?.status ===400){
-                setErrMsg('Missing Username or Password')
+                setErrMsg('Invalid Username or Password')
             } else if (err.response?.status === 401) {
                 setErrMsg('Unauthorized')
             } else {
@@ -69,13 +71,11 @@ const LogInWorker = () => {
     return (
         <>
         {success?(
-            <div>
-                <h1 className ="title">Success!!</h1>
-            </div>
+            navigate("/worker-profile")
         ):(
         <div className="page-s">
-        <div className="cover-admin main-font">
-            <h1 className ="title-admin">Log In</h1>
+        <div className="cover-login main-font">
+            <h1 className ="title-login">Log In</h1>
             <form className="form-container-sign" onSubmit={handleSubmit}>
             <p ref={errRef} className={errMsg ? 'errmsg':"offscreen"} aria-live="assertive">{errMsg}</p>
             <div className="form-group" >
@@ -97,7 +97,7 @@ const LogInWorker = () => {
                     // onFocus = {() => setEmailFocus(true)}
                     // onBlur={()=> setEmailFocus(false)}
                     onChange= {(e)=> setEmail(e.target.value)}
-                    className="main-font input-admin"
+                    className="main-font input-login"
                     value={email}
                     type="text"
                     placeholder="" />
@@ -110,21 +110,22 @@ const LogInWorker = () => {
                 </label>
                 <input
                     id="password"
-                    className="main-font input-admin"
+                    className="main-font input-login"
                     type={visible ? "text": "password"}
                     placeholder=""
                     required
                     value={password}
+                    autoComplete="off"
                     onChange={(e) => setPwd(e.target.value)}
                                     />
             
             </div>
             <div>
-                <button type="submit"className="login-btn-admin">LOG IN</button>
+                <button type="submit" className="login-btn-worker">LOG IN</button>
             </div>
         
-            </form>
-            <button className="forgot-password fgtpass-btn">Forgot Password?</button>                 
+            </form>    
+            <button className="fgtpass-btn">Forgot Password?</button>                
         </div>
         </div>
         )}

@@ -10,13 +10,15 @@ import Hero from "./components/Hero/Hero";
 import Contact from "./components/Contact/Contact";
 import LogInAdmin from './components/AdminLogin/adminlogin';
 import LogInClient from './components/Log In Form/loginform';
-import UserManagement from './components/Admin User/AdminManagement';
+import UserManagement from './components/Admin User/AdminUserManagement';
 import ProtectedRoute from './components/AdminLogin/ProtectedRoute';
 import LogInWorker from './components/Log In Worker/loginworker';
 import ChooseLogin from './components/Log In Worker/chooselogin';
-import AdminManagement from './components/Admin User/AdminManagement';
+import AdminUserManagement from './components/Admin User/AdminUserManagement';
 import WorkerManagement from './components/Worker User/WorkerManagement';
 import WorkerProfile from './components/WorkerManagement/WorkerProfile';
+import AdminUserUpdate from './components/Admin User/AdminUserView';
+
 
 function App() {
   return (
@@ -35,9 +37,10 @@ function App() {
             <Route path="/signupworker" element={<SignUpWorker />} />
             <Route path="/loginadmin" element={<LogInAdmin />} />
             <Route path="/usermanagement" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
-            <Route path="/admin-profile" element={<AdminManagement />} />
-            <Route path="/worker-profile" element={<WorkerManagement />} />
-            <Route path="/worker-profile-management" element={<WorkerProfile />} />
+            <Route path="/admin/user/profile" element={<AdminUserManagement/>} />
+            <Route path="/worker/profile" element={<WorkerManagement />} />
+            <Route path="/worker/profile/management" element={<WorkerProfile />} />
+            <Route path="/admin/user/view" element={<AdminUserUpdate />} />
           </Routes>
         </main>
         <Footer />

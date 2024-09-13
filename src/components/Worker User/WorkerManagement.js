@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import {
+    workerGetDataApi, workerPutUpdateDataApi} from '../../api/axios';
+import AuthContext from '../../context/AuthProvider';
 import axios from 'axios';
+import { useEffect } from 'react';
 import './Worker.css';
 
+
 const WorkerProfile = () => {
+    const { auth } = useContext(AuthContext);
+    const { workerId } = auth;
     const [worker, setWorker] = useState({
         fullName: '',
         username: '',
@@ -11,6 +18,11 @@ const WorkerProfile = () => {
         password: '',
         profilePicture: null,
         services: []
+    });
+
+    const [updatedWorker, setUpdatedWorker] = useState({
+        fullName: '',
+        contact: ''
     });
 
     const [newService, setNewService] = useState({
@@ -22,7 +34,25 @@ const WorkerProfile = () => {
 
     const [errors, setErrors] = useState({});
     const [responseMessage, setResponseMessage] = useState('');
-    const workerId = "66de0492e489a3e530a6ff5e"; // Exemplu de workerId, ar trebui să fie dinamic
+
+    useEffect(() => {
+        const fetchWorkerProfile = async () => {
+            try {
+                const response = await workerGetDataApi(workerId).get(`http://3.70.72.246:3001/worker/${workerId}`);
+                const workerData = response.data;
+                setWorker(workerData);
+                setUpdatedWorker({
+                    fullName: workerData.fullName,
+                    contact: workerData.contact,
+                });
+            } catch (err) {
+                setResponseMessage('Error fetching worker profile: ${error.message}')
+            }
+        };
+        if (workerId) {
+            fetchWorkerProfile();
+        }
+    }, [workerId]);
 
     const handlePictureChange = (e) => {
         const file = e.target.files[0];
@@ -38,28 +68,16 @@ const WorkerProfile = () => {
         }
     };
 
-    const validateEmail = (email) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    };
-
     const validatePhone = (contact) => {
         const phoneRegex = /^\+?[0-9]{9,14}$/;
         return phoneRegex.test(contact);
     };
 
-    const validatePassword = (password) => {
-        return password.length >= 6;
-    };
-
     const validateFields = (isServiceValidation = false) => {
         const newErrors = {};
 
-        if (!worker.fullName) newErrors.fullName = 'Full name is required';
-        if (!worker.username) newErrors.username = 'Username is required';
-        if (!worker.email || !validateEmail(worker.email)) newErrors.email = 'Invalid email';
-        if (!worker.contact || !validatePhone(worker.contact)) newErrors.contact = 'Invalid contact number';
-        if (!worker.password || !validatePassword(worker.password)) newErrors.password = 'Password must be at least 6 characters';
+        if (!updatedWorker.fullName) newErrors.fullName = 'Full name is required';
+        if (!updatedWorker.contact || !validatePhone(updatedWorker.contact)) newErrors.contact = 'Invalid contact number';
 
         if (isServiceValidation) {
             if (!newService.serviceName) newErrors.serviceName = 'Service name is required';
@@ -70,13 +88,15 @@ const WorkerProfile = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleInputChange = (e) => {
+
+     const handleUpdateInputChange = (e) => {
         const { name, value } = e.target;
-        setWorker((prevWorker) => ({
+        setUpdatedWorker((prevWorker) => ({
             ...prevWorker,
             [name]: value
         }));
     };
+
 
     const handleServiceChange = (e) => {
         const { name, value } = e.target;
@@ -87,23 +107,23 @@ const WorkerProfile = () => {
     };
 
     const workerProfileAPI = axios.create({
-        baseURL: `http://3.70.72.246:3001/worker/edit/${workerId}`, // Endpoint-ul corect pentru editare
+        baseURL: `http://3.70.72.246:3001/worker/edit/${workerId}`, 
     });
 
-    const updateWorkerDetails = async () => {
+    const updateWorkerDetails = async (e) => {
+        e.preventDefault();
         if (validateFields()) {
-            const details = {
-                fullName: worker.fullName,
-                username: worker.username,
-                email: worker.email,
-                contact: worker.contact,
-                password: worker.password,
-                profilePicture: worker.profilePicture,
-                services: worker.services,
-            };
-
+            console.log('Vasea');
             try {
-                const response = await workerProfileAPI.put('/', details);
+                const response = await workerPutUpdateDataApi(workerId).put(`http://3.70.72.246:3001/worker/edit/${workerId}`,
+                    JSON.stringify(updatedWorker),
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        withCredentials: true
+                    }
+                );
                 setResponseMessage('Worker details updated successfully');
                 console.log('Worker details updated:', response.data);
             } catch (error) {
@@ -161,45 +181,45 @@ const WorkerProfile = () => {
                     style={{ display: 'none' }}
                     onChange={handlePictureChange}
                 />
-                <button
+                {/* <button
                     className="change-picture-btn"
                     onClick={() => document.getElementById('file-input').click()}
                 >
                     Change Picture
-                </button>
+                </button> */}
             </div>
 
             <div className="devider">
                 <div className="right">
                     <div className="worker-info">
-                        <form>
+                        <form onSubmit={updateWorkerDetails}>
                             <label>Full Name:</label>
                             <input
                                 type="text"
                                 name="fullName"
-                                placeholder="Ion Berzedeanu"
-                                value={worker.fullName}
-                                onChange={handleInputChange}
+                                placeholder={worker.fullName}
+                                value={updatedWorker.fullName}
+                                onChange={handleUpdateInputChange}
                             />
                             {errors.fullName && <p className="error">{errors.fullName}</p>}
 
                             <label>Email:</label>
                             <input
+                                disabled
                                 type="email"
                                 name="email"
-                                placeholder="ionberzedeanu@gmail.com"
-                                value={worker.email}
-                                onChange={handleInputChange}
+                                placeholder={worker.email}
+                                value={updateWorkerDetails.email}
                             />
                             {errors.email && <p className="error">{errors.email}</p>}
 
                             <label>Username:</label>
                             <input
+                                disabled
                                 type="text"
                                 name="username"
-                                placeholder="ion!2"
+                                placeholder={worker.username}
                                 value={worker.username}
-                                onChange={handleInputChange}
                             />
                             {errors.username && <p className="error">{errors.username}</p>}
 
@@ -207,12 +227,12 @@ const WorkerProfile = () => {
                             <input
                                 type="tel"
                                 name="contact"
-                                placeholder="+37368126027"
-                                value={worker.contact}
-                                onChange={handleInputChange}
+                                placeholder={worker.contact}
+                                value={updateWorkerDetails.contact}
+                                onChange={handleUpdateInputChange}
                             />
                             {errors.contact && <p className="error">{errors.contact}</p>}
-
+{/* 
                             <label>Password:</label>
                             <input
                                 type="password"
@@ -221,12 +241,11 @@ const WorkerProfile = () => {
                                 value={worker.password}
                                 onChange={handleInputChange}
                             />
-                            {errors.password && <p className="error">{errors.password}</p>}
+                            {errors.password && <p className="error">{errors.password}</p>} */}
 
                             <button
-                                type="button"
+                                type="submit"
                                 className="update-details-btn"
-                                onClick={updateWorkerDetails}
                             >
                                 Update Details
                             </button>

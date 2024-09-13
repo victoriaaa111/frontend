@@ -3,6 +3,8 @@ import { useState, useRef, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { clientSignUpApi, workerSignUpApi } from "../../api/axios";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const NAME_REGEX = /^[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$/;
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
@@ -10,13 +12,14 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PHONE_REGEX = /^\+?(\d{1,3})?[-. (]?(\d{1,4})?[). -]?(\d{3})[-. ]?(\d{3,4})$/;
 
-const SIGNUP_WORKER_URL = 'http://3.70.72.246:3001/worker/66de0492e489a3e530a6ff5e';
-// const SIGNUP_WORKER_URL = workerSignUpApi("66de0492e489a3e530a6ff5e")
+const SIGNUP_WORKER_URL = 'http://3.70.72.246:3001/auth/worker/signup';
+
 
 
 const SignUpWorker = () => {
     const userRef = useRef();
     const errRef = useRef();
+    const navigate = useNavigate();
 
     const [user, setUser] = useState('');
     const[validName, setValidName] = useState(false);
@@ -117,11 +120,12 @@ const SignUpWorker = () => {
             setContact('');
             setPwd('');
             setMatchPwd('');
+            navigate('/loginworker')
             }catch(err){
                 if(!err?.response){
                 setErrMsg('No Server Response');
         }else if (err.response?.status === 409){
-                setErrMsg('Username Taken');
+                setErrMsg('Invalid Input');
         }else{
                 setErrMsg('Registration Failed');
         }
@@ -319,7 +323,9 @@ const SignUpWorker = () => {
             </div>
             */}
             </form>
-            <button className="signup-btn">Log In</button>
+                            <button className="signup-btn">
+                                <Link to="/loginworker"> Log In</Link>
+                            </button>
         </div>
         </div>
         )}
