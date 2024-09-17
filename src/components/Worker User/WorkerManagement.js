@@ -1,7 +1,9 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import {
     serviceApi,
-    workerGetDataApi, workerPutUpdateDataApi
+    workerGetDataApi,
+    workerPutUpdateDataApi,
+    deleteService
 } from '../../api/axios';
 import AuthContext from '../../context/AuthProvider';
 import './Worker.css';
@@ -15,7 +17,7 @@ const PRICE_REGEX = /^\d+(\.\d{1,2})?$/;
 const WorkerProfile = () => {
     const { auth } = useContext(AuthContext);
     const { workerId } = auth;
-
+    const [services, setServices] = useState([]);
     const [worker, setWorker] = useState({
         fullName: '',
         uniqueId: '',
@@ -25,14 +27,24 @@ const WorkerProfile = () => {
         profilePicture: null,
         services: []
     });
-
     const [updatedWorker, setUpdatedWorker] = useState({
         fullName: '',
         contact: ''
     });
-
     const [errors, setErrors] = useState({});
     const [responseMessage, setResponseMessage] = useState('');
+    const [errMsg, setErrMsg] = useState('');
+    const userRef = useRef();
+    const errRef = useRef();
+
+
+    const [editServiceId, setEditServiceId] = useState(null);
+    const [editServiceData, setEditServiceData] = useState({
+        service: '',
+        description: '',
+        price: ''
+    });
+    
 
     useEffect(() => {
         const fetchWorkerProfile = async () => {
@@ -47,7 +59,6 @@ const WorkerProfile = () => {
                     fullName: workerData.fullName,
                     contact: contact
                 });
-                
             } catch (err) {
                 setResponseMessage(`Error fetching worker profile: ${err.message}`);
             }
@@ -55,6 +66,24 @@ const WorkerProfile = () => {
         if (workerId) {
             fetchWorkerProfile();
         }
+    }, [workerId]);
+
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const response = await workerGetDataApi(workerId).get(`http://3.70.72.246:3001/worker/${workerId}`);
+                const serviceData = response.data.services.map(service => ({
+                    id: service._id,
+                    service: service.service,
+                    description: service.description,
+                    price: service.price
+                }));
+                setServices(serviceData);
+            } catch (err) {
+                console.log("Error fetching services: ", err);
+            }
+        };
+        fetchServices();
     }, [workerId]);
 
     const validatePhone = (contact) => {
@@ -104,22 +133,21 @@ const WorkerProfile = () => {
         }
     };
 
-    const userRef = useRef();
-    const errRef = useRef();
-
     const [service, setService] = useState('');
     const [validService, setValidService] = useState(false);
     const [serviceFocus, setServiceFocus] = useState(false);
-
+    const [validServiceUpdate, setValidServiceUpdate] = useState(false);
+    const [serviceUpdateFocus, setServiceUpdateFocus] = useState(false);
     const [description, setDescription] = useState('');
     const [validDescription, setValidDescription] = useState(false);
     const [descriptionFocus, setDescriptionFocus] = useState(false);
-
+    const [validDescriptionUpdate, setValidDescriptionUpdate] = useState(false);
+    const [descriptionUpdateFocus, setDescriptionUpdateFocus] = useState(false);
     const [price, setPrice] = useState('');
     const [validPrice, setValidPrice] = useState(false);
     const [priceFocus, setPriceFocus] = useState(false);
-
-    const [errMsg, setErrMsg] = useState('');
+    const [validPriceUpdate, setValidPriceUpdate] = useState(false);
+    const [priceUpdateFocus, setPriceUpdateFocus] = useState(false);
 
     useEffect(() => {
         userRef.current.focus();
@@ -141,17 +169,31 @@ const WorkerProfile = () => {
     }, [price])
 
     useEffect(() => {
+        const result = SERVICE_NAME_REGEX.test(editServiceData.service);
+        setValidServiceUpdate(result);
+    }, [editServiceData.service])
+
+    useEffect(() => {
+        const result = DESCRIPTION_REGEX.test(editServiceData.description);
+        setValidDescriptionUpdate(result);
+    }, [editServiceData.description])
+
+    useEffect(() => {
+        const result = PRICE_REGEX.test(editServiceData.price);
+        setValidPriceUpdate(result);
+    }, [price])
+
+    useEffect(() => {
         setErrMsg('')
     }, [service, description, price])
 
     const HandleSubmit = async (e) => {
-        e.preventDefault();  // Prevent form from submitting in traditional way
+        e.preventDefault();
 
         const v1 = SERVICE_NAME_REGEX.test(service);
         const v2 = DESCRIPTION_REGEX.test(description);
         const v3 = PRICE_REGEX.test(price);
 
-        // If any validation fails, show error message
         if (!v1 || !v2 || !v3) {
             setErrMsg("Invalid Entry");
             errRef.current.focus();
@@ -159,7 +201,6 @@ const WorkerProfile = () => {
         }
 
         try {
-            // Make the API call to add the service
             const response = await serviceApi(workerId).post(
                 `http://3.70.72.246:3001/worker/add/${workerId}`,
                 JSON.stringify({ id: null, service, description, price }),
@@ -169,25 +210,20 @@ const WorkerProfile = () => {
                 }
             );
 
-            // Assuming the API response returns the new service object with an ID
             const newService = {
-                id: response.data._id,  // Use the actual ID from the response
+                id: response.data._id,
                 service,
                 description,
                 price
             };
 
-            // Update the services state by appending the new service
             setServices(prevServices => [...prevServices, newService]);
-
-            // Save the updated services to local storage
             localStorage.setItem('services', JSON.stringify([...services, newService]));
 
-            // Clear form inputs after adding the service
             setService('');
             setDescription('');
             setPrice('');
-            setErrMsg('');  // Clear any previous errors
+            setErrMsg('');
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');
@@ -200,38 +236,102 @@ const WorkerProfile = () => {
             } else {
                 setErrMsg('Adding Service Failed. Please try again later.');
             }
-            errRef.current.focus();  // Focus the error message area
+            errRef.current.focus();
         }
     };
 
-    const [services, setServices] = useState([]);
+    const handleEditClick = (service) => {
+        setEditServiceId(service.id);
+        setEditServiceData({
+            service: service.service,
+            description: service.description,
+            price: service.price
+        });
+    };
 
-    useEffect(() => {
-        const fetchServices = async () => {
-            try {
-                const savedServices = localStorage.getItem('services');
-                if (savedServices) {
-                    // Use the saved services from local storage
-                    setServices(JSON.parse(savedServices));
-                } else {
-                    // Fetch services from the API if not available in local storage
-                    const response = await workerGetDataApi(workerId).get(`http://3.70.72.246:3001/worker/${workerId}`);
-                    const serviceData = response.data.services.map(service => ({
-                        id: service._id,
-                        service: service.service,
-                        description: service.description,
-                        price: service.price
-                    }))
-                    setServices(serviceData);
-                    // Save the fetched services to local storage
-                    localStorage.setItem('services', JSON.stringify(serviceData));
-                }
-            } catch (err) {
-                console.log("Error fetching data: ", err);
+    const handleEditServiceChange = (e) => {
+        const { name, value } = e.target;
+        setEditServiceData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handleUpdateService = async (e) => {
+    e.preventDefault();
+
+    const v1 = SERVICE_NAME_REGEX.test(editServiceData.service);
+    const v2 = DESCRIPTION_REGEX.test(editServiceData.description);
+    const v3 = PRICE_REGEX.test(editServiceData.price);
+
+    if (!v1 || !v2 || !v3) {
+        setErrMsg("Invalid Entry");
+        errRef.current.focus();
+        return;
+    }
+
+    try {
+        const response = await serviceApi(workerId).post(
+            `http://3.70.72.246:3001/worker/add/${workerId}`,
+            JSON.stringify({
+                id: editServiceId,
+                service: editServiceData.service,
+                description: editServiceData.description,
+                price: editServiceData.price
+            }),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
             }
-        };
-        fetchServices();
-    }, [workerId]);
+        );
+        
+        // update services with edited service
+        const updatedServices = services.map(service =>
+            service.id === editServiceId ? { ...service, ...editServiceData } : service
+        );
+        setServices(updatedServices);  
+
+        // reset form 
+        setEditServiceId(null);
+        setEditServiceData({ service: '', description: '', price: '' });
+        setErrMsg('');
+    } catch (err) {
+        console.error('Error updating service:', err);
+        if (!err?.response) {
+            setErrMsg('No Server Response');
+        } else if (err.response?.status === 400) {
+            setErrMsg('Invalid Data. Check your inputs.');
+        } else if (err.response?.status === 500) {
+            setErrMsg('Server error. Please try again later.');
+        } else {
+            setErrMsg('Updating Service Failed. Please try again.');
+        }
+        errRef.current.focus();
+    }
+};
+
+
+
+    const handleDeleteService = async (serviceId) => {
+    try {
+
+        await serviceApi(workerId,serviceId).delete(
+            `http://3.70.72.246:3001/worker/${workerId}/service/${serviceId}`,
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            }
+        );
+
+        // update services state after deletion
+        const filteredServices = services.filter(service => service.id !== serviceId);
+        setServices(filteredServices);
+        localStorage.setItem('services', JSON.stringify(filteredServices)); 
+    } catch (err) {
+        console.error('Error deleting service:', err);
+    }
+};
+
 
     return (
         <div className="worker-profile-container">
@@ -254,12 +354,6 @@ const WorkerProfile = () => {
                             id="file-input"
                             style={{ display: 'none' }}
                         />
-                        {/* <button
-                            className="change-picture-btn"
-                            onClick={() => document.getElementById('file-input').click()}
-                        >
-                            Change Picture
-                        </button> */}
                     </div>
 
                     <div className="devider">
@@ -320,10 +414,11 @@ const WorkerProfile = () => {
                 </div>
 
                 <div className="column" id="border">
-                    <h1 className='title-profile'>Services</h1>
+                    <h1 className='title-profile'>Add Service</h1>
                     <div className="worker-info">
                         <form onSubmit={HandleSubmit}>
-                            <p ref={errRef} className={errMsg ? 'errmsg' : "offscreen"} aria-live="assertive">{errMsg}</p>
+                            <p ref={errRef} className={errMsg ? 'errmsg' : "offscreen"}
+                               aria-live="assertive">{errMsg}</p>
                             <label>Service Offered:</label>
                             <input
                                 ref={userRef}
@@ -338,10 +433,11 @@ const WorkerProfile = () => {
                                 value={service}
                                 onChange={(e) => setService(e.target.value)}
                             />
-                            <p id="servicenote" className={serviceFocus && service && !validService ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
+                            <p id="servicenote"
+                               className={serviceFocus && service && !validService ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle}/>
                                 Enter a name for the service.
-                                <br />
+                                <br/>
                                 It can consist of letters, numbers, and spaces, with a maximum of 100 characters.
                             </p>
 
@@ -358,11 +454,12 @@ const WorkerProfile = () => {
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                             />
-                            <p id="descriptionnote" className={descriptionFocus && description && !validDescription ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
+                            <p id="descriptionnote"
+                               className={descriptionFocus && description && !validDescription ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle}/>
                                 Provide a detailed description of the service, using up to 500 characters.
-                                <br />
-                                You can include letters, numbers, punctuation <br />
+                                <br/>
+                                You can include letters, numbers, punctuation <br/>
                                 (such as commas, periods, question marks, etc.), and spaces.
                             </p>
 
@@ -377,29 +474,90 @@ const WorkerProfile = () => {
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
                             />
-                            <p id="pricenote" className={priceFocus && price && !validPrice ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle} />
-                                Enter the price for the service in numeric format. You may include up to two decimal places.
+                            <p id="pricenote"
+                               className={priceFocus && price && !validPrice ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle}/>
+                                Enter the price for the service in numeric format. You may include up to two decimal
+                                places.
                             </p>
 
                             <button disabled={(!validService || !validDescription || !validPrice) ? true : false}
-                                type="submit"
-                                className="add-service-btn"
+                                    type="submit"
+                                    className="add-service-btn"
                             >
                                 Add Service
                             </button>
                         </form>
                     </div>
+                    <h1 className='title-profile' id="services">Services</h1>
 
                     <ul>
                         {services.map(service => (
                             <li key={service.id}>
-                                <h4>{service.service}</h4>
-                                <p>{service.description}</p>
-                                <p>Price: ${service.price}/h</p>
+                                {editServiceId === service.id ? (
+                                    <form onSubmit={handleUpdateService}>
+                                        <label>Service Offered:</label>
+                                        <input
+                                            type="text"
+                                            name="service"
+                                            value={editServiceData.service}
+                                            onChange={handleEditServiceChange}
+                                            onFocus={() => setServiceUpdateFocus(true)}
+                                            onBlur={() => setServiceUpdateFocus(false)}
+                                        />
+                                        <p id="servicenote"
+                               className={serviceUpdateFocus && editServiceData.service && !validServiceUpdate ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle}/>
+                                Enter a name for the service.
+                                <br/>
+                                It can consist of letters, numbers, and spaces, with a maximum of 100 characters.
+                            </p>
+                                        <label>Service Description:</label>
+                                        <textarea
+                                            name="description"
+                                            value={editServiceData.description}
+                                            onChange={handleEditServiceChange}
+                                            onFocus={() => setDescriptionUpdateFocus(true)}
+                                            onBlur={() => setDescriptionUpdateFocus(false)}
+                                        />
+                                        <p id="descriptionnote"
+                               className={descriptionUpdateFocus && editServiceData.description && !validDescriptionUpdate ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle}/>
+                                Provide a detailed description of the service, using up to 500 characters.
+                                <br/>
+                                You can include letters, numbers, punctuation <br/>
+                                (such as commas, periods, question marks, etc.), and spaces.
+                            </p>
+                                        <label>Hourly Rate:</label>
+                                        <input
+                                            type="number"
+                                            name="price"
+                                            value={editServiceData.price}
+                                            onChange={handleEditServiceChange}
+                                            onFocus={() => setPriceUpdateFocus(true)}
+                                            onBlur={() => setPriceUpdateFocus(false)}
+                                        />
+                                        <p id="pricenote"
+                               className={priceUpdateFocus && editServiceData.price && !validPriceUpdate ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle}/>
+                                Enter the price for the service in numeric format. You may include up to two decimal
+                                places.
+                            </p>
+                                        <button type="submit">Save</button>
+                                    </form>
+                                ) : (
+                                    <>
+                                        <p>Service: {service.service}</p>
+                                        <p>Description: {service.description}</p>
+                                        <p>Price: {service.price}</p>
+                                        <button onClick={() => handleEditClick(service)}>Edit</button>
+                                        <button onClick={() => handleDeleteService(service.id)}>Delete</button>
+                                    </>
+                                )}
                             </li>
                         ))}
                     </ul>
+
                 </div>
             </div>
         </div>

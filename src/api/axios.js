@@ -50,5 +50,16 @@ const serviceApi = (workerId) =>{
         baseURL: `http://3.70.72.246:3001/worker/add/${workerId}`
     });
 }
+const Rating = (workerId) => {
+    return axios.create({
+        baseURL: `http://3.70.72.246:3001/worker/${workerId}`
+    })
+}
 
-export { adminApi, clientApi, clientSignUpApi, workerSignUpApi, workerPrfileAPI, workerSignInApi, workerGetDataApi, workerPutUpdateDataApi,serviceApi};
+const deleteService = (workerId, serviceId) => {
+    return axios.create({
+        baseURL: `http://3.70.72.246:3001/worker/${workerId}/service/${serviceId}`
+    })
+}
+
+export { adminApi, clientApi, clientSignUpApi, workerSignUpApi, workerPrfileAPI, workerSignInApi, workerGetDataApi, workerPutUpdateDataApi,serviceApi,Rating,deleteService};

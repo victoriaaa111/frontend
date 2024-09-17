@@ -7,10 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const NAME_REGEX = /^[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$/;
-const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const PHONE_REGEX = /^\+?(\d{1,3})?[-. (]?(\d{1,4})?[). -]?(\d{3})[-. ]?(\d{3,4})$/;
+const PHONE_REGEX = /^\+(\d{1,3})?[-. (]?(\d{1,4})?[). -]?(\d{3})[-. ]?(\d{3,4})$/;
 
 const SIGNUP_WORKER_URL = 'http://3.70.72.246:3001/auth/worker/signup';
 
@@ -193,7 +192,7 @@ const SignUpWorker = () => {
                 <p id="lastnote" className={contactFocus && contact && !validContact ? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
                                         Phone numbers must be 7 to 15 digits long and can include optional spaces, dashes, or parentheses. <br/>
-                                        International numbers can start with a + and country code, while local numbers can be entered without it.
+                                        Numbers must start with a + and country code.
                 </p>
 
                 <label htmlFor = "email" className="description-field">Email

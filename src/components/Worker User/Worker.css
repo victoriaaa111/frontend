@@ -72,6 +72,9 @@ h1 {
 .title-profile{
     margin-bottom: 10%;
 }
+#services{
+    margin-top: 30px;
+}
 
 .profile-picture {
     text-align: center;
