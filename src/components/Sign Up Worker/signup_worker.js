@@ -21,10 +21,6 @@ const SignUpWorker = () => {
     const errRef = useRef();
     const navigate = useNavigate();
 
-    const [user, setUser] = useState('');
-    const[validName, setValidName] = useState(false);
-    const[userFocus, setUserFocus] = useState(false);
-
     const [fullName, setfullName] = useState('');
     const[validFullName, setValidFullName] = useState(false);
     const [fullNameFocus, setFullNameFocus] = useState(false);
@@ -65,13 +61,6 @@ const SignUpWorker = () => {
 
 
     useEffect(()=>{
-        const result = USER_REGEX.test(user);
-        console.log(result);
-        console.log(user);
-        setValidName(result);
-    }, [user])
-    
-    useEffect(()=>{
         const result = PHONE_REGEX.test(contact);
         console.log(result);
         console.log(contact);
@@ -90,21 +79,20 @@ const SignUpWorker = () => {
 
     useEffect(()=>{
         setErrMsg('');
-    },[user, fullName, contact,  email, password, matchPwd])
+    },[fullName, contact,  email, password, matchPwd])
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
-        const v1 = USER_REGEX.test(user);
-        const v2 = PWD_REGEX.test(password);
-        const v3 = NAME_REGEX.test(fullName);
-        const v4 = PHONE_REGEX.test(contact);
-        if(!v1 || !v2 || !v3 || !v4){
+        const v1 = PWD_REGEX.test(password);
+        const v2 = NAME_REGEX.test(fullName);
+        const v3 = PHONE_REGEX.test(contact);
+        if(!v1 || !v2 || !v3){
             setErrMsg("Invalid Entry");
             return;
         }
         try{
             const response = await clientSignUpApi.post(SIGNUP_WORKER_URL,
-                JSON.stringify({ fullName ,contact, username: user, email, password }),
+                JSON.stringify({ fullName ,contact, email, password }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -114,23 +102,28 @@ const SignUpWorker = () => {
         console.log(response?.accessToken);
         console.log(JSON.stringify(response))
             setSuccess(true);
-            setUser('');
             setEmail('');
             setfullName('');
             setContact('');
             setPwd('');
             setMatchPwd('');
             navigate('/loginworker')
-            }catch(err){
-                if(!err?.response){
+        }catch (err) {
+            if (!err?.response) {
                 setErrMsg('No Server Response');
-        }else if (err.response?.status === 409){
-                setErrMsg('Invalid Input');
-        }else{
-                setErrMsg('Registration Failed');
-        }
-                errRef.current.focus()
+            } else if (err?.response?.data?.message === "Email already exists") {
+                setErrMsg('Email already exists.');
+            } else if(err.response?.status === 400) {
+                setErrMsg('Invalid Data. Check your inputs.');
+            } else if (err.response?.status === 500) {
+                setErrMsg('Server error. Please try again later.');
+            }else if(err?.response?.data?.message){
+                setErrMsg(err.response.data.message)
+            }else {
+                setErrMsg('Registration Failed. Please try again later.');
             }
+        }
+        errRef.current.focus();
     }
 
     return (
@@ -201,35 +194,6 @@ const SignUpWorker = () => {
                     <FontAwesomeIcon icon={faInfoCircle} />
                                         Phone numbers must be 7 to 15 digits long and can include optional spaces, dashes, or parentheses. <br/>
                                         International numbers can start with a + and country code, while local numbers can be entered without it.
-                </p>
-
-                <label htmlFor="username" className="description-field">Username
-                    <span className={validName? "valid" : "hide"}>
-                        <FontAwesomeIcon icon={faCheck} />
-                    </span>
-                    <span className={validName || !user ? "hide" : "invalid"}>
-                        <FontAwesomeIcon icon={faTimes} />
-                    </span>
-                </label>
-                <input 
-                    id="username" 
-                    autocomplete="on"
-                    className="main-font input-admin"
-                    type="text" 
-                    placeholder=""
-                    ref={userRef}
-                    required
-                    aria-invalid={validName ? "false" : "true"}
-                    aria-describedby="uidnote"
-                    onFocus={() => setUserFocus(true)}
-                    onBlur={() => setUserFocus(false)}
-                    onChange={(e) => setUser(e.target.value)} 
-/>
-                <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    4 to 24 characters. <br />
-                    Must begin with a letter.<br />
-                    Letters, numbers, underscores, hyphens allowed.
                 </p>
 
                 <label htmlFor = "email" className="description-field">Email
@@ -314,7 +278,7 @@ const SignUpWorker = () => {
                 </p>
             </div>
             <div>
-                <button disabled = {(!validName || !validContact || !validFullName || !validPwd || !validMatchPwd || !validEmail) ? true: false} className="signup-client-btn">SIGN UP</button>
+                <button disabled = {(!validContact || !validFullName || !validPwd || !validMatchPwd || !validEmail) ? true: false} className="signup-client-btn">SIGN UP</button>
             </div>
 
             {/*<p className="text">Or login using</p>

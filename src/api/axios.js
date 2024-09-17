@@ -45,4 +45,10 @@ const workerPutUpdateDataApi = (workerId) =>{
     });
 }
 
-export { adminApi, clientApi, clientSignUpApi, workerSignUpApi, workerPrfileAPI, workerSignInApi, workerGetDataApi, workerPutUpdateDataApi};
+const serviceApi = (workerId) =>{
+    return axios.create({
+        baseURL: `http://3.70.72.246:3001/worker/add/${workerId}`
+    });
+}
+
+export { adminApi, clientApi, clientSignUpApi, workerSignUpApi, workerPrfileAPI, workerSignInApi, workerGetDataApi, workerPutUpdateDataApi,serviceApi};
