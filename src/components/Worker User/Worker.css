@@ -64,7 +64,14 @@
     border: 2px solid red;
 }
 
-
+.edit{
+    margin-top: 5px;
+    background-color:#6c63ff ;
+    margin-right: 10px;
+}
+.delete{
+    background-color:rgb(255, 67, 67) ;
+}
 h1 {
     text-align: center;
     color: #6c63ff;

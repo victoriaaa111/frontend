@@ -34,8 +34,10 @@ const WorkerProfile = () => {
     const [errors, setErrors] = useState({});
     const [responseMessage, setResponseMessage] = useState('');
     const [errMsg, setErrMsg] = useState('');
+    const [errMsgUpdate, setErrMsgUpdate] = useState('');
     const userRef = useRef();
     const errRef = useRef();
+    const errRefUpdate = useRef();
 
 
     const [editServiceId, setEditServiceId] = useState(null);
@@ -186,59 +188,66 @@ const WorkerProfile = () => {
     useEffect(() => {
         setErrMsg('')
     }, [service, description, price])
+    useEffect(() => {
+        setErrMsgUpdate('')
+    }, [editServiceData.service, editServiceData.description, editServiceData.price])
 
     const HandleSubmit = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        const v1 = SERVICE_NAME_REGEX.test(service);
-        const v2 = DESCRIPTION_REGEX.test(description);
-        const v3 = PRICE_REGEX.test(price);
+    const v1 = SERVICE_NAME_REGEX.test(service);
+    const v2 = DESCRIPTION_REGEX.test(description);
+    const v3 = PRICE_REGEX.test(price);
+    console.log("Validation Results:", v1, v2, v3);
+    // Ensure that all inputs are valid
+    if (!v1 || !v2 || !v3) {
+        setErrMsg("Invalid Entry");
+        errRef.current.focus();
+        return;
+    }
+        
 
-        if (!v1 || !v2 || !v3) {
-            setErrMsg("Invalid Entry");
-            errRef.current.focus();
-            return;
-        }
-
-        try {
-            const response = await serviceApi(workerId).post(
-                `http://3.70.72.246:3001/worker/add/${workerId}`,
-                JSON.stringify({ id: null, service, description, price }),
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                    withCredentials: true
-                }
-            );
-
-            const newService = {
-                id: response.data._id,
-                service,
-                description,
-                price
-            };
-
-            setServices(prevServices => [...prevServices, newService]);
-            localStorage.setItem('services', JSON.stringify([...services, newService]));
-
-            setService('');
-            setDescription('');
-            setPrice('');
-            setErrMsg('');
-        } catch (err) {
-            if (!err?.response) {
-                setErrMsg('No Server Response');
-            } else if (err.response?.status === 400) {
-                setErrMsg('Invalid Data. Check your inputs.');
-            } else if (err.response?.status === 500) {
-                setErrMsg('Server error. Please try again later.');
-            } else if (err?.response?.data?.message) {
-                setErrMsg(err.response.data.message);
-            } else {
-                setErrMsg('Adding Service Failed. Please try again later.');
+    try {
+        const response = await serviceApi(workerId).post(
+            `http://3.70.72.246:3001/worker/add/${workerId}`,
+            JSON.stringify({ id: null, service, description, price }),
+            {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
             }
-            errRef.current.focus();
+        );
+
+        const newService = {
+            id: response.data._id,
+            service,
+            description,
+            price
+        };
+
+        setServices(prevServices => [...prevServices, newService]);
+        localStorage.setItem('services', JSON.stringify([...services, newService]));
+
+        // Reset the input fields
+        setService('');
+        setDescription('');
+        setPrice('');
+        setErrMsg('');
+    } catch (err) {
+        if (!err?.response) {
+            setErrMsg('No Server Response');
+        } else if (err.response?.status === 400) {
+            setErrMsg('Invalid Data. Check your inputs.');
+        } else if (err.response?.status === 500) {
+            setErrMsg('Server error. Please try again later.');
+        } else if (err?.response?.data?.message) {
+            setErrMsg(err.response.data.message);
+        } else {
+            setErrMsg('Adding Service Failed. Please try again later.');
         }
-    };
+        errRef.current.focus();
+    }
+};
+
 
     const handleEditClick = (service) => {
         setEditServiceId(service.id);
@@ -265,8 +274,8 @@ const WorkerProfile = () => {
     const v3 = PRICE_REGEX.test(editServiceData.price);
 
     if (!v1 || !v2 || !v3) {
-        setErrMsg("Invalid Entry");
-        errRef.current.focus();
+        setErrMsgUpdate("Invalid Entry");
+        errRefUpdate.current.focus();
         return;
     }
 
@@ -294,19 +303,19 @@ const WorkerProfile = () => {
         // reset form 
         setEditServiceId(null);
         setEditServiceData({ service: '', description: '', price: '' });
-        setErrMsg('');
+        setErrMsgUpdate('');
     } catch (err) {
         console.error('Error updating service:', err);
         if (!err?.response) {
-            setErrMsg('No Server Response');
+            setErrMsgUpdate('No Server Response');
         } else if (err.response?.status === 400) {
-            setErrMsg('Invalid Data. Check your inputs.');
+            setErrMsgUpdate('Invalid Data. Check your inputs.');
         } else if (err.response?.status === 500) {
-            setErrMsg('Server error. Please try again later.');
+            setErrMsgUpdate('Server error. Please try again later.');
         } else {
-            setErrMsg('Updating Service Failed. Please try again.');
+            setErrMsgUpdate('Updating Service Failed. Please try again.');
         }
-        errRef.current.focus();
+        errRefUpdate.current.focus();
     }
 };
 
@@ -416,86 +425,78 @@ const WorkerProfile = () => {
                 <div className="column" id="border">
                     <h1 className='title-profile'>Add Service</h1>
                     <div className="worker-info">
-                        <form onSubmit={HandleSubmit}>
-                            <p ref={errRef} className={errMsg ? 'errmsg' : "offscreen"}
-                               aria-live="assertive">{errMsg}</p>
-                            <label>Service Offered:</label>
-                            <input
-                                ref={userRef}
-                                required
-                                onFocus={() => setServiceFocus(true)}
-                                onBlur={() => setServiceFocus(false)}
-                                aria-invalid={validService ? "false" : "true"}
-                                aria-describedby="servicenote"
-                                type="text"
-                                name="service"
-                                placeholder="Service Name"
-                                value={service}
-                                onChange={(e) => setService(e.target.value)}
-                            />
-                            <p id="servicenote"
-                               className={serviceFocus && service && !validService ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle}/>
-                                Enter a name for the service.
-                                <br/>
-                                It can consist of letters, numbers, and spaces, with a maximum of 100 characters.
-                            </p>
+    <form onSubmit={HandleSubmit}>
+        <p ref={errRef} className={errMsg ? 'errmsg' : "offscreen"} aria-live="assertive">{errMsg}</p>
+        
+        <label>Service Offered:</label>
+        <input
+            ref={userRef}
+            required
+            onFocus={() => setServiceFocus(true)}
+            onBlur={() => setServiceFocus(false)}
+            aria-invalid={validService ? "false" : "true"}
+            aria-describedby="servicenote"
+            type="text"
+            name="service"
+            placeholder="Service Name"
+            value={service}
+            onChange={(e) => setService(e.target.value)}
+        />
+        <p id="servicenote" className={serviceFocus && service && !validService ? "instructions" : "offscreen"}>
+            <FontAwesomeIcon icon={faInfoCircle}/>
+            Enter a name for the service. It can consist of letters, numbers, and spaces, with a maximum of 100 characters.
+        </p>
 
-                            <label>Service Description: </label>
-                            <input
-                                onFocus={() => setDescriptionFocus(true)}
-                                onBlur={() => setDescriptionFocus(false)}
-                                aria-invalid={validDescription ? "false" : "true"}
-                                aria-describedby="descriptionnote"
-                                required
-                                type="text"
-                                name="description"
-                                placeholder="Service Description"
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                            />
-                            <p id="descriptionnote"
-                               className={descriptionFocus && description && !validDescription ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle}/>
-                                Provide a detailed description of the service, using up to 500 characters.
-                                <br/>
-                                You can include letters, numbers, punctuation <br/>
-                                (such as commas, periods, question marks, etc.), and spaces.
-                            </p>
+        <label>Service Description: </label>
+        <input
+            onFocus={() => setDescriptionFocus(true)}
+            onBlur={() => setDescriptionFocus(false)}
+            aria-invalid={validDescription ? "false" : "true"}
+            aria-describedby="descriptionnote"
+            required
+            type="text"
+            name="description"
+            placeholder="Service Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+        />
+        <p id="descriptionnote" className={descriptionFocus && description && !validDescription ? "instructions" : "offscreen"}>
+            <FontAwesomeIcon icon={faInfoCircle}/>
+            Provide a detailed description of the service, using up to 500 characters.
+            You can include letters, numbers, punctuation (such as commas, periods, question marks, etc.), and spaces.
+        </p>
 
-                            <label>Hourly Rate: </label>
-                            <input
-                                onFocus={() => setPriceFocus(true)}
-                                onBlur={() => setPriceFocus(false)}
-                                required
-                                type="number"
-                                name="price"
-                                placeholder="Hourly Rate"
-                                value={price}
-                                onChange={(e) => setPrice(e.target.value)}
-                            />
-                            <p id="pricenote"
-                               className={priceFocus && price && !validPrice ? "instructions" : "offscreen"}>
-                                <FontAwesomeIcon icon={faInfoCircle}/>
-                                Enter the price for the service in numeric format. You may include up to two decimal
-                                places.
-                            </p>
+        <label>Hourly Rate: </label>
+        <input
+            onFocus={() => setPriceFocus(true)}
+            onBlur={() => setPriceFocus(false)}
+            required
+            type="number"
+            name="price"
+            placeholder="Hourly Rate"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+        />
+        <p id="pricenote" className={priceFocus && price && !validPrice ? "instructions" : "offscreen"}>
+            <FontAwesomeIcon icon={faInfoCircle}/>
+            Enter the price for the service in numeric format. You may include up to two decimal places.
+        </p>
 
-                            <button disabled={(!validService || !validDescription || !validPrice) ? true : false}
-                                    type="submit"
-                                    className="add-service-btn"
-                            >
-                                Add Service
-                            </button>
-                        </form>
-                    </div>
+        <button disabled={(!validService || !validDescription || !validPrice) ? true : false} type="submit" className="add-service-btn">
+            Add Service
+        </button>
+    </form>
+</div>
+
                     <h1 className='title-profile' id="services">Services</h1>
+                    
 
                     <ul>
                         {services.map(service => (
                             <li key={service.id}>
                                 {editServiceId === service.id ? (
                                     <form onSubmit={handleUpdateService}>
+                                        <p ref={errRefUpdate} className={errMsgUpdate ? 'errmsg' : "offscreen"} aria-live="assertive">{errMsgUpdate}</p>
                                         <label>Service Offered:</label>
                                         <input
                                             type="text"
@@ -550,8 +551,8 @@ const WorkerProfile = () => {
                                         <p>Service: {service.service}</p>
                                         <p>Description: {service.description}</p>
                                         <p>Price: {service.price}</p>
-                                        <button onClick={() => handleEditClick(service)}>Edit</button>
-                                        <button onClick={() => handleDeleteService(service.id)}>Delete</button>
+                                        <button className = "edit" onClick={() => handleEditClick(service)}>Edit</button>
+                                        <button className = "delete" onClick={() => handleDeleteService(service.id)}>Delete</button>
                                     </>
                                 )}
                             </li>
