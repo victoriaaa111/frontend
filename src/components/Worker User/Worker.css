@@ -1,5 +1,5 @@
 .worker-profile-container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background-color: #f9f9f9;
@@ -7,9 +7,70 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.row {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 30px;  
+}
+
+.column {
+    flex: 1;          
+    min-width: 0;     
+    max-width: 48%;  
+    box-sizing: border-box;  
+}
+
+#border{
+    border-left: 2px solid #6c63ff;
+    padding-left: 30px;
+}
+    
+
+.hide {
+    display: none;
+}
+
+
+.valid {
+    color: green;
+    margin-left: 8px;
+}
+
+.errmsg{
+    color:red;
+    text-align: center;
+}
+
+.invalid {
+    color: red;
+    margin-left: 8px;
+    margin-bottom:3px;
+}
+
+
+.instructions {
+    color: rgb(53, 53, 53);
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+
+.offscreen {
+    position: absolute;
+    left: -9999px;
+}
+
+.invalid-input {
+    border: 2px solid red;
+}
+
+
 h1 {
     text-align: center;
     color: #6c63ff;
+}
+.title-profile{
+    margin-bottom: 10%;
 }
 
 .profile-picture {
@@ -105,13 +166,6 @@ h1 {
     margin-top: 20px;
 }
 
-
-.devider{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    
-}
 
 .rating{
     margin-top: 10px;

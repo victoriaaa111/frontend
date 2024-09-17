@@ -104,7 +104,11 @@ button {
     display: flex;
     justify-content: space-around;
 }
-
+.errmsg{
+    color:red;
+    text-align: center;
+    
+}
 .alt-login div {
     width: 45%;
     height: 90%;

@@ -46,10 +46,12 @@ const LogInWorker = () => {
                     
                 }
             );
-            console.log(response);
             const accessToken = response?.data?.accessToken;
             const workerId = response?.data?.workerId;
-            setAuth({email, password, accessToken, workerId})
+            console.log(response);
+
+            localStorage.setItem('auth', JSON.stringify({email, accessToken, workerId}))
+            setAuth({email, accessToken, workerId})
             setEmail('');
             setPwd('');
             setSuccess(true);
@@ -71,7 +73,7 @@ const LogInWorker = () => {
     return (
         <>
         {success?(
-            navigate("/worker-profile")
+            navigate("/worker/profile")
         ):(
         <div className="page-s">
         <div className="cover-login main-font">

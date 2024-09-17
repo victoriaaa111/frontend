@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const NAME_REGEX = /^[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$/;
-const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const SIGNUP_CLIENT_URL = 'http://3.70.72.246:3001/auth/signup';
@@ -18,10 +17,6 @@ const SignUpClient = () => {
     const userRef = useRef();
     const errRef = useRef();
     const navigate = useNavigate();
-
-    const [user, setUser] = useState('');
-    const[validName, setValidName] = useState(false);
-    const[userFocus, setUserFocus] = useState(false);
 
     const [fullName, setFullName] = useState('');
     const[validFullName, setValidFullName] = useState(false);
@@ -56,12 +51,6 @@ const SignUpClient = () => {
         setValidEmail(result);
     },[email])
 
-    useEffect(()=>{
-        const result = USER_REGEX.test(user);
-        console.log(result);
-        console.log(user);
-        setValidName(result);
-    },[user])
 
     useEffect(()=>{
         const result = PWD_REGEX.test(password);
@@ -75,46 +64,56 @@ const SignUpClient = () => {
 
     useEffect(()=>{
         setErrMsg('');
-    },[user, fullName, email, password, matchPwd])
+    },[fullName, email, password, matchPwd])
 
-    const handleSubmit = async(e)=>{
-        e.preventDefault();
-        const v1 = USER_REGEX.test(user);
-        const v2 = PWD_REGEX.test(password);
-        const v3 = NAME_REGEX.test(fullName);
-        if(!v1 || !v2 || !v3){
-            setErrMsg("Invalid Entry");
-            return;
-        }
-        try{
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Validate inputs before making the request
+    const v1 = PWD_REGEX.test(password);
+    const v2 = NAME_REGEX.test(fullName);
+    const v3 = EMAIL_REGEX.test(email);
+
+    if (!v1 || !v2 || !v3) {
+        setErrMsg("Invalid Entry");
+        return;
+    }
+
+        try {
             const response = await clientSignUpApi.post(SIGNUP_CLIENT_URL,
-                JSON.stringify({ fullName, username: user, email, password }),
+                JSON.stringify({ fullName, email, password }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
             );
-        console.log(response?.data);
-        console.log(response?.accessToken);
-        console.log(JSON.stringify(response))
+
+
             setSuccess(true);
-            setUser('');
             setEmail('');
             setFullName('');
             setPwd('');
             setMatchPwd('');
-            navigate("/loginclient")
-            }catch(err){
-                if(!err?.response){
+            navigate("/loginclient");
+        
+        } catch (err) {
+            if (!err?.response) {
                 setErrMsg('No Server Response');
-        }else if (err.response?.status === 409){
-                setErrMsg('Invalid Input');
-        }else{
-                setErrMsg('Registration Failed');
-        }
-                errRef.current.focus()
+            } else if (err?.response?.data?.message === "Email already exists") {
+                setErrMsg('Email already exists.');
+            } else if(err.response?.status === 400) {
+                setErrMsg('Invalid Data. Check your inputs.');
+            } else if (err.response?.status === 500) {
+                setErrMsg('Server error. Please try again later.');
+            }else if(err?.response?.data?.message){
+                setErrMsg(err.response.data.message)
+            }else {
+                setErrMsg('Registration Failed. Please try again later.');
             }
+        }
+        errRef.current.focus();
     }
+
 
     return (
         <>
@@ -157,35 +156,6 @@ const SignUpClient = () => {
                     Must contain only letters and begin with a uppercase letter.
                 </p>
 
-
-                <label htmlFor="username" className="description-field">Username
-                    <span className={validName? "valid" : "hide"}>
-                        <FontAwesomeIcon icon={faCheck} />
-                    </span>
-                    <span className={validName || !user ? "hide" : "invalid"}>
-                        <FontAwesomeIcon icon={faTimes} />
-                    </span>
-                </label>
-                <input 
-                    id="username" 
-                    autoComplete="on"
-                    className="main-font input-admin"
-                    type="text" 
-                    placeholder=""
-                    ref={userRef}
-                    required
-                    aria-invalid={validName ? "false" : "true"}
-                    aria-describedby="uidnote"
-                    onFocus={() => setUserFocus(true)}
-                    onBlur={() => setUserFocus(false)}
-                    onChange={(e) => setUser(e.target.value)} 
-/>
-                <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
-                    <FontAwesomeIcon icon={faInfoCircle} />
-                    4 to 24 characters. <br />
-                    Must begin with a letter.<br />
-                    Letters, numbers, underscores, hyphens allowed.
-                </p>
 
                 <label htmlFor = "email" className="description-field">Email
                     <span className={validEmail? "valid" : "hide"}>
@@ -269,7 +239,7 @@ const SignUpClient = () => {
                 </p>
             </div>
             <div>
-                <button disabled = {(!validName || !validFullName || !validPwd || !validMatchPwd || !validEmail) ? true: false} className="signup-client-btn">SIGN UP</button>
+                <button disabled = {(!validFullName || !validPwd || !validMatchPwd || !validEmail) ? true: false} className="signup-client-btn">SIGN UP</button>
             </div>
 
             {/*<p className="text">Or login using</p>
