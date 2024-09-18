@@ -76,24 +76,28 @@ const WorkerProfile = () => {
             fetchWorkerProfile();
         }
     }, [workerId]);
+    const fetchServices = async () => {
+    try {
+        const response = await workerGetDataApi(workerId).get(`http://3.70.72.246:3001/worker/${workerId}`);
+        const serviceData = response.data.services.map(service => ({
+            id: service._id,
+            service: service.service,
+            description: service.description,
+            price: service.price
+        }));
+        setServices(serviceData);
+    } catch (err) {
+        console.log("Error fetching services: ", err);
+    }
+};
+
 
     useEffect(() => {
-        const fetchServices = async () => {
-            try {
-                const response = await workerGetDataApi(workerId).get(`http://3.70.72.246:3001/worker/${workerId}`);
-                const serviceData = response.data.services.map(service => ({
-                    id: service._id,
-                    service: service.service,
-                    description: service.description,
-                    price: service.price
-                }));
-                setServices(serviceData);
-            } catch (err) {
-                console.log("Error fetching services: ", err);
-            }
-        };
+    if (workerId) {
         fetchServices();
-    }, [workerId]);
+    }
+}, [workerId]);
+
 
     const validatePhone = (contact) => {
         const phoneRegex = /^\+?[0-9]{9,14}$/;
@@ -207,14 +211,12 @@ const WorkerProfile = () => {
     const v1 = SERVICE_NAME_REGEX.test(service);
     const v2 = DESCRIPTION_REGEX.test(description);
     const v3 = PRICE_REGEX.test(price);
-    console.log("Validation Results:", v1, v2, v3);
-    // Ensure that all inputs are valid
+
     if (!v1 || !v2 || !v3) {
         setErrMsg("Invalid Entry");
         errRef.current.focus();
         return;
     }
-        
 
     try {
         const response = await serviceApi(workerId).post(
@@ -233,8 +235,11 @@ const WorkerProfile = () => {
             price: Number(price)
         };
 
+        // Update services state
         setServices(prevServices => [...prevServices, newService]);
-        localStorage.setItem('services', JSON.stringify([...services, newService]));
+
+        // Fetch updated list of services
+        fetchServices();
 
         // Reset the input fields
         setService('');
@@ -288,6 +293,17 @@ const WorkerProfile = () => {
         return;
     }
 
+    // Check for duplicate service
+    const isDuplicate = services.some(existingService =>
+        existingService.service.toLowerCase() === editServiceData.service.toLowerCase() &&
+        existingService.id !== editServiceId // Ensure that we're not checking the service we're currently editing
+    );
+    if (isDuplicate) {
+        setErrMsgUpdate('This service already exists.');
+        errRef.current.focus();
+        return;
+    }
+
     try {
         const response = await serviceApi(workerId).post(
             `http://3.70.72.246:3001/worker/add/${workerId}`,
@@ -303,13 +319,13 @@ const WorkerProfile = () => {
             }
         );
         
-        // update services with edited service
+        // Update services with edited service
         const updatedServices = services.map(service =>
             service.id === editServiceId ? { ...service, ...editServiceData, price: Number(editServiceData.price) } : service
         );
-        setServices(updatedServices);  
+        setServices(updatedServices);
 
-        // reset form 
+        // Reset form
         setEditServiceId(null);
         setEditServiceData({ service: '', description: '', price: '' });
         setErrMsgUpdate('');
@@ -330,10 +346,10 @@ const WorkerProfile = () => {
 
 
 
+
     const handleDeleteService = async (serviceId) => {
     try {
-
-        await serviceApi(workerId,serviceId).delete(
+        await serviceApi(workerId).delete(
             `http://3.70.72.246:3001/worker/${workerId}/service/${serviceId}`,
             {
                 headers: { 'Content-Type': 'application/json' },
@@ -341,14 +357,22 @@ const WorkerProfile = () => {
             }
         );
 
-        // update services state after deletion
-        const filteredServices = services.filter(service => service.id !== serviceId);
-        setServices(filteredServices);
-        localStorage.setItem('services', JSON.stringify(filteredServices)); 
+        // Update services state after deletion
+        setServices(prevServices => {
+            const updatedServices = prevServices.filter(service => service.id !== serviceId);
+            localStorage.setItem('services', JSON.stringify(updatedServices));
+            return updatedServices;
+        });
+
     } catch (err) {
-        console.error('Error deleting service:', err);
+        console.error('Error deleting service:', err.message);
+        setErrMsg('Failed to delete service. Please try again later.');
     }
 };
+
+
+
+
 
 
     return (

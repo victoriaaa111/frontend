@@ -62,4 +62,9 @@ const deleteService = (workerId, serviceId) => {
     })
 }
 
-export { adminApi, clientApi, clientSignUpApi, workerSignUpApi, workerPrfileAPI, workerSignInApi, workerGetDataApi, workerPutUpdateDataApi,serviceApi,Rating,deleteService};
+const searchAPI = axios.create({
+    baseURL: 'http://3.70.72.246:3001/shareable/search'
+});
+
+
+export { adminApi, clientApi, clientSignUpApi, workerSignUpApi, workerPrfileAPI, workerSignInApi, workerGetDataApi, workerPutUpdateDataApi,serviceApi,Rating,deleteService, searchAPI};

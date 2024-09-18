@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './WorkerProfile.css'; // import the CSS file
 import { workerGetDataApi } from '../../api/axios'; // Import your worker API function
 
-const Worker = () => {
+const WorkerProfile = () => {
   const defaultProfilePic = '/images/planet-earth.png'; // Default image
-  const workerId = '66e7da37e4c48248a5197c49'; // Assuming worker ID is fixed for now
-
-  // State for worker data
   const [worker, setWorker] = useState({
     fullName: '',
     uniqueId: '',
@@ -16,20 +13,18 @@ const Worker = () => {
     services: [] // Array to store services
   });
 
-  const [updatedWorker, setUpdatedWorker] = useState({
-    fullName: '',
-    contact: ''
-  });
-
   const [rating, setRating] = useState(null); // State for rating
   const [responseMessage, setResponseMessage] = useState('');
   const [services, setServices] = useState([]); // State for services
+
+  // Retrieve workerId from local storage
+  const workerId = localStorage.getItem('selectedWorkerId');
 
   // Fetch worker data and services
   useEffect(() => {
     const fetchWorkerProfile = async () => {
       try {
-        const response = await workerGetDataApi(workerId).get(`http://3.70.72.246:3001/worker/${workerId}`);
+        const response = await workerGetDataApi().get(`http://3.70.72.246:3001/worker/${workerId}`);
         const workerData = response.data;
 
         // Set worker data including services
@@ -37,6 +32,15 @@ const Worker = () => {
 
         // Set rating if available
         setRating(workerData.rating);
+
+        // Set services
+        const serviceData = workerData.services.map(service => ({
+          id: service._id,
+          service: service.service,
+          description: service.description,
+          price: service.price
+        }));
+        setServices(serviceData);
 
       } catch (err) {
         setResponseMessage(`Error fetching worker profile: ${err.message}`);
@@ -47,23 +51,6 @@ const Worker = () => {
       fetchWorkerProfile();
     }
   }, [workerId]);
-  useEffect(() => {
-        const fetchServices = async () => {
-            try {
-                const response = await workerGetDataApi(workerId).get(`http://3.70.72.246:3001/worker/${workerId}`);
-                const serviceData = response.data.services.map(service => ({
-                    id: service._id,
-                    service: service.service,
-                    description: service.description,
-                    price: service.price
-                }));
-                setServices(serviceData);
-            } catch (err) {
-                console.log("Error fetching services: ", err);
-            }
-        };
-        fetchServices();
-    }, [workerId]);
 
   return (
     <div className="profile-container">
@@ -110,35 +97,31 @@ const Worker = () => {
 
           {/* Column 2: Services */}
           <div className="profile-column">
-            {/* Column 2: Services */}
-<div className="profile-column">
-  <h3>Services</h3>
-  <table className="info-table">
-    <thead>
-      <tr>
-        <th>Service Offered</th>
-        <th>Service Description</th>
-        <th>Price</th>
-      </tr>
-    </thead>
-    <tbody>
-      {services.length > 0 ? (
-        services.map(service => (
-          <tr key={service.id}>
-            <td>{service.service}</td>
-            <td>{service.description}</td>
-            <td>{service.price}</td>
-          </tr>
-        ))
-      ) : (
-        <tr>
-          <td colSpan="3">No services available</td>
-        </tr>
-      )}
-    </tbody>
-  </table>
-</div>
-
+            <h3>Services</h3>
+            <table className="info-table">
+              <thead>
+                <tr>
+                  <th>Service Offered</th>
+                  <th>Service Description</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {services.length > 0 ? (
+                  services.map(service => (
+                    <tr key={service.id}>
+                      <td>{service.service}</td>
+                      <td>{service.description}</td>
+                      <td>${service.price}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3">No services available</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -146,4 +129,4 @@ const Worker = () => {
   );
 };
 
-export default Worker;
+export default WorkerProfile;

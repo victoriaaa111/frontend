@@ -14,6 +14,7 @@ import UserManagement from './components/Admin User Worker/AdminWorkerManagement
 import ProtectedRoute from './components/AdminLogin/ProtectedRoute';
 import LogInWorker from './components/Log In Worker/loginworker';
 import ChooseLogin from './components/Log In Worker/chooselogin';
+import WorkerCalendar from './components/Worker Calendar/WorkerCalendar';
 
 import WorkerManagement from './components/Worker User/WorkerManagement';
 import WorkerProfile from './components/WorkerManagement/WorkerProfile';
@@ -41,6 +42,7 @@ function App() {
               <Route path="/loginworker" element={<LogInWorker />} />
               <Route path="/signupclient" element={<SignUpClient />} />
               <Route path="/signupworker" element={<SignUpWorker />} />
+              <Route path="/workercalendar" element={<WorkerCalendar />} />
               <Route path="/loginadmin" element={<LogInAdmin />} />
 
               {/* Protected Route */}

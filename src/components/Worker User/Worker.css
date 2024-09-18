@@ -40,6 +40,9 @@
     color:red;
     text-align: center;
 }
+.error{
+    color:red;
+}
 
 .invalid {
     color: red;
