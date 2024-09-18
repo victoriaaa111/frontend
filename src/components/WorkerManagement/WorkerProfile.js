@@ -1,29 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import './WorkerProfile.css'; // import the CSS file
-import { Rating } from '../../api/axios';
+import { workerGetDataApi } from '../../api/axios'; // Import your worker API function
 
 const Worker = () => {
   const defaultProfilePic = '/images/planet-earth.png'; // Default image
-  const [rating, setRating] = useState(null);
-  const [responseMessage, setResponseMessage] = useState('');
-  const workerId = '66e7148e8d2d0146f5b42e24'; // Assuming worker ID is fixed for now
+  const workerId = '66e7da37e4c48248a5197c49'; // Assuming worker ID is fixed for now
 
+  // State for worker data
+  const [worker, setWorker] = useState({
+    fullName: '',
+    uniqueId: '',
+    email: '',
+    contact: '',
+    profilePicture: null,
+    services: [] // Array to store services
+  });
+
+  const [updatedWorker, setUpdatedWorker] = useState({
+    fullName: '',
+    contact: ''
+  });
+
+  const [rating, setRating] = useState(null); // State for rating
+  const [responseMessage, setResponseMessage] = useState('');
+  const [services, setServices] = useState([]); // State for services
+
+  // Fetch worker data and services
   useEffect(() => {
-    const fetchRating = async () => {
+    const fetchWorkerProfile = async () => {
       try {
-        const response = await Rating(workerId).get(`http://3.70.72.246:3001/worker/${workerId}`);
+        const response = await workerGetDataApi(workerId).get(`http://3.70.72.246:3001/worker/${workerId}`);
         const workerData = response.data;
-        // Assuming the workerData contains a "rating" field
+
+        // Set worker data including services
+        setWorker(workerData);
+
+        // Set rating if available
         setRating(workerData.rating);
+
       } catch (err) {
-        setResponseMessage(`Error fetching worker rating: ${err.message}`);
+        setResponseMessage(`Error fetching worker profile: ${err.message}`);
       }
     };
 
     if (workerId) {
-      fetchRating();
+      fetchWorkerProfile();
     }
   }, [workerId]);
+  useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const response = await workerGetDataApi(workerId).get(`http://3.70.72.246:3001/worker/${workerId}`);
+                const serviceData = response.data.services.map(service => ({
+                    id: service._id,
+                    service: service.service,
+                    description: service.description,
+                    price: service.price
+                }));
+                setServices(serviceData);
+            } catch (err) {
+                console.log("Error fetching services: ", err);
+            }
+        };
+        fetchServices();
+    }, [workerId]);
 
   return (
     <div className="profile-container">
@@ -39,9 +79,7 @@ const Worker = () => {
             </div>
           </div>
           <div className="profile-info">
-            <h2>Ion Popescu</h2>
-            <p>Electric</p>
-            <p>Electrician</p>
+            <h2>{worker.fullName}</h2>
           </div>
         </div>
 
@@ -53,15 +91,15 @@ const Worker = () => {
             <div className="info-block">
               <div className="info-row">
                 <span>Name and Surname:</span>
-                <span>Ion Popescu</span>
+                <span>{worker.fullName || 'Ion Popescu'}</span>
               </div>
               <div className="info-row">
                 <span>Email:</span>
-                <span>ionpopescu@gmail.com</span>
+                <span>{worker.email || 'ionpopescu@gmail.com'}</span>
               </div>
               <div className="info-row">
                 <span>Phone Number:</span>
-                <span>073 980 123</span>
+                <span>{worker.contact || '073 980 123'}</span>
               </div>
               <div className="info-row">
                 <span>Ratings:</span>
@@ -72,27 +110,37 @@ const Worker = () => {
 
           {/* Column 2: Services */}
           <div className="profile-column">
-            <h3>Services</h3>
-            <table className="info-table">
-              <thead>
-                <tr>
-                  <th>Service Offered</th>
-                  <th>Service Description</th>
-                  <th>Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Electric, Electrician</td>
-                  <td>Cel mai bun electric și electrician</td>
-                  <td>20</td>
-                </tr>
-              </tbody>
-            </table>
+            {/* Column 2: Services */}
+<div className="profile-column">
+  <h3>Services</h3>
+  <table className="info-table">
+    <thead>
+      <tr>
+        <th>Service Offered</th>
+        <th>Service Description</th>
+        <th>Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {services.length > 0 ? (
+        services.map(service => (
+          <tr key={service.id}>
+            <td>{service.service}</td>
+            <td>{service.description}</td>
+            <td>{service.price}</td>
+          </tr>
+        ))
+      ) : (
+        <tr>
+          <td colSpan="3">No services available</td>
+        </tr>
+      )}
+    </tbody>
+  </table>
+</div>
+
           </div>
-
         </div>
-
       </div>
     </div>
   );

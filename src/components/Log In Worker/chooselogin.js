@@ -14,7 +14,7 @@ const ChooseLogin = () =>{
 
     return(
     <div className="cover-2 container main-font">
-    <h1 className="titlu">Alege-ți rolul:</h1>
+    <h1 className="titlu">Choose your role:</h1>
 
     <div className="option-cards">
         <label className ="card" htmlFor="client">
@@ -29,7 +29,7 @@ const ChooseLogin = () =>{
 
                 <div className="card-content">
                     <span className="icon"></span> 
-                    <p>Sunt client, caut meșter</p>
+                    <p>I am a client</p>
                 </div>
         </div>
         </label>
@@ -43,7 +43,7 @@ const ChooseLogin = () =>{
                 onChange={handleRoleChange}/>
                 <div className="card-content">
                     <span className="icon"></span> 
-                    <p>Sunt meșter în căutare de lucru</p>
+                    <p>I am a worker</p>
                 </div>
             
         </div>

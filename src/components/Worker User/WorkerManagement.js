@@ -10,9 +10,11 @@ import './Worker.css';
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const SERVICE_NAME_REGEX = /^[A-Za-z0-9 ]{4,100}$/;
-const DESCRIPTION_REGEX = /^[\w\s.,'"\-?!()]{4,500}$/;
-const PRICE_REGEX = /^\d+(\.\d{1,2})?$/;
+const SERVICE_NAME_REGEX = /^[a-zA-Z0-9\s]{1,100}$/; // Example pattern
+const DESCRIPTION_REGEX = /^[a-zA-Z0-9\s,.!?]{1,500}$/; // Example pattern
+const PRICE_REGEX = /^\d+(\.\d{1,2})?$/; // Example pattern for price with up to 2 decimal places
+const WORK_REGEX = /^(?:[0-9]|1[0-9]|2[0-3])$/
+
 
 const WorkerProfile = () => {
     const { auth } = useContext(AuthContext);
@@ -23,13 +25,17 @@ const WorkerProfile = () => {
         uniqueId: '',
         email: '',
         contact: '',
+        startWork: '',
+        endWork: '',
         password: '',
         profilePicture: null,
         services: []
     });
     const [updatedWorker, setUpdatedWorker] = useState({
         fullName: '',
-        contact: ''
+        contact: '',
+        startWork: '',
+        endWork:''
     });
     const [errors, setErrors] = useState({});
     const [responseMessage, setResponseMessage] = useState('');
@@ -37,7 +43,6 @@ const WorkerProfile = () => {
     const [errMsgUpdate, setErrMsgUpdate] = useState('');
     const userRef = useRef();
     const errRef = useRef();
-    const errRefUpdate = useRef();
 
 
     const [editServiceId, setEditServiceId] = useState(null);
@@ -59,7 +64,9 @@ const WorkerProfile = () => {
                 setWorker(workerData);
                 setUpdatedWorker({
                     fullName: workerData.fullName,
-                    contact: contact
+                    contact: contact,
+                    startWork: workerData.startWork,
+                    endWork: workerData.endWork
                 });
             } catch (err) {
                 setResponseMessage(`Error fetching worker profile: ${err.message}`);
@@ -97,18 +104,20 @@ const WorkerProfile = () => {
         const newErrors = {};
 
         if (!updatedWorker.fullName) newErrors.fullName = 'Full name is required';
-        if (!updatedWorker.contact || !validatePhone(updatedWorker.contact)) newErrors.contact = 'Invalid contact number';
-        setErrors(newErrors);
+        if (updatedWorker.startWork > updatedWorker.endWork) newErrors.fullName = 'Start Work Hour should be smaller than End Work Hour';
+        if (!updatedWorker.contact || !validatePhone(updatedWorker.contact)) newErrors.contact = 'Invalid contact number';        setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const handleUpdateInputChange = (e) => {
-        const { name, value } = e.target;
-        setUpdatedWorker((prevWorker) => ({
-            ...prevWorker,
-            [name]: value
-        }));
-    };
+    const { name, value } = e.target;
+
+    setUpdatedWorker((prevWorker) => ({
+        ...prevWorker,
+        [name]: name === "startWork" || name === "endWork" ? Number(value) : value
+    }));
+};
+
 
     const updateWorkerDetails = async (e) => {
         e.preventDefault();
@@ -210,7 +219,7 @@ const WorkerProfile = () => {
     try {
         const response = await serviceApi(workerId).post(
             `http://3.70.72.246:3001/worker/add/${workerId}`,
-            JSON.stringify({ id: null, service, description, price }),
+            JSON.stringify({ id: null, service, description, price: Number(price) }),
             {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
@@ -221,7 +230,7 @@ const WorkerProfile = () => {
             id: response.data._id,
             service,
             description,
-            price
+            price: Number(price)
         };
 
         setServices(prevServices => [...prevServices, newService]);
@@ -275,7 +284,7 @@ const WorkerProfile = () => {
 
     if (!v1 || !v2 || !v3) {
         setErrMsgUpdate("Invalid Entry");
-        errRefUpdate.current.focus();
+        errRef.current.focus();
         return;
     }
 
@@ -286,7 +295,7 @@ const WorkerProfile = () => {
                 id: editServiceId,
                 service: editServiceData.service,
                 description: editServiceData.description,
-                price: editServiceData.price
+                price: Number(editServiceData.price)
             }),
             {
                 headers: { 'Content-Type': 'application/json' },
@@ -296,7 +305,7 @@ const WorkerProfile = () => {
         
         // update services with edited service
         const updatedServices = services.map(service =>
-            service.id === editServiceId ? { ...service, ...editServiceData } : service
+            service.id === editServiceId ? { ...service, ...editServiceData, price: Number(editServiceData.price) } : service
         );
         setServices(updatedServices);  
 
@@ -315,7 +324,7 @@ const WorkerProfile = () => {
         } else {
             setErrMsgUpdate('Updating Service Failed. Please try again.');
         }
-        errRefUpdate.current.focus();
+        errRef.current.focus();
     }
 };
 
@@ -409,6 +418,26 @@ const WorkerProfile = () => {
                                     />
                                     {errors.contact && <p className="error">{errors.contact}</p>}
 
+                                    <label>Start Work Time:</label>
+                                    <input
+                                        type="number"
+                                        name="startWork"
+                                        placeholder={worker.startWork}
+                                        value={updatedWorker.startWork}
+                                        onChange={handleUpdateInputChange}
+                                    />
+                                    {errors.startWork && <p className="error">{errors.startWork}</p>}
+
+                                    <label>End Work Time:</label>
+                                    <input
+                                        type="number"
+                                        name="endWork"
+                                        placeholder={worker.endWork}
+                                        value={updatedWorker.endWork}
+                                        onChange={handleUpdateInputChange}
+                                    />
+                                    {errors.endWork && <p className="error">{errors.endWork}</p>}
+
                                     <button
                                         type="submit"
                                         className="update-details-btn"
@@ -496,7 +525,7 @@ const WorkerProfile = () => {
                             <li key={service.id}>
                                 {editServiceId === service.id ? (
                                     <form onSubmit={handleUpdateService}>
-                                        <p ref={errRefUpdate} className={errMsgUpdate ? 'errmsg' : "offscreen"} aria-live="assertive">{errMsgUpdate}</p>
+                                        <p ref={errRef} className={errMsgUpdate ? 'errmsg' : "offscreen"} aria-live="assertive">{errMsgUpdate}</p>
                                         <label>Service Offered:</label>
                                         <input
                                             type="text"
