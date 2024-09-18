@@ -121,7 +121,46 @@
     border-radius: 25px;
     cursor: pointer;
 }
+.black-text{
+    color:black;
+}
 
 .search-button:hover {
     background-color: #1c86ee;
+}
+.result-ticket {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+}
+
+.result-ticket h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.worker-info {
+    margin: 10px 0;
+}
+
+.worker-info p {
+    margin: 4px 0;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px;
+
+}
+
+.search-select, .search-button {
+    margin-left: 10px;
 }

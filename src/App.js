@@ -6,7 +6,7 @@ import ChooseRole from './components/Chooserole/chooserole';
 import SignUpWorker from './components/Sign Up Worker/signup_worker';
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import Hero from "./components/Hero/Hero";
+import Hero from './components/Hero/Hero.js'
 import Contact from "./components/Contact/Contact";
 import LogInAdmin from './components/AdminLogin/adminlogin';
 import LogInClient from './components/Log In Form/loginform';
