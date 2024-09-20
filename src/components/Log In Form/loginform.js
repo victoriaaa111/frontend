@@ -26,7 +26,7 @@ const LogInClient = () => {
     useEffect(() => {
         setErrMsg('');
     }, [email, password]);
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -39,12 +39,19 @@ const LogInClient = () => {
                     withCredentials: true
                 }
             );
-            console.log(response);
+
             const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
-            setAuth({ email, password, roles, accessToken });
-            setEmail('');
-            setPwd('');
+            const refreshToken = response?.data?.refreshToken;
+
+            if (accessToken) {
+                localStorage.setItem('accessToken', accessToken);
+            }
+
+            if (refreshToken) {
+                localStorage.setItem('refreshToken', refreshToken);
+            }
+            //todo aici am adaugat functional
+            console.log(response);
             setSuccess(true);
         } catch (err) {
             if (!err?.response) {
