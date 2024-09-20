@@ -71,5 +71,10 @@ const workerGetOrdersApi = axios.create({
     baseURL: 'http://3.70.72.246:3001',
 })
 
+const workerOrder = (workerId) => {
+    return axios.create({
+        baseURL: `http://3.70.72.246:3001/worker/orders/${workerId}`
+    })
+}
 
-export { adminApi, clientApi, clientSignUpApi, workerSignUpApi, workerPrfileAPI, workerSignInApi, workerGetDataApi, workerPutUpdateDataApi,serviceApi,Rating,deleteService, searchAPI, workerGetOrdersApi};
+export { adminApi, clientApi, clientSignUpApi, workerSignUpApi, workerPrfileAPI, workerSignInApi, workerGetDataApi, workerPutUpdateDataApi,serviceApi,Rating,deleteService, searchAPI, workerGetOrdersApi, workerOrder};

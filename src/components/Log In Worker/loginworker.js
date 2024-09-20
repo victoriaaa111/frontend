@@ -73,7 +73,7 @@ const LogInWorker = () => {
     return (
         <>
         {success?(
-            navigate("/worker/profile")
+            navigate("/worker")
         ):(
         <div className="page-s">
         <div className="cover-login main-font">

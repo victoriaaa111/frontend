@@ -21,10 +21,12 @@ import WorkerProfile from './components/WorkerManagement/WorkerProfile';
 
 import AdminAppointmentView from "./components/Admin Profile/AdminAppointmentView";
 import AdminLayout from './components/Admin Profile/AdminLayout';
+import WorkerLayout from './components/Worker User/WorkerLayout.js';
 import AdminDashboardPage from './components/Admin Profile/AdminDashboardPage';
 
 import AdminWorkerManagement from "./components/Admin User Worker/AdminWorkerManagement";
 import AdminUserManagement from "./components/Admin User Worker/AdminUserManagement"
+import Orders from './components/Worker User/Appointments/Orders.js';
 
 function App() {
   return (
@@ -51,6 +53,9 @@ function App() {
               {/* Worker Routes */}
               <Route path="/worker/profile" element={<WorkerManagement />} />
               <Route path="/worker/profile/management" element={<WorkerProfile />} />
+              <Route path="/worker/profile/orders" element={<Orders />} />
+              <Route path="/worker" element={<WorkerLayout/>}/>
+            
 
               {/* Admin Layout and Admin Routes */}
               <Route path='/admin' element={<AdminLayout />}>
