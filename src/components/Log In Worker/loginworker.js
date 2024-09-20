@@ -47,6 +47,16 @@ const LogInWorker = () => {
                 }
             );
             const accessToken = response?.data?.accessToken;
+            const refreshToken = response?.data?.refreshToken;
+
+            if (accessToken) {
+                localStorage.setItem('accessToken', accessToken);
+            }
+
+            if (refreshToken) {
+                localStorage.setItem('refreshToken', refreshToken);
+            }
+
             const workerId = response?.data?.workerId;
             console.log(response);
 

@@ -24,7 +24,7 @@ const WorkerProfile = () => {
   useEffect(() => {
     const fetchWorkerProfile = async () => {
       try {
-        const response = await workerGetDataApi().get(`http://3.70.72.246:3001/worker/${workerId}`);
+        const response = await workerGetDataApi();
         const workerData = response.data;
 
         // Set worker data including services

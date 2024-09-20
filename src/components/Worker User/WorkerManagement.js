@@ -9,6 +9,7 @@ import AuthContext from '../../context/AuthProvider';
 import './Worker.css';
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 
 const SERVICE_NAME_REGEX = /^[a-zA-Z0-9\s]{1,100}$/; // Example pattern
 const DESCRIPTION_REGEX = /^[a-zA-Z0-9\s,.!?]{1,500}$/; // Example pattern
@@ -56,7 +57,7 @@ const WorkerProfile = () => {
     useEffect(() => {
         const fetchWorkerProfile = async () => {
             try {
-                const response = await workerGetDataApi(workerId).get(`http://3.70.72.246:3001/worker/${workerId}`);
+                const response = await workerGetDataApi(workerId);
                 const workerData = response.data;
                 let contact = workerData.contact;
                 contact = `+${contact}`;
@@ -78,7 +79,7 @@ const WorkerProfile = () => {
     }, [workerId]);
     const fetchServices = async () => {
     try {
-        const response = await workerGetDataApi(workerId).get(`http://3.70.72.246:3001/worker/${workerId}`);
+        const response = await axios.get(`http://3.70.72.246:3001/worker/${workerId}`, {workerId});
         const serviceData = response.data.services.map(service => ({
             id: service._id,
             service: service.service,
