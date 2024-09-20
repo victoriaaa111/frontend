@@ -83,7 +83,7 @@ const WorkerProfile = () => {
             id: service._id,
             service: service.service,
             description: service.description,
-            price: service.price
+            price: Number(service.price)
         }));
         setServices(serviceData);
     } catch (err) {
@@ -268,24 +268,33 @@ const WorkerProfile = () => {
         setEditServiceData({
             service: service.service,
             description: service.description,
-            price: service.price
+            price: Number(service.price)
         });
     };
 
+    // const handleEditServiceChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setEditServiceData(prevData => ({
+    //         ...prevData,
+    //         [name]: value
+    //     }));
+    // };
     const handleEditServiceChange = (e) => {
-        const { name, value } = e.target;
-        setEditServiceData(prevData => ({
-            ...prevData,
-            [name]: value
-        }));
-    };
+    const { name, value } = e.target;
+
+    setEditServiceData(prevData => ({
+        ...prevData,
+        [name]: name === "price" ? Number(value) : value
+    }));
+};
+
 
     const handleUpdateService = async (e) => {
     e.preventDefault();
 
     const v1 = SERVICE_NAME_REGEX.test(editServiceData.service);
     const v2 = DESCRIPTION_REGEX.test(editServiceData.description);
-    const v3 = PRICE_REGEX.test(editServiceData.price);
+    const v3 = PRICE_REGEX.test(Number(editServiceData.price));
 
     if (!v1 || !v2 || !v3) {
         setErrMsgUpdate("Invalid Entry");
@@ -527,8 +536,8 @@ const WorkerProfile = () => {
             type="number"
             name="price"
             placeholder="Hourly Rate"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            value={Number(price)}
+            onChange={(e) => setPrice(Number(e.target.value))}
         />
         <p id="pricenote" className={priceFocus && price && !validPrice ? "instructions" : "offscreen"}>
             <FontAwesomeIcon icon={faInfoCircle}/>
@@ -587,12 +596,12 @@ const WorkerProfile = () => {
                                             type="number"
                                             name="price"
                                             value={editServiceData.price}
-                                            onChange={handleEditServiceChange}
+                                             onChange={(e) => handleEditServiceChange({ target: { name: 'price', value: Number(e.target.value) } })}
                                             onFocus={() => setPriceUpdateFocus(true)}
                                             onBlur={() => setPriceUpdateFocus(false)}
                                         />
                                         <p id="pricenote"
-                               className={priceUpdateFocus && editServiceData.price && !validPriceUpdate ? "instructions" : "offscreen"}>
+                               className={priceUpdateFocus && Number(editServiceData).price && !validPriceUpdate ? "instructions" : "offscreen"}>
                                 <FontAwesomeIcon icon={faInfoCircle}/>
                                 Enter the price for the service in numeric format. You may include up to two decimal
                                 places.
@@ -603,7 +612,7 @@ const WorkerProfile = () => {
                                     <>
                                         <p>Service: {service.service}</p>
                                         <p>Description: {service.description}</p>
-                                        <p>Price: {service.price}</p>
+                                        <p>Price: {Number(service.price)}</p>
                                         <button className = "edit" onClick={() => handleEditClick(service)}>Edit</button>
                                         <button className = "delete" onClick={() => handleDeleteService(service.id)}>Delete</button>
                                     </>
