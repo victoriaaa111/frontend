@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AdminOrdersPage.css';
-// import { adminGetOrdersApi, updateOrderStatusApi, cancelOrderApi } from '../../api/axios'; // API calls
+import axios from 'axios';
 
 const AdminOrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -10,8 +10,8 @@ const AdminOrdersPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        // const response = await adminGetOrdersApi.get('/admin/orders');
-        // setOrders(response.data);
+        const response = await axios.get('/admin/orders');
+        setOrders(response.data);
       } catch (error) {
         setError("Error fetching orders");
       }
@@ -22,7 +22,7 @@ const AdminOrdersPage = () => {
 
   const handleStatusUpdate = async (orderId, newStatus) => {
     try {
-    //   await updateOrderStatusApi.put(`/admin/orders/${orderId}`, { status: newStatus });
+      await axios.put(`/admin/orders/${orderId}`, { status: newStatus });
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order._id === orderId ? { ...order, status: newStatus } : order
@@ -37,7 +37,7 @@ const AdminOrdersPage = () => {
   const handleCancelOrder = async (orderId) => {
     if (window.confirm("Are you sure you want to cancel this order?")) {
       try {
-        // await cancelOrderApi.delete(`/admin/orders/${orderId}`);
+        await axios.delete(`/admin/orders/${orderId}`);
         setOrders((prevOrders) => prevOrders.filter((order) => order._id !== orderId));
         setError(null);
       } catch (error) {
