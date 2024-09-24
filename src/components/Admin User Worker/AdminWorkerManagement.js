@@ -243,7 +243,7 @@ const AdminSignUpWorker = () => {
 
 
           <button className='button1' type="submit" disabled={!validFullName || !validEmail || !validPwd || !validMatchPwd}>
-            Sign Up
+          Create Worker
           </button>
         </form>
 
