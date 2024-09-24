@@ -3,12 +3,9 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './UserCalendarCreateOrder.css';
-import { workerGetOrdersApi } from "../../api/axios";
 import axios from 'axios';
 import AuthContext from '../../context/AuthProvider';
 import { useLocation } from 'react-router-dom';
-
-
 
 const UserCalendarCreateOrder = () => {
   const localizer = momentLocalizer(moment);
@@ -17,108 +14,110 @@ const UserCalendarCreateOrder = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [editEvent, setEditEvent] = useState({ title: '', start: new Date(), end: new Date() });
   const [newEvent, setNewEvent] = useState(null);
-  
-  const { workerId, serviceId } = location.state; 
-    console.log("Worker ID:", workerId);
-    console.log("Service ID:", serviceId);
+  const [error, setError] = useState('');
 
+  const { workerId, serviceId } = location.state;
   const { auth } = useContext(AuthContext);
-    const { userId } = auth;
+  const { userId } = auth;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-
         const response = await axios.get(`http://3.70.72.246:3001/user/orders/${userId}`);
-
-        const orders = response.data.map(order => ({
-          ...order,
-          start: new Date(order.startDate),
-          end: new Date(order.endDate),
-          title: order.description
-        }));
+        const orders = response.data
+          .filter(order => order.status !== 'Declined') 
+          .map(order => ({
+            ...order,
+            start: new Date(order.startDate),
+            end: new Date(order.endDate),
+            title: order.description
+          }));
         setEvents(orders);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
-  }, []);
-  
+  }, [userId]);
+
   const today = moment().startOf('day');
-
-  const countEventsOnDay = (events, date) => {
-    const targetDate = moment(date).format('YYYY-MM-DD');
-    return events.filter(
-      (event) => moment(event.start).format('YYYY-MM-DD') === targetDate
-    ).length;
-  };
-
-  const customEventRenderer = ({ event }) => {
-    // Count the total number of events on the same day
-    const eventCount = countEventsOnDay(events, event.start);
-  
-    return (
-      <div>
-        {eventCount} {eventCount === 1 ? 'order' : 'orders'}
-      </div>
-    );
-  };
 
   const handleSlotSelected = ({ start, end }) => {
     setNewEvent({ title: '', start, end });
   };
 
-  const handleSaveNewEvent = async () => {
-  if (newEvent && newEvent.title) {
+  const checkAvailability = async (start) => {
     try {
-      console.log("Creating a new order with event data:", newEvent); // Log event data
-      console.log('Save button clicked'); 
-
-      // Fetch the user data using the /user/:userId API
-      const userResponse = await axios.get(`http://3.70.72.246:3001/user/${userId}`);
-      const userData = userResponse.data;
-      const userContact = userData.contact || "+37368126027"; // Replace with actual contact
-      
-      // Prepare order data
-      const orderData = {
-        userId: userId,
-        serviceId: serviceId, // Use the serviceId from location.state
-        userContact: userContact,
-        startDate: new Date(newEvent.start).toISOString(), // Convert to the required format
-        endDate: new Date(newEvent.end).toISOString(), 
-        description: newEvent.title,
-      };
-
-      console.log("Sending order data to API:", orderData); // Log data before sending
-      const response = await axios.post(`http://3.70.72.246:3001/user/create-order`, orderData);
-
-      // Log the API response
-      console.log("Order created successfully:", response.data);
-
-      // After the order is created successfully, update the events state
-      setEvents([
-        ...events,
-        {
-          ...newEvent,
-          start: new Date(newEvent.start).toISOString(),
-          end: new Date(newEvent.end).toISOString(),
-          status: 'pending',  // New orders can have a default status
-        },
-      ]);
-
-      // Clear the new event form
-      setNewEvent(null);
+      const availabilityResponse = await axios.post(
+        `http://3.70.72.246:3001/user/worker/availability/${workerId}`,
+        { date: new Date(start).toISOString() }
+      );
+      return availabilityResponse.data.available;
     } catch (error) {
-      console.error("Error creating new order:", error);
+      console.error("Error checking availability:", error);
+      return false; // Assume not available if there's an error
     }
-  } else {
-    console.warn("Title is required for new event."); // Warn if no title is set
-  }
-};
+  };
 
+  const validateEvent = (event) => {
+    if (!event.title) {
+      setError("Title is required for the order.");
+      return false;
+    }
+    if (!event.start || !event.end) {
+      setError("Start and end times are required.");
+      return false;
+    }
+    return true;
+  };
 
+  const handleSaveNewEvent = async () => {
+    if (newEvent && validateEvent(newEvent)) {
+      try {
+        console.log("Creating a new order with event data:", newEvent);
+
+        // Check worker availability for the selected start time
+        const isAvailable = await checkAvailability(newEvent.start);
+        if (!isAvailable) {
+          setError("The worker is not available at the selected time. Please choose another time slot.");
+          return;
+        }
+
+        // Fetch user data using the /user/:userId API
+        const userResponse = await axios.get(`http://3.70.72.246:3001/user/${userId}`);
+        const userData = userResponse.data;
+        const userContact = userData.contact || "+37368126027"; // Replace with actual contact
+        
+        // Prepare order data
+        const orderData = {
+          userId: userId,
+          serviceId: serviceId,
+          userContact: userContact,
+          startDate: new Date(newEvent.start).toISOString(),
+          endDate: new Date(newEvent.end).toISOString(),
+          description: newEvent.title,
+        };
+
+        const response = await axios.post(`http://3.70.72.246:3001/user/create-order`, orderData);
+        console.log("Order created successfully:", response.data);
+
+        // Update events state
+        setEvents([
+          ...events,
+          {
+            ...newEvent,
+            start: new Date(newEvent.start).toISOString(),
+            end: new Date(newEvent.end).toISOString(),
+            status: 'pending',
+          },
+        ]);
+        setNewEvent(null);
+        setError(''); // Clear any previous error messages
+      } catch (error) {
+        console.error("Error creating new order:", error);
+      }
+    }
+  };
 
   const handleInputChange = (e, isNewEvent = false) => {
     const { name, value } = e.target;
@@ -135,10 +134,13 @@ const UserCalendarCreateOrder = () => {
   };
 
   const handleSaveEdit = () => {
-    const updatedEvents = [...events];
-    updatedEvents[editIndex] = editEvent;
-    setEvents(updatedEvents);
-    setEditIndex(null);
+    if (validateEvent(editEvent)) {
+      const updatedEvents = [...events];
+      updatedEvents[editIndex] = editEvent;
+      setEvents(updatedEvents);
+      setEditIndex(null);
+      setError(''); // Clear any previous error messages
+    }
   };
 
   const handleDelete = (index) => {
@@ -148,85 +150,58 @@ const UserCalendarCreateOrder = () => {
       setEvents(updatedEvents);
     }
   };
-
-  // Function to generate colors based on event status
-  const generateEventColor = (status, index) => {
-  switch (status) {
-    case 'done':
-      return 'green'; // Green for done
-    case 'canceled':
-      return 'red'; // Red for canceled
-    case 'pending':
-    default:
-      const blueShade = 60 + (index * 10); // Generate varying shades of blue for pending
-      return `hsl(210, 100%, ${blueShade}%)`; // Adjust lightness for different shades
-  }
+  const groupEventsByDay = () => {
+  const eventCountByDay = {};
+  events.forEach(event => {
+    const day = moment(event.start).format('YYYY-MM-DD');
+    eventCountByDay[day] = (eventCountByDay[day] || 0) + 1;
+  });
+  return eventCountByDay;
 };
 
-
-  const groupEventsByDay = (events) => {
-    const eventsByDay = {};
-    
-    events.forEach((event) => {
-      const dateStr = moment(event.start).format('YYYY-MM-DD');
-      
-      if (!eventsByDay[dateStr]) {
-        eventsByDay[dateStr] = [];
-      }
-      eventsByDay[dateStr].push(event);
-    });
-    
-    return eventsByDay;
+  const generateEventColor = (status, index) => {
+    switch (status) {
+      case 'Done':
+        return 'green';
+      case 'Pending':
+        return '#FFCB64'
+      default:
+        const blueShade = 60 + (index * 10);
+        return `hsl(210, 100%, ${blueShade}%)`;
+    }
   };
 
-  const EventCount = ({ events }) => {
-    const dateStr = moment(events[0].start).format('YYYY-MM-DD');
-    const eventCount = events.length;
-  
+  const eventCountByDay = groupEventsByDay();
+
+  // Custom event component to display number of events per day
+  const EventComponent = ({ event }) => {
+    const day = moment(event.start).format('YYYY-MM-DD');
+    const eventCount = eventCountByDay[day];
     return (
       <div>
-        {eventCount} {eventCount === 1 ? 'order' : 'orders'} on {dateStr}
+        {eventCount} {eventCount === 1 ? 'order' : 'orders'}
       </div>
     );
   };
-  
-  
+
   return (
     <div className="calendar-container">
       <h3 className='calendar-title'>User Calendar</h3>
-      {/* Calendar */}
+
+
       <Calendar
         localizer={localizer}
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 300 }}
-        selectable
-        onSelectSlot={handleSlotSelected}
-        views={['month', 'week', 'day']}
+        style={{ height: 500 }}
         components={{
-          month: {
-            event: customEventRenderer, // Custom event rendering for month view
-          },
-          week: {
-            event: customEventRenderer, // Custom event rendering for week view
-          },
-          day: {
-            event: customEventRenderer, // Custom event rendering for day view
-          },
+          event: EventComponent, 
         }}
-        eventPropGetter={(event) => {
-          const backgroundColor = generateEventColor(event.status, events.indexOf(event));
-          return {
-            style: {
-              backgroundColor: backgroundColor, // Set the background color based on status
-              color: 'white' // Ensure text color is white for visibility
-            }
-          };
-        }}
+        views={['month', 'week', 'day']}
       />
-  
-      {/* New Event Form - Now above the orders list */}
+
+
       {newEvent && (
         <div className="new-event-form">
           <h3>Create New Order</h3>
@@ -248,53 +223,38 @@ const UserCalendarCreateOrder = () => {
           </div>
         </div>
       )}
-  
-      {/* Orders List */}
+
       <div className="orders-list">
-        <h3>Orders</h3>
-        {events.length > 0 ? (
-          <ul>
-            {events.map((event, index) => (
-              <li
-              key={index}
-              style={{ backgroundColor: 'white', borderLeft:`4px solid ${generateEventColor(event.status, index)}` }}>
-                <strong>{event.title}</strong> <br />
-                Start: {new Date(event.start).toLocaleString()} <br />
-                End: {new Date(event.end).toLocaleString()} <br />
-                Status: {event.status} <br /><br />
-                <button className="buton" onClick={() => handleEdit(index)}>Edit</button>
-                <br />
-                <button className="buton" onClick={() => handleDelete(index)} style={{ marginLeft: '10px' }}>Delete</button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No orders available.</p>
-        )}
-      </div>
-  
-      {/* Edit Form */}
-      {editIndex !== null && (
-        <div className="edit-form">
-          <h3>Edit Order</h3>
-          <label>
-            Title:
-            <input type="text" name="title" value={editEvent.title} onChange={handleInputChange} />
-          </label>
-          <label>
-            Start Time:
-            <input type="datetime-local" name="start" value={moment(editEvent.start).format('YYYY-MM-DDTHH:mm')} onChange={handleInputChange} />
-          </label>
-          <label>
-            End Time:
-            <input type="datetime-local" name="end" value={moment(editEvent.end).format('YYYY-MM-DDTHH:mm')} onChange={handleInputChange} />
-          </label>
-          <button className="buton" onClick={handleSaveEdit}>Save</button>
-          <button className="buton" onClick={() => setEditIndex(null)} style={{ marginLeft: '10px' }}>Cancel</button>
-        </div>
-      )}
+  <h3>Orders</h3>
+  {events.length > 0 ? (
+    <ul>
+      {events.map((event, index) => (
+        <li key={index} style={{ borderLeft: `4px solid ${generateEventColor(event.status, index)}` }}>
+          <div className="left">
+            <strong>{event.title}</strong>
+          </div>
+          <div className="right">
+            <div className="info">
+              Start: {new Date(event.start).toLocaleString()}
+            </div>
+            <div className="info">
+              End: {new Date(event.end).toLocaleString()}
+            </div>
+            <div className="info">
+              Status: <span style={{color:`${generateEventColor(event.status, index)}`}}> {event.status}</span>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p>No orders available.</p>
+  )}
+</div>
+
+
     </div>
   );
-};  
+};
 
 export default UserCalendarCreateOrder;

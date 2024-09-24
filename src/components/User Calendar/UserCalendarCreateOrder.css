@@ -26,8 +26,14 @@
   border-radius: 8px;
 }
 
+.error-message{
+  color:red;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
 .rbc-event {
-  background-color: #4caf50;
+  background-color: rgb(105,127,249);
   color: white;
   border-radius: 4px;
   padding: 6px 10px;
@@ -37,7 +43,7 @@
 }
 
 .rbc-event:hover {
-  background-color: #388e3c;
+  background-color: rgb(105,127,249) ;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
@@ -61,37 +67,62 @@
 }
 
 .orders-list ul {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
 }
 
 .orders-list li {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  background-color: #f8f9fa;
-  border-left: 6px solid #4caf50;
-  border-radius: 6px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  align-items: flex-start;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: none;
 }
 
-.orders-list li:hover {
-  border-left-color: #388e3c;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+.right{
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-.orders-list li .content {
-  flex-grow: 1;
+.left{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.orders-list li strong {
+
+  font-size: 16px;
+}
+
+.orders-list .left-section {
+  flex: 1;
+}
+
+.orders-list .right-section {
+  text-align: right;
+  flex: 1;
+}
+
+.orders-list .info {
+  margin: 5px 0;
+  color: #555;
+}
+
+.orders-list {
+  margin-top: 20px;
 }
 
 .button-container {
   display: flex;
+  justify-content: flex-start;
   gap: 10px;
-  justify-content: flex-end;
 }
+
+
 
 .buton {
   padding: 8px;

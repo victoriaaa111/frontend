@@ -76,6 +76,7 @@ const WorkerCalendar = () => {
       case 'Declined':
         return 'red';
       case 'Pending':
+        return '#FFCB64';
       default:
         const blueShade = 60 + (index * 10);
         return `hsl(210, 100%, ${blueShade}%)`;

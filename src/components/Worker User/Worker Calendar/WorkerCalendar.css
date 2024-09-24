@@ -27,7 +27,7 @@
   }
   
   .rbc-event {
-    background-color: #4caf50;
+    background-color:  rgb(105,127,249);
     color: white;
     border-radius: 4px;
     padding: 6px 10px;
@@ -37,7 +37,7 @@
   }
   
   .rbc-event:hover {
-    background-color: #388e3c;
+    background-color: #007bff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
   
@@ -71,7 +71,7 @@
     align-items: center;
     padding: 15px;
     background-color: #f8f9fa;
-    border-left: 6px solid #4caf50;
+    border-left: 6px solid ;
     border-radius: 6px;
     margin-bottom: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
