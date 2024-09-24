@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import './AdminAppointmentView.css';
+import './AdminLayout.css';
 import { Link } from 'react-router-dom';
 
 const AdminLayout = () => {
@@ -14,9 +14,9 @@ const AdminLayout = () => {
                 <nav>
                     <ul>
                         <li><Link to="/admin/dashboard">Dashboard</Link></li>
-                        <li><Link to="/admin/dashboard/appointment">Appointments</Link></li>
+                        <li><Link to="/admin/dashboard/orders">Orders</Link></li>
                         <li><Link to="/admin/dashboard/client">Client List</Link></li>
-                        <li><Link to="/admin/dashboard/mester">Mester List</Link></li>
+                        <li><Link to="/admin/dashboard/worker">Worker List</Link></li>
                     </ul>
                 </nav>
             </aside>

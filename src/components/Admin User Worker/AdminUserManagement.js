@@ -242,7 +242,7 @@ const AdminSignUpClient = () => {
                 </div>
 
 
-                <button type="submit" disabled={!validFullName || !validEmail || !validPwd || !validMatchPwd}>
+                <button className='button1' type="submit" disabled={!validFullName || !validEmail || !validPwd || !validMatchPwd}>
                     Sign Up
                 </button>
             </form>
@@ -277,7 +277,7 @@ const AdminSignUpClient = () => {
                             <td>{user.role}</td>
                             <td>{user.status}</td>
                             <td>
-                                <button onClick={() => toggleUserStatus(user.id)}>
+                                <button className='button1' onClick={() => toggleUserStatus(user.id)}>
                                     {user.status === 'Active' ? 'Deactivate' : 'Activate'}
                                 </button>
                             </td>

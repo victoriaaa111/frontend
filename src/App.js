@@ -18,10 +18,12 @@ import ChooseLogin from './components/Log In Worker/chooselogin';
 import WorkerManagement from './components/Worker User/WorkerManagement';
 import WorkerProfile from './components/WorkerManagement/WorkerProfile';
 
-import AdminAppointmentView from "./components/Admin Profile/AdminAppointmentView";
+import AdminOrdersPage from "./components/Admin Order Control/AdminOrdersPage";
 import AdminLayout from './components/Admin Profile/AdminLayout';
 import WorkerLayout from './components/Worker User/WorkerLayout.js';
 import AdminDashboardPage from './components/Admin Profile/AdminDashboardPage';
+
+import UserCalendar from './components/User Calendar/UserCalendarCreateOrder';
 
 import AdminWorkerManagement from "./components/Admin User Worker/AdminWorkerManagement";
 import AdminUserManagement from "./components/Admin User Worker/AdminUserManagement"
@@ -57,13 +59,15 @@ function App() {
               <Route path="/worker/profile/reviews" element={<ReviewsWorker />} />
               <Route path="/worker" element={<WorkerLayout/>}/>
             
+              {/* User Routes */}
+              <Route path="/usercalendar" element={<UserCalendar />} />
 
               {/* Admin Layout and Admin Routes */}
               <Route path='/admin' element={<AdminLayout />}>
                 <Route path='/admin/dashboard' element={<AdminDashboardPage />} />
-                <Route path='/admin/dashboard/appointment' element={<AdminAppointmentView />} />
-              <Route path="/admin/dashboard/mester" element={<AdminWorkerManagement />} />
-              <Route path="/admin/dashboard/mester/reviews" element={<ReviewsAdmin />} />
+                <Route path='/admin/dashboard/orders' element={<AdminOrdersPage/>} />
+              <Route path="/admin/dashboard/worker" element={<AdminWorkerManagement />} />
+              <Route path="/admin/dashboard/worker/reviews" element={<ReviewsAdmin />} />
                 <Route path="/admin/dashboard/client" element={<AdminUserManagement />} />
               </Route>
             </Routes>
