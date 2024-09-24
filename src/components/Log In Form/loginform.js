@@ -53,8 +53,11 @@ const LogInClient = () => {
             if (refreshToken) {
                 localStorage.setItem('refreshToken', refreshToken);
             }
-            //todo aici am adaugat functional
+
+            const userId = response?.data?.userId;
             console.log(response);
+            localStorage.setItem('auth', JSON.stringify({email, accessToken, userId}))
+            setAuth({email, accessToken, userId})
             setSuccess(true);
         } catch (err) {
             if (!err?.response) {

@@ -1,80 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './Hero.css';
 import { FaSearch } from 'react-icons/fa';
-import { searchAPI } from '../../api/axios'; // Ensure this path is correct
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 import CountUp from 'react-countup';
 import axios from 'axios';
+import AuthContext from "../../context/AuthProvider";
 
 const Hero = () => {
     const [input, setInput] = useState("");
-    const [sortOrder, setSortOrder] = useState(""); // Sorting state
-    const [results, setResults] = useState([]); // State for search results
-    const navigate = useNavigate(); // Hook for navigation
+    const [sortOrder, setSortOrder] = useState("");
+    const [results, setResults] = useState([]);
+    const navigate = useNavigate();
+    const { auth } = useContext(AuthContext);
+    const { userId } = auth;
 
-    // Fetch data function using axios
     const fetchData = async (value) => {
-        try {
-            const response = await axios.get("http://3.70.72.246:3001/shareable/search", {
-                params: { service: value, sortOrder }, // Send the search value and sortOrder as query parameters
-            });
+    try {
+        const response = await axios.get("http://3.70.72.246:3001/shareable/search", {
+            params: { service: value, sortOrder },
+        });
+        console.log(response);
 
-            console.log("API Response:", response.data); // Debugging
+        const filteredResults = response.data.flatMap((worker) =>
+            worker.services
+                .filter((service) =>
+                    !value || service.service.toLowerCase().includes(value.toLowerCase())
+                )
+                .map((service) => ({
+                    serviceName: service.service,
+                    description: service.description,
+                    price: service.price,
+                    workerName: worker.fullName,
+                    workerContact: worker.contact,
+                    workerRating: worker.rating,
+                    workerId: worker._id,
+                    serviceId: service._id, // Extracting serviceId
+                }))
+        );
 
-            const filteredResults = response.data.flatMap((worker) =>
-                worker.services
-                    .filter((service) =>
-                        !value || service.service.toLowerCase().includes(value.toLowerCase())
-                    )
-                    .map((service) => ({
-                        serviceName: service.service,
-                        description: service.description,
-                        price: service.price,
-                        workerName: worker.fullName,
-                        workerContact: worker.contact,
-                        workerRating: worker.rating, // Include the worker's rating in the result
-                        workerId: worker._id // Include worker ID
-                    }))
-            );
-
-            // Sort results by worker rating
-            if (sortOrder === "lowToHigh") {
-                filteredResults.sort((a, b) => a.workerRating - b.workerRating);
-            } else if (sortOrder === "highToLow") {
-                filteredResults.sort((a, b) => b.workerRating - a.workerRating);
-            }
-
-            // If no results are found
-            if (filteredResults.length === 0 && value) {
-                setResults([{ serviceName: "No results found" }]);
-            } else {
-                setResults(filteredResults);
-            }
-        } catch (error) {
-            console.error("Error fetching data: ", error.response || error.message);
-            setResults([{ serviceName: "Error fetching data" }]); 
+        // Sorting based on workerRating
+        if (sortOrder === "lowToHigh") {
+            filteredResults.sort((a, b) => a.workerRating - b.workerRating);
+        } else if (sortOrder === "highToLow") {
+            filteredResults.sort((a, b) => b.workerRating - a.workerRating);
         }
+
+        // Handling no results found
+        if (filteredResults.length === 0 && value) {
+            setResults([{ serviceName: "No results found" }]);
+        } else {
+            setResults(filteredResults);
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        setResults([{ serviceName: "Error fetching data" }]);
+    }
+};
+
+
+    // Updated handleMakeOrder to accept serviceId
+    const handleMakeOrder = (workerId, serviceId) => {
+        navigate(`/user/calendar`, { state: {workerId, serviceId } });
     };
-
-
+    
     const handleInputChange = (value) => {
         setInput(value);
-        fetchData(value); 
+        fetchData(value);
     };
 
     const handleSortChange = (value) => {
         setSortOrder(value);
-        fetchData(input); 
+        fetchData(input);
     };
-
 
     const handleSearchClick = () => {
-        fetchData(input); 
+        fetchData(input);
     };
 
-
-    const handleWorkerNameClick = (workerId) => {
+    const handleWorkerNameClick = (workerId, serviceId) => {
         localStorage.setItem('selectedWorkerId', workerId);
+        localStorage.setItem('selectedServiceId', serviceId);
         navigate('/worker/profile/management');
     };
 
@@ -97,7 +102,7 @@ const Hero = () => {
                             placeholder="Indică Serviciul..."
                             className="search-input"
                             value={input}
-                            onChange={(e) => handleInputChange(e.target.value)} 
+                            onChange={(e) => handleInputChange(e.target.value)}
                         />
                         <select
                             className="search-select"
@@ -113,30 +118,33 @@ const Hero = () => {
                         </button>
                     </div>
 
-
                     <div className="results-showcase">
                         {results.length > 0 && results[0].serviceName !== "No results found" ? (
                             results.map((result, index) => (
                                 <div key={index} className="result-ticket">
-                                    <h3>{result.serviceName}</h3> 
-                                    <p>Description: <span className='black-text'>{result.description}</span> </p> 
-                                    <p>Price: <span className='black-text'>${result.price}/hour</span></p> 
+                                    <h3>{result.serviceName}</h3>
+                                    <p>Description: <span className='black-text'>{result.description}</span></p>
+                                    <p>Price: <span className='black-text'>${result.price}/hour</span></p>
                                     <div className="worker-info">
                                         <p>
                                             Offered by:{" "}
-                                            <a onClick={() => handleWorkerNameClick(result.workerId)}>
+                                            <a onClick={() => handleWorkerNameClick(result.workerId, result.serviceId)}>
                                                 {result.workerName}
                                             </a>
                                         </p>
-                                        <p>Rating: {result.workerRating}</p> 
+                                        <p>Rating: {result.workerRating}</p>
                                     </div>
-                                    <button onClick={() => handleWorkerNameClick(result.workerId)}>
+                                    <button onClick={() => handleWorkerNameClick(result.workerId, result.serviceId)}>
                                         View Profile
+                                    </button>
+                                    {/* Updated Make Order button */}
+                                    <button onClick={() => handleMakeOrder(result.workerId, result.serviceId)}>
+                                        Make an order
                                     </button>
                                 </div>
                             ))
                         ) : (
-                            <p>No services found</p> 
+                            <p>No services found</p>
                         )}
                     </div>
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './WorkerProfile.css'; // import the CSS file
-import { workerGetDataApi } from '../../api/axios'; // Import your worker API function
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from "../../context/AuthProvider";
 
 const WorkerProfile = () => {
   const defaultProfilePic = '/images/planet-earth.png'; // Default image
@@ -16,10 +17,12 @@ const WorkerProfile = () => {
 
   const [rating, setRating] = useState(null); // State for rating
   const [responseMessage, setResponseMessage] = useState('');
-  const [services, setServices] = useState([]); // State for services
+  const [services, setServices] = useState([]); // State for services 
+  const navigate = useNavigate();
 
-  // Retrieve workerId from local storage
+  // Retrieve workerId and serviceId from local storage
   const workerId = localStorage.getItem('selectedWorkerId');
+  const serviceId = localStorage.getItem('selectedServiceId'); // Get the serviceId
 
   // Fetch worker data and services
   useEffect(() => {
@@ -53,6 +56,9 @@ const WorkerProfile = () => {
     }
   }, [workerId]);
 
+  // Handle navigation with workerId and serviceId
+  
+
   return (
     <div className="profile-container">
       <div className="profile-content white-box">
@@ -60,9 +66,8 @@ const WorkerProfile = () => {
           <div className="profile-pic">
             <div className="profile-image" style={{ backgroundImage: `url(${defaultProfilePic})` }}>
               <img
-                src="./mester.png" // Placeholder for profile picture
-                alt="Profile"
-                onError={(e) => e.target.style.display = 'none'} // Hide image if not found
+                src="./mester.png" 
+                onError={(e) => e.target.style.display = 'none'}
               />
             </div>
           </div>
