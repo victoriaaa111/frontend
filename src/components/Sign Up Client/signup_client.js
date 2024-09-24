@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { clientSignUpApi } from "../../api/axios";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const NAME_REGEX = /^[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -80,7 +81,7 @@ const SignUpClient = () => {
     }
 
         try {
-            const response = await clientSignUpApi.post(SIGNUP_CLIENT_URL,
+            const response = await axios.post(SIGNUP_CLIENT_URL,
                 JSON.stringify({ fullName, email, password }),
                 {
                     headers: { 'Content-Type': 'application/json' },

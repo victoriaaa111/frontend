@@ -57,7 +57,7 @@ const WorkerProfile = () => {
     useEffect(() => {
         const fetchWorkerProfile = async () => {
             try {
-                const response = await workerGetDataApi(workerId);
+                const response = await axios.get(`http://3.70.72.246:3001/worker/${workerId}`);
                 const workerData = response.data;
                 let contact = workerData.contact;
                 contact = `+${contact}`;
@@ -79,7 +79,7 @@ const WorkerProfile = () => {
     }, [workerId]);
     const fetchServices = async () => {
     try {
-        const response = await axios.get(`http://3.70.72.246:3001/worker/${workerId}`, {workerId});
+        const response = await axios.get(`http://3.70.72.246:3001/worker/${workerId}`);
         const serviceData = response.data.services.map(service => ({
             id: service._id,
             service: service.service,
@@ -130,7 +130,7 @@ const WorkerProfile = () => {
         setResponseMessage('');
         if (validateFields()) {
             try {
-                const response = await workerPutUpdateDataApi(workerId).put(
+                const response = await axios.put(
                     `http://3.70.72.246:3001/worker/edit/${workerId}`,
                     JSON.stringify(updatedWorker),
                     {
@@ -220,7 +220,7 @@ const WorkerProfile = () => {
     }
 
     try {
-        const response = await serviceApi(workerId).post(
+        const response = await axios.post(
             `http://3.70.72.246:3001/worker/add/${workerId}`,
             JSON.stringify({ id: null, service, description, price: Number(price) }),
             {
@@ -265,7 +265,7 @@ const WorkerProfile = () => {
 
 
     const handleEditClick = (service) => {
-        setEditServiceId(service.id);
+        setEditServiceId(service.id)
         setEditServiceData({
             service: service.service,
             description: service.description,
@@ -314,8 +314,10 @@ const WorkerProfile = () => {
         return;
     }
 
-    try {
-        const response = await serviceApi(workerId).post(
+        try {
+            console.log(editServiceData);
+            console.log(editServiceId);
+        const response = await axios.post(
             `http://3.70.72.246:3001/worker/add/${workerId}`,
             JSON.stringify({
                 id: editServiceId,
@@ -359,7 +361,7 @@ const WorkerProfile = () => {
 
     const handleDeleteService = async (serviceId) => {
     try {
-        await serviceApi(workerId).delete(
+        await axios.delete(
             `http://3.70.72.246:3001/worker/${workerId}/service/${serviceId}`,
             {
                 headers: { 'Content-Type': 'application/json' },
@@ -596,13 +598,13 @@ const WorkerProfile = () => {
                                         <input
                                             type="number"
                                             name="price"
-                                            value={editServiceData.price}
+                                            value={Number(editServiceData.price)}
                                              onChange={(e) => handleEditServiceChange({ target: { name: 'price', value: Number(e.target.value) } })}
                                             onFocus={() => setPriceUpdateFocus(true)}
                                             onBlur={() => setPriceUpdateFocus(false)}
                                         />
                                         <p id="pricenote"
-                               className={priceUpdateFocus && Number(editServiceData).price && !validPriceUpdate ? "instructions" : "offscreen"}>
+                               className={priceUpdateFocus && Number(editServiceData.price) && !validPriceUpdate ? "instructions" : "offscreen"}>
                                 <FontAwesomeIcon icon={faInfoCircle}/>
                                 Enter the price for the service in numeric format. You may include up to two decimal
                                 places.

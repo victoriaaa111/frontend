@@ -92,7 +92,7 @@ const AdminSignUpWorker = () => {
     }
 
     try {
-      const response = await workerSignUpApi.post(SIGNUP_WORKER_URL,
+      const response = await axios.post(SIGNUP_WORKER_URL,
           JSON.stringify({ fullName, email, password }),
           {
             headers: { 'Content-Type': 'application/json' },
@@ -267,6 +267,7 @@ const AdminSignUpWorker = () => {
               <th>Role</th>
               <th>Status</th>
               <th>Actions</th>
+              <th>Ratings</th>
             </tr>
             </thead>
             <tbody>
@@ -280,7 +281,10 @@ const AdminSignUpWorker = () => {
                     <button onClick={() => toggleUserStatus(user.id)}>
                       {user.status === 'Active' ? 'Deactivate' : 'Activate'}
                     </button>
-                  </td>
+                </td>
+                <td>
+                  <button onClick={() => navigate(`/admin/dashboard/mester/reviews`, { state: { workerId: user.id } })}>View Ratings</button>
+                </td>
                 </tr>
             ))}
             </tbody>

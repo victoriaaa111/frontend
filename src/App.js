@@ -14,7 +14,6 @@ import UserManagement from './components/Admin User Worker/AdminWorkerManagement
 import ProtectedRoute from './components/AdminLogin/ProtectedRoute';
 import LogInWorker from './components/Log In Worker/loginworker';
 import ChooseLogin from './components/Log In Worker/chooselogin';
-import WorkerCalendar from './components/Worker Calendar/WorkerCalendar';
 
 import WorkerManagement from './components/Worker User/WorkerManagement';
 import WorkerProfile from './components/WorkerManagement/WorkerProfile';
@@ -26,7 +25,9 @@ import AdminDashboardPage from './components/Admin Profile/AdminDashboardPage';
 
 import AdminWorkerManagement from "./components/Admin User Worker/AdminWorkerManagement";
 import AdminUserManagement from "./components/Admin User Worker/AdminUserManagement"
-import Orders from './components/Worker User/Appointments/Orders.js';
+import WorkerCalendar from './components/Worker User/Worker Calendar/WorkerCalendar.js';
+import ReviewsWorker from './components/Worker User/Reviews/Reviews.js';
+import ReviewsAdmin from './components/Admin User Worker/Reviews Admin/ReviewsAdmin.js';
 
 function App() {
   return (
@@ -44,7 +45,6 @@ function App() {
               <Route path="/loginworker" element={<LogInWorker />} />
               <Route path="/signupclient" element={<SignUpClient />} />
               <Route path="/signupworker" element={<SignUpWorker />} />
-              <Route path="/workercalendar" element={<WorkerCalendar />} />
               <Route path="/loginadmin" element={<LogInAdmin />} />
 
               {/* Protected Route */}
@@ -53,7 +53,8 @@ function App() {
               {/* Worker Routes */}
               <Route path="/worker/profile" element={<WorkerManagement />} />
               <Route path="/worker/profile/management" element={<WorkerProfile />} />
-              <Route path="/worker/profile/orders" element={<Orders />} />
+              <Route path="/worker/profile/orders" element={<WorkerCalendar />} />
+              <Route path="/worker/profile/reviews" element={<ReviewsWorker />} />
               <Route path="/worker" element={<WorkerLayout/>}/>
             
 
@@ -61,7 +62,8 @@ function App() {
               <Route path='/admin' element={<AdminLayout />}>
                 <Route path='/admin/dashboard' element={<AdminDashboardPage />} />
                 <Route path='/admin/dashboard/appointment' element={<AdminAppointmentView />} />
-                <Route path="/admin/dashboard/mester" element={<AdminWorkerManagement />} />
+              <Route path="/admin/dashboard/mester" element={<AdminWorkerManagement />} />
+              <Route path="/admin/dashboard/mester/reviews" element={<ReviewsAdmin />} />
                 <Route path="/admin/dashboard/client" element={<AdminUserManagement />} />
               </Route>
             </Routes>

@@ -92,7 +92,7 @@ const AdminSignUpClient = () => {
         }
 
         try {
-            const response = await clientSignUpApi.post(SIGNUP_CLIENT_URL,
+            const response = await axios.post(SIGNUP_CLIENT_URL,
                 JSON.stringify({ fullName, email, password }),
                 {
                     headers: { 'Content-Type': 'application/json' },

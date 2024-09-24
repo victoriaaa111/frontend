@@ -6,7 +6,6 @@ import "./WorkerLayout.css"
 const WorkerLayout = () => {
     return (
         <div className="worker-container">
-            {/* Sidebar */}
             <aside className="sidebar">
                 <div className="sidebar-header">
                     <h2>Worker Menu</h2>
@@ -15,6 +14,7 @@ const WorkerLayout = () => {
                     <ul>
                         <li><Link to="/worker/profile">Edit Profile</Link></li>
                         <li><Link to="/worker/profile/orders">Orders</Link></li>
+                        <li><Link to="/worker/profile/reviews">Reviews</Link></li>
                     </ul>
                 </nav>
             </aside>

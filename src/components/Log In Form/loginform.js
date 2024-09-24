@@ -5,6 +5,8 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AuthContext from "../../context/AuthProvider";
 import clientApi from "axios";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LOGIN_CLIENT_URL = 'http://3.70.72.246:3001/auth/login';
 
@@ -12,6 +14,7 @@ const LogInClient = () => {
     const { setAuth } = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [password, setPwd] = useState('');
@@ -30,7 +33,7 @@ const LogInClient = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await clientApi.post(LOGIN_CLIENT_URL,
+            const response = await axios.post(LOGIN_CLIENT_URL,
                 JSON.stringify({ email, password }),
                 {
                     headers: {
@@ -70,13 +73,11 @@ const LogInClient = () => {
     return (
         <>
             {success ? (
-                <div>
-                    <h1 className="title">Success!!</h1>
-                </div>
+                    navigate("/")
             ) : (
                 <div className="page-s">
                     <div className="cover-login main-font">
-                        <h1 className="title-login">Log In</h1>
+                        <h1 className="title-login">Log In Client</h1>
                         <form className="form-container-sign" onSubmit={handleSubmit}>
                             <p ref={errRef} className={errMsg ? 'errmsg' : "offscreen"} aria-live="assertive">{errMsg}</p>
                             <div className="form-group">

@@ -28,7 +28,7 @@ const LogInAdmin = () => {
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
         if (token) {
-            navigate('/usermanagement');
+            navigate('/admin');
         }
     }, []);
 
@@ -59,7 +59,7 @@ const LogInAdmin = () => {
             setErrMsg('');
 
             // Redirect to dashboard on successful login
-            navigate('/usermanagement');
+            navigate('/admin');
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');

@@ -4,6 +4,7 @@ import { FaSearch } from 'react-icons/fa';
 import { searchAPI } from '../../api/axios'; // Ensure this path is correct
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import CountUp from 'react-countup';
+import axios from 'axios';
 
 const Hero = () => {
     const [input, setInput] = useState("");
@@ -14,7 +15,7 @@ const Hero = () => {
     // Fetch data function using axios
     const fetchData = async (value) => {
         try {
-            const response = await searchAPI.get("http://3.70.72.246:3001/shareable/search", {
+            const response = await axios.get("http://3.70.72.246:3001/shareable/search", {
                 params: { service: value, sortOrder }, // Send the search value and sortOrder as query parameters
             });
 

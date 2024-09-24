@@ -112,4 +112,4 @@ axios.interceptors.response.use(
     }
 );
 
-export { adminApi, clientApi, clientSignUpApi, workerSignUpApi, workerPrfileAPI, workerSignInApi, workerGetDataApi, workerPutUpdateDataApi,serviceApi,Rating,deleteService, searchAPI, workerGetOrdersApi, workerOrder};
+export { adminApi, clientApi, clientSignUpApi, workerSignUpApi, workerPrfileAPI, workerSignInApi, workerGetDataApi, workerPutUpdateDataApi,serviceApi,Rating,deleteService, searchAPI, workerGetOrdersApi};

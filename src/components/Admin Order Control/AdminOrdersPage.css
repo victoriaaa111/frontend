@@ -1,0 +1,59 @@
+.admin-orders-page {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .error {
+    color: red;
+    margin-bottom: 10px;
+  }
+  
+  .orders-list {
+    margin-top: 20px;
+  }
+  
+  .orders-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .orders-list th, .orders-list td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  .orders-list th {
+    background-color: #f4f4f4;
+  }
+  
+  .order-details {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .actions {
+    margin-top: 20px;
+  }
+  
+  .actions button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .actions button:hover {
+    background-color: #0056b3;
+  }
+  
