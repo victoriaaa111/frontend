@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './WorkerProfile.css'; // import the CSS file
 import { workerGetDataApi } from '../../api/axios'; // Import your worker API function
+import axios from 'axios';
 
 const WorkerProfile = () => {
   const defaultProfilePic = '/images/planet-earth.png'; // Default image
@@ -24,7 +25,7 @@ const WorkerProfile = () => {
   useEffect(() => {
     const fetchWorkerProfile = async () => {
       try {
-        const response = await workerGetDataApi();
+        const response = await axios.get(`http://3.70.72.246:3001/worker/${workerId}`);
         const workerData = response.data;
 
         // Set worker data including services
