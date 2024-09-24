@@ -148,7 +148,7 @@ const AdminSignUpWorker = () => {
   return (
       <div className="signup-container">
         <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
-        <h1>Sign Up</h1>
+        <h1>Create new Worker</h1>
         <form onSubmit={handleSubmit}>
           {/* Form fields */}
           <div className="form-group">
@@ -242,16 +242,16 @@ const AdminSignUpWorker = () => {
           </div>
 
 
-          <button type="submit" disabled={!validFullName || !validEmail || !validPwd || !validMatchPwd}>
+          <button className='button1' type="submit" disabled={!validFullName || !validEmail || !validPwd || !validMatchPwd}>
             Sign Up
           </button>
         </form>
 
         {success && <p className="success-msg">Sign Up Successful!</p>}
-
+        <br/><br/>
         {/* User List Section */}
         <div className="user-list">
-          <h2>User Management</h2>
+          <h1>Worker Management</h1>
 
           <input
               type="text"
@@ -278,12 +278,12 @@ const AdminSignUpWorker = () => {
                   <td>{user.role}</td>
                   <td>{user.status}</td>
                   <td>
-                    <button onClick={() => toggleUserStatus(user.id)}>
+                    <button className='button1' onClick={() => toggleUserStatus(user.id)}>
                       {user.status === 'Active' ? 'Deactivate' : 'Activate'}
                     </button>
                 </td>
                 <td>
-                  <button onClick={() => navigate(`/admin/dashboard/mester/reviews`, { state: { workerId: user.id } })}>View Ratings</button>
+                  <button className='button1' onClick={() => navigate(`/admin/dashboard/worker/reviews`, { state: { workerId: user.id } })}>View Ratings</button>
                 </td>
                 </tr>
             ))}

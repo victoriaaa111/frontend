@@ -99,6 +99,15 @@ th {
     cursor: pointer;
 }
 
+.pagination button:hover {
+    margin: 0 5px;
+    padding: 8px 12px;
+    border: 1px solid #093f7e;
+    background-color: #438fdd;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .new-user-form {
     margin-top: 10px;
     align-items: center;

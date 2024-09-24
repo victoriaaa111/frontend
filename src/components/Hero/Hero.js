@@ -169,7 +169,7 @@ const Hero = () => {
 
                 <div className="hero-right">
                     <div className="image-container">
-                        <img src="./fixer.png" alt="Fixer" />
+                        <img src="./w7.png" alt="Fixer" />
                     </div>
                 </div>
             </div>
