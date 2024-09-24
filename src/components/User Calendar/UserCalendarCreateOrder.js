@@ -1,24 +1,36 @@
-// WorkerCalendar.js
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './UserCalendarCreateOrder.css';
 import { workerGetOrdersApi } from "../../api/axios";
+import axios from 'axios';
+import AuthContext from '../../context/AuthProvider';
+import { useLocation } from 'react-router-dom';
 
-const localizer = momentLocalizer(moment);
+
 
 const UserCalendarCreateOrder = () => {
+  const localizer = momentLocalizer(moment);
+  const location = useLocation();
   const [events, setEvents] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [editEvent, setEditEvent] = useState({ title: '', start: new Date(), end: new Date() });
   const [newEvent, setNewEvent] = useState(null);
+  
+  const { workerId, serviceId } = location.state; 
+    console.log("Worker ID:", workerId);
+    console.log("Service ID:", serviceId);
+
+  const { auth } = useContext(AuthContext);
+    const { userId } = auth;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const workerId = "66e7da37e4c48248a5197c49";
-        const response = await workerGetOrdersApi.get(`/worker/orders/${workerId}`);
+
+        const response = await axios.get(`http://3.70.72.246:3001/user/orders/${userId}`);
+
         const orders = response.data.map(order => ({
           ...order,
           start: new Date(order.startDate),
@@ -58,13 +70,55 @@ const UserCalendarCreateOrder = () => {
     setNewEvent({ title: '', start, end });
   };
 
+  const handleSaveNewEvent = async () => {
+  if (newEvent && newEvent.title) {
+    try {
+      console.log("Creating a new order with event data:", newEvent); // Log event data
+      console.log('Save button clicked'); 
 
-  const handleSaveNewEvent = () => {
-    if (newEvent.title) {
-      setEvents([...events, newEvent]);
+      // Fetch the user data using the /user/:userId API
+      const userResponse = await axios.get(`http://3.70.72.246:3001/user/${userId}`);
+      const userData = userResponse.data;
+      const userContact = userData.contact || "+37368126027"; // Replace with actual contact
+      
+      // Prepare order data
+      const orderData = {
+        userId: userId,
+        serviceId: serviceId, // Use the serviceId from location.state
+        userContact: userContact,
+        startDate: new Date(newEvent.start).toISOString(), // Convert to the required format
+        endDate: new Date(newEvent.end).toISOString(), 
+        description: newEvent.title,
+      };
+
+      console.log("Sending order data to API:", orderData); // Log data before sending
+      const response = await axios.post(`http://3.70.72.246:3001/user/create-order`, orderData);
+
+      // Log the API response
+      console.log("Order created successfully:", response.data);
+
+      // After the order is created successfully, update the events state
+      setEvents([
+        ...events,
+        {
+          ...newEvent,
+          start: new Date(newEvent.start).toISOString(),
+          end: new Date(newEvent.end).toISOString(),
+          status: 'pending',  // New orders can have a default status
+        },
+      ]);
+
+      // Clear the new event form
       setNewEvent(null);
+    } catch (error) {
+      console.error("Error creating new order:", error);
     }
-  };
+  } else {
+    console.warn("Title is required for new event."); // Warn if no title is set
+  }
+};
+
+
 
   const handleInputChange = (e, isNewEvent = false) => {
     const { name, value } = e.target;
@@ -97,17 +151,18 @@ const UserCalendarCreateOrder = () => {
 
   // Function to generate colors based on event status
   const generateEventColor = (status, index) => {
-    switch (status) {
-      case 'done':
-        return 'green'; // Green for done
-      case 'canceled':
-        return 'red'; // Red for canceled
-      case 'pending':
-      default:
-        const blueShade = 60 + (index * 10); // Generate varying shades of blue for pending
-        return `hsl(210, 100%, ${blueShade}%)`; // Adjust lightness for different shades
-    }
-  };
+  switch (status) {
+    case 'done':
+      return 'green'; // Green for done
+    case 'canceled':
+      return 'red'; // Red for canceled
+    case 'pending':
+    default:
+      const blueShade = 60 + (index * 10); // Generate varying shades of blue for pending
+      return `hsl(210, 100%, ${blueShade}%)`; // Adjust lightness for different shades
+  }
+};
+
 
   const groupEventsByDay = (events) => {
     const eventsByDay = {};
@@ -201,9 +256,8 @@ const UserCalendarCreateOrder = () => {
           <ul>
             {events.map((event, index) => (
               <li
-                key={index}
-                style={{ backgroundColor: 'white', borderLeft: `4px solid ${generateEventColor(event.status, index)}` }}
-              >
+              key={index}
+              style={{ backgroundColor: 'white', borderLeft:`4px solid ${generateEventColor(event.status, index)}` }}>
                 <strong>{event.title}</strong> <br />
                 Start: {new Date(event.start).toLocaleString()} <br />
                 End: {new Date(event.end).toLocaleString()} <br />
