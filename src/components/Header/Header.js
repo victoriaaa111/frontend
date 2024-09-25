@@ -48,7 +48,7 @@ const Header = () => {
                 </Link>
               </button>
               <button className="button2">
-                <Link to="/signupclient" style={{ color: "white" }}>
+                <Link to="/choose" style={{ color: "white" }}>
                   Sign Up
                 </Link>
               </button>
