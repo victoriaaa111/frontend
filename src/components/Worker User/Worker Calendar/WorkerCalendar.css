@@ -6,6 +6,23 @@
     color: var(--blue);
   }
   
+  .orders-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Change to center */
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: none;
+}
+
+.orders-list .button-section {
+  display: flex;
+  gap: 10px; /* Add some space between buttons */
+}
+
   .calendar-container {
     padding: 30px;
     background-color: #ffffff;
@@ -65,18 +82,7 @@
     padding: 0;
   }
   
-  .orders-list li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    background-color: #f8f9fa;
-    border-left: 6px solid ;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-  }
+
   
   .orders-list li:hover {
     border-left-color: #388e3c;
@@ -86,7 +92,12 @@
   .orders-list li .content {
     flex-grow: 1;
   }
-  
+  .left-part{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
   .button-container {
     display: flex;
     gap: 10px;
@@ -147,7 +158,14 @@
   .edit-form input:focus, .new-event-form input:focus {
     border-color: #007bff;
   }
-  
+  .orders-list .button-section {
+  width: 200px;
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 5px; /* Space between stacked buttons */
+  align-items: flex-end; /* Align buttons to the right */
+}
+
   @media (max-width: 768px) {
     .calendar-container {
       padding: 20px;

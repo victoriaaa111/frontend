@@ -45,7 +45,7 @@
   
   button {
     padding: 10px;
-    background-color: #6a0066;
+    background-color: var(--blue2);
     color: white;
     border: none;
     border-radius: 5px;
@@ -54,7 +54,7 @@
   }
   
   button:hover {
-    background-color: #8a008a;
+    background-color: var(--blue);
   }
   
   .location-section iframe {

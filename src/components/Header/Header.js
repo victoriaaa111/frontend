@@ -17,7 +17,7 @@ const Header = () => {
     <section className="header-wrapper">
       <div className="flexCenter paddings innerWidth header-container">
         <div className="move-logo">
-          <img src="./logo3.png" alt="logo" className="logo" width={100} />
+        <img src="/logo3.png" alt="logo" className="logo" width={100} />
           <div className="logo-name">
             <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
               <h1>fixer.md</h1>

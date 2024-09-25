@@ -58,12 +58,9 @@
   display: block;
 }
 
-.reviews-list li > div {
-  margin-bottom: 10px;
-}
+
 
 .review-details {
-  margin-top: 10px;
   display: block; 
 }
 

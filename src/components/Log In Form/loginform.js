@@ -80,7 +80,7 @@ const LogInClient = () => {
             ) : (
                 <div className="page-s">
                     <div className="cover-login main-font">
-                        <h1 className="title-login">Log In Client</h1>
+                        <h1 className="title-login">Log In as Client</h1>
                         <form className="form-container-sign" onSubmit={handleSubmit}>
                             <p ref={errRef} className={errMsg ? 'errmsg' : "offscreen"} aria-live="assertive">{errMsg}</p>
                             <div className="form-group">

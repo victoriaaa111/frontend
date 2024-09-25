@@ -91,9 +91,9 @@ h1 {
     margin-bottom: 20px;
 }
 
-.profile-image {
-    width: 100px;
-    height: 100px;
+.profile-image2 {
+    width: 150px;
+    height: 150px;
     border-radius: 50%; 
     overflow: hidden; 
     display: flex;
@@ -101,7 +101,7 @@ h1 {
     align-items: center;
     background-color: #e0e0e0;
     margin: 0 auto;
-    background-image: url('/public/mester.png'); 
+    background-image: url('/public/farmer.png'); 
     background-size: cover;
     background-position: center;
 }

@@ -3,7 +3,7 @@
    height: 45em;
    position: relative;
    border-radius: 2em;
-   border: 0.15em solid rgb(255, 203, 67);
+   border: 0.15em solid var(--blue);
    display: flex;
    flex-direction: column;
    align-items: center;
@@ -16,7 +16,7 @@
    background-color: white;
    font-size: 0.8em;
    height: 1.8em;
-   border: 1px solid rgb(198, 153, 254);
+   border: 1px solid var(--blue);
    padding: 0.5em;
    margin-top: 0.1em;
    border-radius: 0.15em;
@@ -26,7 +26,7 @@
 
 }
 .signup-client-btn{
-        background-color: rgb(198, 153, 254);
+        background-color: var(--blue);
         color: white;
         width: 10em;
         margin-top: 3em;
@@ -133,10 +133,18 @@
             font-size: 0.7em;
             cursor: pointer;
         }
+        .signup-btn:hover {
+            width: 80%;
+            color: white;
+            background: none;
+            font-size: 0.7em;
+            cursor: pointer;
+        }
     .cover {
             height: 30em;
             position: relative;
             padding-bottom: 1.2em;
+            color: white;
         }
 }
 

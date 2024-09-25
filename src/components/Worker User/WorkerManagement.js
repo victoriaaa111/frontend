@@ -1,10 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import {
-    serviceApi,
-    workerGetDataApi,
-    workerPutUpdateDataApi,
-    deleteService
-} from '../../api/axios';
+
 import AuthContext from '../../context/AuthProvider';
 import './Worker.css';
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
@@ -394,7 +389,7 @@ const WorkerProfile = () => {
                     <h1>Worker Profile Management</h1>
 
                     <div className="profile-picture">
-                        <div className="profile-image">
+                        <div className="profile-image2">
                             {worker.profilePicture ? (
                                 <img src={worker.profilePicture} alt="Profile" />
                             ) : (

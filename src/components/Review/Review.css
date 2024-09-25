@@ -1,0 +1,73 @@
+.rating-container {
+    width: 400px;
+    height:auto;
+    padding: 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  .rating-stars {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .rating-stars label {
+    cursor: pointer;
+  }
+  
+  .review-text {
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+  }
+  
+  .file-upload {
+    margin-bottom: 20px;
+  }
+  
+  .file-upload-label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .camera-icon {
+    margin-right: 10px;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .cancel-btn, .post-btn {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  .post-btn {
+    background-color: #1a73e8;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #ddd;
+  }
+  
+  .post-btn:hover {
+    background-color: #135bb5;
+  }
+  
+  

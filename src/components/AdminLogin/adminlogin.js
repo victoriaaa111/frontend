@@ -59,7 +59,7 @@ const LogInAdmin = () => {
             setErrMsg('');
 
             // Redirect to dashboard on successful login
-            navigate('/admin');
+            navigate('/admin/dashboard');
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');

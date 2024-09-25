@@ -129,35 +129,41 @@ const WorkerCalendar = () => {
         }}
       />
 
-      <div className="orders-list">
-        <h3>Orders</h3>
-        {filteredEvents.length > 0 ? (
-          <ul>
-            {filteredEvents.map((event, index) => (
-              <li
-                key={index}
-                style={{ backgroundColor: 'white', borderLeft: `4px solid ${generateEventColor(event.status, index)}` }}
-              >
-                <strong>{event.title}</strong> <br />
-                Start: {new Date(event.start).toLocaleString()} <br />
-                End: {new Date(event.end).toLocaleString()} <br />
-                Status: {event.status} <br /><br />
-                {event.status === 'Pending' && (
-                  <>
-                    <button style={{backgroundColor: 'green'}} onClick={() => handleStatusChange(index, 'In Progress')}>Accept</button>
-                    <button onClick={() => handleStatusChange(index, 'Declined')} style={{ marginLeft: '10px', backgroundColor: 'red'}}>Decline</button>
-                  </>
-                )}
-                {event.status === 'In Progress' && (
-                  <button style={{backgroundColor: 'green'}} onClick={() => handleStatusChange(index, 'Done')}>Mark as Done</button>
-                )}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No orders available.</p>
-        )}
-      </div>
+       <div className="orders-list">
+  <h3>Orders</h3>
+  {filteredEvents.length > 0 ? (
+    <ul>
+      {filteredEvents.map((event, index) => (
+        <li
+          key={index}
+          style={{ backgroundColor: 'white', borderLeft: `4px solid ${generateEventColor(event.status, index)}` }}
+        >
+          <div className="left-part">
+            <div style={{marginBottom:`15px`}}><strong>{event.title}</strong> <br /></div> 
+            <div style={{color:`#555`, paddingBottom:`5px`}}>Start: {new Date(event.start).toLocaleString()} <br /></div>
+            <div style={{color:`#555`,paddingBottom:`5px`}}>End: {new Date(event.end).toLocaleString()} <br /></div>
+            <div style={{color:`#555`,paddingBottom:`5px`}}>Status: {event.status}</div>
+          </div>
+          <div className="button-section">
+            {event.status === 'Pending' && (
+              <>
+                <button style={{ backgroundColor: 'green', width:`170px` }} onClick={() => handleStatusChange(index, 'In Progress')}>Accept</button>
+                <button onClick={() => handleStatusChange(index, 'Declined')} style={{ marginLeft: '10px', backgroundColor: 'red', width:`170px`}}>Decline</button>
+              </>
+            )}
+            {event.status === 'In Progress' && (
+              <button style={{ backgroundColor: 'green', width:`170px`}} onClick={() => handleStatusChange(index, 'Done')}>Mark as Done</button>
+            )}
+          </div>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p>No orders available.</p>
+  )}
+</div>
+
+
     </div>
   );
 };

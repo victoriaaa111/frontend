@@ -125,7 +125,7 @@ const SignUpClient = () => {
         ):(
         <div className="page-s">
         <div className="cover-signup main-font">
-            <h1 className ="title-signup">Sign Up</h1>
+            <h1 className ="title-signup">Sign Up as Client</h1>
             <form className="form-container-signup" onSubmit={handleSubmit}>
             <p ref={errRef} className={errMsg ? 'errmsg':"offscreen"} aria-live="assertive">{errMsg}</p>
             <div className="form-group" >

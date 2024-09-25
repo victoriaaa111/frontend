@@ -1,0 +1,80 @@
+/* General container styles */
+.profile-container {
+    display: flex;
+    max-width: 1280px;
+    margin: auto;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Profil Ã®ntr-un chenar alb */
+  .profile-content {
+    flex-grow: 1;
+    background-color: #fff; /* Fundal alb */
+    padding: 20px; /* SpaÈ›iu interior */
+    border-radius: 8px; /* ColÈ›uri rotunjite */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* UmbrÄƒ */
+    margin-bottom: 20px;
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-pic img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+  }
+  
+  .profile-info {
+    flex-grow: 1;
+  }
+  
+  .profile-info h2 {
+    margin: 0;
+    font-size: 24px;
+  }
+  
+  .profile-info p {
+    margin: 5px 0;
+    color: #6c757d;
+  }
+  
+  /* Stil pentru coloanele de profil */
+  .profile-columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* SpaÈ›iu Ã®ntre coloane */
+    margin-bottom: 20px;
+  }
+  
+  .profile-column {
+    flex: 1; /* Ambele coloane vor avea aceeaÈ™i lÄƒÈ›ime */
+    background-color: #f8f9fa; /* Fundal uÈ™or gri pentru separare vizualÄƒ */
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .profile-column h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  .blue-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }
+  
+  .blue-btn:hover {
+    background-color: #0056b3;
+  }
+  

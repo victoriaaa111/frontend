@@ -15,7 +15,7 @@
     height: 25em;
     position: relative;
     border-radius: 2em;
-    border: 0.15em solid rgb(255, 203, 67);
+    border: 0.15em solid var(--blue);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,7 +28,7 @@
     background-color: white;
     font-size: 1.2em;
     height: 1em;
-    border: 1px solid rgb(198, 153, 254);
+    border: 1px solid var(--blue);
     padding: 0.2em;
     margin-top: 0.1em;
     border-radius: 0.15em;
@@ -38,7 +38,7 @@
 }
 
 .login-btn-worker{
-    background-color: rgb(198, 153, 254);
+    background-color: var(--blue2);
     font-size: 0.8em;
     color: white;
     width:9em;
@@ -54,7 +54,7 @@
 
 .forgot-password {
     text-decoration: none;
-    color: rgb(198, 153, 254);
+    color: var(--blue);
     font-size: 0.5em;
     cursor: pointer;
     border: none;
@@ -83,7 +83,7 @@ button {
 }
 
 .login-btn {
-    background-color: rgb(198, 153, 254);
+    background-color: var(--blue);
     color: white;
     width:10em;
 }
@@ -161,7 +161,7 @@ button {
             margin-top: 0.09em;
         }
     .login-btn {
-            background-color: rgb(198, 153, 254);
+            background-color: var(--blue);
             color: white;
             width: 7em;
             font-size: 0.8em;
