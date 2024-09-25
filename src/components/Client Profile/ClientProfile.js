@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import './ClientProfile.css'; // Ensure to create this CSS
 import axios from 'axios';
 import AuthContext from '../../context/AuthProvider';
+import {useNavigate} from 'react-router-dom';
 
 const ClientProfile = () => {
   const [user, setUser] = useState({
@@ -14,6 +15,7 @@ const ClientProfile = () => {
 
   const [responseMessage, setResponseMessage] = useState('');
   const [orders, setOrders] = useState([]);
+  const navigate = useNavigate();
 
   const { auth } = useContext(AuthContext); 
   const { userId } = auth;
@@ -78,8 +80,7 @@ const ClientProfile = () => {
             <h3>Orders</h3>
 
             {/* Blue Button above the table */}
-            <button className="blue-btn">
-              LNew Order</button>
+            <button className="blue-btn" onClick={() => navigate('/')}>Find Workers</button>
 
             <table className="info-table">
               <thead>

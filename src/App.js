@@ -57,11 +57,11 @@ function App() {
               {/* Protected Route */}
             <Route path="/usermanagement" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
             <Route path="/user/calendar" element={<UserCalendarCreateOrder/>}/>
-
+            <Route path="/worker/profile/management" element={<WorkerProfile />} /> 
               {/* Worker Routes */}
               <Route path="/worker" element={<WorkerLayout/>}>
                 <Route path="/worker/profile" element={<WorkerManagement />} />
-                <Route path="/worker/profile/management" element={<WorkerProfile />} />
+                
                 <Route path="/worker/profile/orders" element={<WorkerCalendar />} />
                 <Route path="/worker/profile/reviews" element={<ReviewsWorker />} />
               </Route>

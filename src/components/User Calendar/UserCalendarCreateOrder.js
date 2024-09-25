@@ -49,18 +49,7 @@ const UserCalendarCreateOrder = () => {
     setNewEvent({ title: '', start, end });
   };
 
-  const checkAvailability = async (start) => {
-    try {
-      const availabilityResponse = await axios.post(
-        `http://3.70.72.246:3001/user/worker/availability/${workerId}`,
-        { date: new Date(start).toISOString() }
-      );
-      return availabilityResponse.data.available;
-    } catch (error) {
-      console.error("Error checking availability:", error);
-      return false; // Assume not available if there's an error
-    }
-  };
+  
 
   const validateEvent = (event) => {
     if (!event.title) {
@@ -79,19 +68,12 @@ const UserCalendarCreateOrder = () => {
       try {
         console.log("Creating a new order with event data:", newEvent);
 
-        // Check worker availability for the selected start time
-        const isAvailable = await checkAvailability(newEvent.start);
-        if (!isAvailable) {
-          setError("The worker is not available at the selected time. Please choose another time slot.");
-          return;
-        }
 
-        // Fetch user data using the /user/:userId API
         const userResponse = await axios.get(`http://3.70.72.246:3001/user/${userId}`);
         const userData = userResponse.data;
-        const userContact = userData.contact || "+37368126027"; // Replace with actual contact
+        const userContact = "+37368126027"; 
         
-        // Prepare order data
+
         const orderData = {
           userId: userId,
           serviceId: serviceId,
@@ -101,21 +83,22 @@ const UserCalendarCreateOrder = () => {
           description: newEvent.title,
         };
 
+
         const response = await axios.post(`http://3.70.72.246:3001/user/create-order`, orderData);
         console.log("Order created successfully:", response.data);
 
-        // Update events state
+
         setEvents([
           ...events,
           {
             ...newEvent,
             start: new Date(newEvent.start).toISOString(),
             end: new Date(newEvent.end).toISOString(),
-            status: 'pending',
+            status: 'Pending',
           },
         ]);
         setNewEvent(null);
-        setError(''); // Clear any previous error messages
+        setError(''); 
       } catch (error) {
         console.error("Error creating new order:", error);
       }
@@ -142,7 +125,7 @@ const UserCalendarCreateOrder = () => {
       updatedEvents[editIndex] = editEvent;
       setEvents(updatedEvents);
       setEditIndex(null);
-      setError(''); // Clear any previous error messages
+      setError(''); 
     }
   };
 
@@ -177,7 +160,7 @@ const UserCalendarCreateOrder = () => {
 
   const eventCountByDay = groupEventsByDay();
 
-  // Custom event component to display number of events per day
+
   const EventComponent = ({ event }) => {
     const day = moment(event.start).format('YYYY-MM-DD');
     const eventCount = eventCountByDay[day];
@@ -198,16 +181,18 @@ const UserCalendarCreateOrder = () => {
       <h3 className='calendar-title'>User Calendar</h3>
 
       <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-        components={{
-          event: EventComponent, 
-        }}
-        views={['month', 'week', 'day']}
-      />
+  localizer={localizer}
+  events={events}
+  startAccessor="start"
+  endAccessor="end"
+  style={{ height: 500 }}
+  selectable={true}  
+  onSelectSlot={handleSlotSelected}  
+  components={{
+    event: EventComponent,
+  }}
+  views={['month', 'week', 'day']}
+/>
 
       {newEvent && (
         <div className="new-event-form">
@@ -215,6 +200,10 @@ const UserCalendarCreateOrder = () => {
           <label>
             Title:
             <input type="text" name="title" value={newEvent.title} onChange={(e) => handleInputChange(e, true)} />
+          </label>
+          <label>
+            Contact:
+            <input type="text" name="contact" value={newEvent.contact} onChange={(e) => handleInputChange(e, true)} />
           </label>
           <label>
             Start Time:
@@ -251,7 +240,6 @@ const UserCalendarCreateOrder = () => {
               Status: <span style={{color:`${generateEventColor(event.status, index)}`}}> {event.status}</span>
             </div>
 
-            {/* Butonul apare doar când statusul este 'Done' */}
             {event.status === 'Done' && (
               <button onClick={()=>handleReview(event.userId, event.orderId)}>Leave Review</button>
             )}
