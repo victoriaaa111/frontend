@@ -43,7 +43,7 @@
 
 
 .card {
-    border: 0.15em solid rgb(255, 203, 67);
+    border: 0.15em solid var(--blue);
     border-radius: 10px;
     width: 220px;
     height: 150px;
@@ -62,7 +62,8 @@
 }
 
 .card input[type="radio"]:checked~.card-content {
-    background-color: rgb(255, 203, 67);
+    background-color: var(--blue);
+    color: white;
     border-radius: 10px;
     padding: 30px;
     width: 220px;
@@ -80,7 +81,7 @@
 }
 
 .create-account-btn {
-    background-color: rgb(198, 153, 254);
+    background-color: var(--blue2);
     color: white;
     padding: 10px 20px;
     border: none;
@@ -139,7 +140,7 @@
     height: 35em;
     position: relative;
     border-radius: 2em;
-    border: 0.15em solid rgb(255, 203, 67);
+    border: 0.15em solid var(--blue);
     display: flex;
     flex-direction: column;
     align-items: center;

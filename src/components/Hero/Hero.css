@@ -94,7 +94,7 @@
   .search-bar {
     display: flex;
     align-items: center;
-    border: 1px solid #3222e1;
+    border: 1px solid rgb(105,127,249);
     border-radius: 25px;
     padding: 5px;
     background-color: white;
@@ -132,13 +132,6 @@
 .search-button:hover {
     background-color: #1c86ee;
 }
-.result-ticket {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    margin: 10px 0;
-    background-color: #f9f9f9;
-}
 
 .result-ticket h3 {
     margin-top: 0;
@@ -146,7 +139,7 @@
 }
 
 .worker-info {
-    margin: 10px 0;
+    margin: 0;
 }
 
 .worker-info p {
@@ -161,4 +154,62 @@
 
 .search-select, .search-button {
     margin-left: 10px;
+}
+.result-ticket {
+    border: 1px solid #ddd; /* Subtle border */
+    border-radius: 12px; /* Softer rounded corners */
+    padding: 20px; /* Increased padding for space */
+    margin: 15px 0; /* Spacing between items */
+    background-color: #f9f9f9; /* Light grey background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    width: 100%; /* Make it as wide as the search bar */
+}
+
+.result-ticket:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
+.service-title {
+    color: rgb(105,127,249); /* Vibrant color for service name */
+    font-size: 1.6rem; /* Larger font for emphasis */
+    font-weight: bold;
+    margin-bottom: 20px; /* Spacing below title */
+}
+
+.description, .price, .offered-by, .rating {
+    font-size: 1.1rem; /* Unified text size */
+    color: #555; /* Softer grey for description and details */
+    margin-bottom: 8px; /* Consistent spacing between text */
+}
+
+.price span, .description span, .rating span {
+    color: #555; /* Dark color for important details */
+}
+
+.offered-by a {
+    color: rgb(105,127,249); /* Matching the title color */
+    text-decoration: none; /* No underline */
+    transition: color 0.2s ease-in-out;
+}
+
+.offered-by a:hover {
+    color: #000; /* Black on hover for a cleaner effect */
+}
+
+.button-service {
+    background-color: rgb(105,127,249); 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    margin-right: 10px; 
+    border-radius: 8px; 
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.button-service:hover {
+    background-color: #5555ff; 
 }

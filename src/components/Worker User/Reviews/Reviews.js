@@ -82,15 +82,15 @@ const ReviewsWorker = () => {
           {reviews.map((review) => (
             <li key={review._id} style={{ borderLeft: `6px solid ${generateBorderColor(review.rating)}` }}>
               <div className="review-main" onClick={() => toggleReviewExpansion(review._id)} style={{ cursor: 'pointer' }}>
-                <p><strong>Customer:</strong> {review.userId.fullName}</p>
-                <p><strong>Rating:</strong> {review.rating} / 5</p>
-                <p><strong>Detailed Feedback:</strong> {review.comment}</p>
+                <p><strong>Customer:</strong> <span style={{color:`#555`}}>{review.userId.fullName}</span></p>
+                <p><strong>Rating:</strong><span style={{color:`#555`}}> {review.rating} / 5</span></p>
+                <p><strong>Detailed Feedback:</strong> <span style={{color:`#555`}}> {review.comment}</span></p>
               </div>
 
               {expandedReviewId === review._id && (
                 <div className="review-details">
-                  <p><strong>Service Provided:</strong> {review.orderId.service}</p>
-                  <p><strong>Review Date:</strong> {new Date(review.date).toLocaleDateString()}</p>
+                  <p><strong>Service Provided:</strong> <span style={{color:`#555`}}> {review.orderId.service}</span></p>
+                  <p><strong>Review Date:</strong> <span style={{color:`#555`}}> {new Date(review.date).toLocaleDateString()}</span></p>
                 </div>
               )}
             </li>

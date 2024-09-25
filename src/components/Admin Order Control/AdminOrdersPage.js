@@ -141,8 +141,12 @@ const AdminOrdersPage = () => {
             onChange={(e) => setEndDate(e.target.value)}
           />
         </label>
-        <button className='button1' onClick={handleReschedule}>Confirm Reschedule</button>
-        <button className='button2' onClick={() => setIsRescheduleModalOpen(false)}>Cancel</button>
+        
+        <div className="modal-buttons">
+          <button className='button1' onClick={handleReschedule}>Confirm Reschedule</button>
+          <button className='button2' onClick={() => setIsRescheduleModalOpen(false)}>Cancel</button>
+        </div>
+       
         {error && <p className="error-modal">{error}</p>}
       </div>
     );
@@ -173,7 +177,7 @@ const AdminOrdersPage = () => {
                 <td>{order.userName}</td>
                 <td>{order.serviceType}</td>
                 <td>{new Date(order.date).toLocaleString()}</td>
-                <td>
+                <td className='status'>
                   <select
                     value={order.status}
                     onChange={(e) => handleStatusChange(order._id, e.target.value)}

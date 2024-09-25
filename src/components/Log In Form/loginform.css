@@ -14,7 +14,7 @@
     height: 25em;
     position: relative;
     border-radius: 2em;
-    border: 0.15em solid rgb(255, 203, 67);
+    border: 0.15em solid var(--blue);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -28,7 +28,7 @@
 input {
     background-color: white;
     height: 2.5em;
-    border: 1px solid rgb(198, 153, 254);
+    border: 1px solid var(--blue);
     padding: 0.8em;
     margin-top: 0.3em;
     border-radius: 0.15em;
@@ -41,7 +41,7 @@ input {
 
 .forgot-password {
     text-decoration: none;
-    color: rgb(198, 153, 254);
+    color: var(--blue);
     font-size: 0.8em;
     cursor: pointer;
     border: none;
@@ -65,7 +65,7 @@ button {
 }
 
 .login-btn {
-    background-color: rgb(198, 153, 254);
+    background-color: var(--blue);
     color: white;
     width:10em;
 }

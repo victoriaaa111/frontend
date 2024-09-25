@@ -8,13 +8,13 @@ const Footer = () => {
       <div className="content">
         <div className="left part">
           <div className="upper">
-            <div className="title">Despre noi</div>
-            <p>Suntem cea mai bună platformă.</p>
+            <div className="title">About us</div>
+            <p>We are the best service providers.</p>
           </div>
           <div className="lower">
-            <div className="title">Contacte</div>
+            <div className="title">Contacts</div>
             <div className="phone">
-              <a href="#"><i className="fas fa-phone-volume"></i>+123 45 67 89</a>
+              <a href="#"><i className="fas fa-phone-volume"></i>+373 678 902 345</a>
             </div>
             <div className="email">
               <a href="#"><i className="fas fa-envelope"></i>fixer.md@gmail.com</a>
@@ -22,14 +22,14 @@ const Footer = () => {
           </div>
         </div>
         <div className="middle part">
-          <div className="title">Servicii</div>
-          <div><a href="#">Reparații și construcții</a></div>
-          <div><a href="#">Instalarea și reparare</a></div>
-          <div><a href="#">Curățare și spălare</a></div>
-          <div><a href="#">Tractări Auto</a></div>
+          <div className="title">Services</div>
+          <div><a href="#">Repairs and construction</a></div>
+          <div><a href="#">Installation and repair</a></div>
+          <div><a href="#">Cleaning and washing</a></div>
+          <div><a href="#">Car towing</a></div>
         </div>
         <div className="right part">
-          <div className="title">Abonațivă</div>
+          <div className="title">Follow us</div>
           <form action="#">
             <input type="text" placeholder="Enter your email "/>
             <input type="submit" value="Send"/>

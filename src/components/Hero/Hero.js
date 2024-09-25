@@ -89,9 +89,9 @@ const Hero = () => {
                 <div className="flexColStart hero-left">
                     <div className="hero-title">
                         <h1>
-                            <span>Alegeți meșterul iscusit</span>
+                            <span>Choose the worker who's just right,</span>
                             <span></span><br />
-                            <span style={{ fontWeight: '700', fontSize: '3.2rem' }}>LA LOCUL POTRIVIT</span><br />
+                            <span style={{ fontWeight: '700', fontSize: '1.5rem' }}>At the perfect time and site!</span><br />
                         </h1>
                     </div>
 
@@ -99,7 +99,7 @@ const Hero = () => {
                         <FaSearch id="search-icon" />
                         <input
                             type="text"
-                            placeholder="Indică Serviciul..."
+                            placeholder="Indicate service..."
                             className="search-input"
                             value={input}
                             onChange={(e) => handleInputChange(e.target.value)}
@@ -114,38 +114,40 @@ const Hero = () => {
                             <option value="highToLow">High to Low</option>
                         </select>
                         <button className="search-button" onClick={handleSearchClick}>
-                            Caută
+                            Search
                         </button>
                     </div>
 
                     <div className="results-showcase">
                         {results.length > 0 && results[0].serviceName !== "No results found" ? (
-                            results.map((result, index) => (
-                                <div key={index} className="result-ticket">
-                                    <h3>{result.serviceName}</h3>
-                                    <p>Description: <span className='black-text'>{result.description}</span></p>
-                                    <p>Price: <span className='black-text'>${result.price}/hour</span></p>
-                                    <div className="worker-info">
-                                        <p>
-                                            Offered by:{" "}
-                                            <a onClick={() => handleWorkerNameClick(result.workerId, result.serviceId)}>
-                                                {result.workerName}
-                                            </a>
-                                        </p>
-                                        <p>Rating: {result.workerRating}</p>
-                                    </div>
-                                    <button onClick={() => handleWorkerNameClick(result.workerId, result.serviceId)}>
-                                        View Profile
-                                    </button>
-                                    {/* Updated Make Order button */}
-                                    <button onClick={() => handleMakeOrder(result.workerId, result.serviceId)}>
-                                        Make an order
-                                    </button>
-                                </div>
-                            ))
-                        ) : (
-                            <p>No services found</p>
-                        )}
+    results.map((result, index) => (
+        <div key={index} className="result-ticket">
+            <h3 className="service-title">{result.serviceName}</h3>
+            <p className="description">Description: <span className='black-text'>{result.description}</span></p>
+            <p className="price">Price: <span className='black-text'>${result.price}/hour</span></p>
+            <div className="worker-info">
+                <p className="offered-by">
+                    Offered by:{" "}
+                    <a onClick={() => handleWorkerNameClick(result.workerId, result.serviceId)}>
+                        {result.workerName}
+                    </a>
+                </p>
+                <p className="rating">Rating: {result.workerRating}</p>
+            </div>
+            <div className="button-container">
+                <button className="button-service profile-button" onClick={() => handleWorkerNameClick(result.workerId, result.serviceId)}>
+                    View Profile
+                </button>
+                <button className="button-service order-button" onClick={() => handleMakeOrder(result.workerId, result.serviceId)}>
+                    Make an order
+                </button>
+            </div>
+        </div>
+    ))
+) : (
+    <p>No services found</p>
+)}
+
                     </div>
 
                     <div className="flexCenter stats">
@@ -154,7 +156,7 @@ const Hero = () => {
                                 <CountUp start={8800} end={10000} duration={4} />
                                 <span>+</span>
                             </span>
-                            <span className='secondaryText'>Meșteri specialiști</span>
+                            <span className='secondaryText'>Specialist workers</span>
                         </div>
 
                         <div className="flexColStart stat">
@@ -162,7 +164,7 @@ const Hero = () => {
                                 <CountUp start={4850} end={5000} duration={4} />
                                 <span>+</span>
                             </span>
-                            <span className='secondaryText'>Chemări</span>
+                            <span className='secondaryText'>Requests</span>
                         </div>
 
                         <div className="flexColStart stat">
@@ -170,7 +172,7 @@ const Hero = () => {
                                 <CountUp end={6000} />
                                 <span>+</span>
                             </span>
-                            <span className='secondaryText'>Recenzii</span>
+                            <span className='secondaryText'>Reviews</span>
                         </div>
                     </div>
                 </div>

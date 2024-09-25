@@ -21,9 +21,8 @@ const AdminLayout = () => {
                 </nav>
             </aside>
 
-            {/* Main Content */}
             <main className="main-content">
-                <Outlet /> {/* Aici vor fi încărcate componentele copil */}
+                <Outlet />
             </main>
         </div>
     );
