@@ -5,11 +5,13 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './UserCalendarCreateOrder.css';
 import axios from 'axios';
 import AuthContext from '../../context/AuthProvider';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const UserCalendarCreateOrder = () => {
   const localizer = momentLocalizer(moment);
   const location = useLocation();
+  const navigate = useNavigate();
+  
   const [events, setEvents] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [editEvent, setEditEvent] = useState({ title: '', start: new Date(), end: new Date() });
@@ -28,6 +30,7 @@ const UserCalendarCreateOrder = () => {
           .filter(order => order.status !== 'Declined') 
           .map(order => ({
             ...order,
+            orderId: order._id,
             start: new Date(order.startDate),
             end: new Date(order.endDate),
             title: order.description
@@ -150,14 +153,15 @@ const UserCalendarCreateOrder = () => {
       setEvents(updatedEvents);
     }
   };
+
   const groupEventsByDay = () => {
-  const eventCountByDay = {};
-  events.forEach(event => {
-    const day = moment(event.start).format('YYYY-MM-DD');
-    eventCountByDay[day] = (eventCountByDay[day] || 0) + 1;
-  });
-  return eventCountByDay;
-};
+    const eventCountByDay = {};
+    events.forEach(event => {
+      const day = moment(event.start).format('YYYY-MM-DD');
+      eventCountByDay[day] = (eventCountByDay[day] || 0) + 1;
+    });
+    return eventCountByDay;
+  };
 
   const generateEventColor = (status, index) => {
     switch (status) {
@@ -184,10 +188,14 @@ const UserCalendarCreateOrder = () => {
     );
   };
 
+
+  const handleReview = (userId, orderId) => {
+    navigate(`/rating`, { state: {userId, orderId} });
+};
+
   return (
     <div className="calendar-container">
       <h3 className='calendar-title'>User Calendar</h3>
-
 
       <Calendar
         localizer={localizer}
@@ -200,7 +208,6 @@ const UserCalendarCreateOrder = () => {
         }}
         views={['month', 'week', 'day']}
       />
-
 
       {newEvent && (
         <div className="new-event-form">
@@ -224,7 +231,7 @@ const UserCalendarCreateOrder = () => {
         </div>
       )}
 
-      <div className="orders-list">
+<div className="orders-list">
   <h3>Orders</h3>
   {events.length > 0 ? (
     <ul>
@@ -243,6 +250,11 @@ const UserCalendarCreateOrder = () => {
             <div className="info">
               Status: <span style={{color:`${generateEventColor(event.status, index)}`}}> {event.status}</span>
             </div>
+
+            {/* Butonul apare doar când statusul este 'Done' */}
+            {event.status === 'Done' && (
+              <button onClick={()=>handleReview(event.userId, event.orderId)}>Leave Review</button>
+            )}
           </div>
         </li>
       ))}
@@ -251,7 +263,6 @@ const UserCalendarCreateOrder = () => {
     <p>No orders available.</p>
   )}
 </div>
-
 
     </div>
   );

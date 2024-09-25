@@ -156,8 +156,8 @@ const ClientProfile = () => {
       <div className="profile-content white-box">
         <div className="profile-header">
           <div className="profile-info">
-            <h2>{user.fullName}</h2>
-            <img src={user.profilePicture || '/images/default-user.png'} alt="User Profile" className="profile-pic" />
+            <h2>User Profile: {user.fullName}</h2>
+            <img src={user.profilePicture || '/woman.png'} style={{ width: '200px', height: '200px', borderRadius: '50%' }} alt="User Profile" className="profile-pic" />
           </div>
         </div>
 
