@@ -16,7 +16,7 @@ const ChooseRole = () =>{
 
     return(
     <div className="cover-2 container main-font">
-    <h1 className="titlu">Alege-ți rolul:</h1>
+    <h1 className="titlu">Choose your role:</h1>
 
     <div className="option-cards">
         <label className ="card" for="client">
@@ -31,7 +31,7 @@ const ChooseRole = () =>{
 
                 <div className="card-content">
                     <span class="icon"></span> 
-                    <p>Sunt client, caut meșter</p>
+                    <p>I am a client</p>
                 </div>
         </div>
         </label>
@@ -45,7 +45,7 @@ const ChooseRole = () =>{
                 onChange={handleRoleChange}/>
                 <div className="card-content">
                     <span className="icon"></span> 
-                    <p>Sunt meșter în căutare de lucru</p>
+                    <p>I am a worker</p>
                 </div>
             
         </div>
@@ -54,13 +54,13 @@ const ChooseRole = () =>{
 
     <Link to={role === "client" ? "/signupclient" : role === "worker" ? "/signupworker" : "#"}>
                 <button className="create-account-btn" disabled={!role}>
-                    Creează cont
+                    Sign Up
                 </button>
             </Link>
 
     <p className="login-text">
-        Deja ai cont? 
-        <Link to="/login">
+        Already have an account? 
+        <Link to="/chooselogin">
         <button className="lgn-btn">Login</button>
       </Link>
     </p>
