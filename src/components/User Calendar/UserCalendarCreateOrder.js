@@ -15,7 +15,7 @@ const UserCalendarCreateOrder = () => {
   const [events, setEvents] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [editEvent, setEditEvent] = useState({ title: '', start: new Date(), end: new Date() });
-  const [newEvent, setNewEvent] = useState(null);
+  const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '', contact: '' }); // Added contact field to newEvent state
   const [error, setError] = useState('');
 
   const { workerId, serviceId } = location.state;
@@ -46,10 +46,8 @@ const UserCalendarCreateOrder = () => {
   const today = moment().startOf('day');
 
   const handleSlotSelected = ({ start, end }) => {
-    setNewEvent({ title: '', start, end });
+    setNewEvent({ title: '', start, end, contact: '' }); 
   };
-
-  
 
   const validateEvent = (event) => {
     if (!event.title) {
@@ -60,59 +58,75 @@ const UserCalendarCreateOrder = () => {
       setError("Start and end times are required.");
       return false;
     }
+    if (!event.contact) {
+      setError("Contact is required.");
+      return false;
+    }
     return true;
   };
 
   const handleSaveNewEvent = async () => {
-    if (newEvent && validateEvent(newEvent)) {
-      try {
-        console.log("Creating a new order with event data:", newEvent);
+  if (newEvent && validateEvent(newEvent)) {
+    try {
+      console.log("Creating a new order with event data:", newEvent);
 
 
-        const userResponse = await axios.get(`http://3.70.72.246:3001/user/${userId}`);
-        const userData = userResponse.data;
-        const userContact = "+37368126027"; 
-        
+      const orderData = {
+        userId: userId,
+        serviceId: serviceId,
+        userContact: newEvent.contact,
+        startDate: (newEvent.start).toISOString(),
+        endDate: (newEvent.end).toISOString(), 
+        description: newEvent.title,
+      };
 
-        const orderData = {
-          userId: userId,
-          serviceId: serviceId,
-          userContact: userContact,
-          startDate: new Date(newEvent.start).toISOString(),
-          endDate: new Date(newEvent.end).toISOString(),
-          description: newEvent.title,
-        };
+      const response = await axios.post(`http://3.70.72.246:3001/user/create-order`, orderData);
+      console.log("Order created successfully:", response.data);
 
 
-        const response = await axios.post(`http://3.70.72.246:3001/user/create-order`, orderData);
-        console.log("Order created successfully:", response.data);
+      setEvents([
+        ...events,
+        {
+          ...newEvent,
+          start: newEvent.start, 
+          end: newEvent.end,
+          status: 'Pending',
+        },
+      ]);
 
-
-        setEvents([
-          ...events,
-          {
-            ...newEvent,
-            start: new Date(newEvent.start).toISOString(),
-            end: new Date(newEvent.end).toISOString(),
-            status: 'Pending',
-          },
-        ]);
-        setNewEvent(null);
-        setError(''); 
-      } catch (error) {
-        console.error("Error creating new order:", error);
-      }
+      setNewEvent({ title: '', start: '', end: '', contact: '' });
+      setError(''); 
+    } catch (error) {
+      console.error("Error creating new order:", error);
     }
-  };
+  }
+};
+
+
+
+
 
   const handleInputChange = (e, isNewEvent = false) => {
-    const { name, value } = e.target;
+  const { name, value } = e.target;
+
+  if (name === 'start' || name === 'end') {
+
+    const dateValue = new Date(value);
+    
+    if (isNewEvent) {
+      setNewEvent({ ...newEvent, [name]: dateValue });
+    } else {
+      setEditEvent({ ...editEvent, [name]: dateValue });
+    }
+  } else {
     if (isNewEvent) {
       setNewEvent({ ...newEvent, [name]: value });
     } else {
       setEditEvent({ ...editEvent, [name]: value });
     }
-  };
+  }
+};
+
 
   const handleEdit = (index) => {
     setEditIndex(index);
@@ -160,7 +174,6 @@ const UserCalendarCreateOrder = () => {
 
   const eventCountByDay = groupEventsByDay();
 
-
   const EventComponent = ({ event }) => {
     const day = moment(event.start).format('YYYY-MM-DD');
     const eventCount = eventCountByDay[day];
@@ -171,10 +184,9 @@ const UserCalendarCreateOrder = () => {
     );
   };
 
-
   const handleReview = (userId, orderId) => {
-    navigate(`/rating`, { state: {userId, orderId} });
-};
+    navigate(`/rating`, { state: { userId, orderId } });
+  };
 
   return (
     <div className="calendar-container">
@@ -182,17 +194,22 @@ const UserCalendarCreateOrder = () => {
 
       <Calendar
   localizer={localizer}
-  events={events}
+  events={events.map(event => ({
+    ...event,
+    start: new Date(event.start),  
+    end: new Date(event.end),  
+  }))}
   startAccessor="start"
   endAccessor="end"
   style={{ height: 500 }}
-  selectable={true}  
-  onSelectSlot={handleSlotSelected}  
+  selectable={true}
+  onSelectSlot={handleSlotSelected}
   components={{
     event: EventComponent,
   }}
   views={['month', 'week', 'day']}
 />
+
 
       {newEvent && (
         <div className="new-event-form">
@@ -203,7 +220,7 @@ const UserCalendarCreateOrder = () => {
           </label>
           <label>
             Contact:
-            <input type="text" name="contact" value={newEvent.contact} onChange={(e) => handleInputChange(e, true)} />
+            <input type="text" name="contact" value={newEvent.contact} onChange={(e) => handleInputChange(e, true)} /> {/* Added contact input */}
           </label>
           <label>
             Start Time:
@@ -220,38 +237,37 @@ const UserCalendarCreateOrder = () => {
         </div>
       )}
 
-<div className="orders-list">
-  <h3>Orders</h3>
-  {events.length > 0 ? (
-    <ul>
-      {events.map((event, index) => (
-        <li key={index} style={{ borderLeft: `4px solid ${generateEventColor(event.status, index)}` }}>
-          <div className="left">
-            <strong>{event.title}</strong>
-          </div>
-          <div className="right">
-            <div className="info">
-              Start: {new Date(event.start).toLocaleString()}
-            </div>
-            <div className="info">
-              End: {new Date(event.end).toLocaleString()}
-            </div>
-            <div className="info">
-              Status: <span style={{color:`${generateEventColor(event.status, index)}`}}> {event.status}</span>
-            </div>
+      <div className="orders-list">
+        <h3>Orders</h3>
+        {events.length > 0 ? (
+          <ul>
+            {events.map((event, index) => (
+              <li key={index} style={{ borderLeft: `4px solid ${generateEventColor(event.status, index)} `}}>
+                <div className="left">
+                  <strong>{event.title}</strong>
+                </div>
+                <div className="right">
+                  <div className="info">
+                    Start: {new Date(event.start).toLocaleString()}
+                  </div>
+                  <div className="info">
+                    End: {new Date(event.end).toLocaleString()}
+                  </div>
+                  <div className="info">
+                    Status: <span style={{ color: `${generateEventColor(event.status, index)} `}}> {event.status}</span>
+                  </div>
 
-            {event.status === 'Done' && (
-              <button onClick={()=>handleReview(event.userId, event.orderId)}>Leave Review</button>
-            )}
-          </div>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p>No orders available.</p>
-  )}
-</div>
-
+                  {event.status === 'Done' && (
+                    <button onClick={() => handleReview(event.userId, event.orderId)}>Leave Review</button>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No orders available.</p>
+        )}
+      </div>
     </div>
   );
 };
