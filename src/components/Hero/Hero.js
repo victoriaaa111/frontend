@@ -89,7 +89,7 @@ const Hero = () => {
                 <div className="flexColStart hero-left">
                     <div className="hero-title">
                         <h1>
-                            <span>Choose the worker who's just right,</span>
+                            <span style={{ fontWeight: '700', fontSize: '2.5rem' }}>Choose the best worker</span>
                             <span></span><br />
                             <span style={{ fontWeight: '700', fontSize: '1.5rem' }}>At the perfect time and site!</span><br />
                         </h1>
