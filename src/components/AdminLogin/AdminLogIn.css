@@ -3,7 +3,7 @@
    height: 25em;
    position: relative;
    border-radius: 2em;
-   border: 0.15em solid rgb(255, 203, 67);
+   border: 0.15em solid var(--blue);
    display: flex;
    flex-direction: column;
    align-items: center;
@@ -21,7 +21,7 @@
    background-color: white;
    font-size: 0.8em;
    height: 1.8em;
-   border: 1px solid rgb(198, 153, 254);
+   border: 1px solid var(--blue);
    padding: 0.5em;
    margin-top: 0.1em;
    border-radius: 0.15em;
@@ -39,7 +39,7 @@
    margin-top: 0.5em;
 }
 .login-btn-admin{
-   background-color: rgb(198, 153, 254);
+   background-color: var(--blue);
    font-size: 0.8em;
    color: white;
    width:9em;
@@ -49,4 +49,7 @@
    padding: 0.8em 1.5em;
    cursor: pointer;
    font-family: inherit;
+}
+.login-btn-admin:hover{
+   background-color: var(--blue2);
 }
