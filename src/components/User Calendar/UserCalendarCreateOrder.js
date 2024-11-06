@@ -176,6 +176,8 @@ const UserCalendarCreateOrder = () => {
         return 'orange';
       case 'Declined':
         return 'red';
+      case 'In Progress':
+            return 'blue';
       case 'Done':
         return 'green';
       default:
