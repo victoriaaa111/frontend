@@ -44,7 +44,7 @@ const Rating = () => {
 
       console.log('Submitting review:', data); // Log the data being sent
       
-      const response = await axios.post('http://3.70.72.246:3001/user/add-review', data, {
+      const response = await axios.post('http://localhost:3001/user/add-review', data, {
         headers: {
           'Content-Type': 'application/json',
         },

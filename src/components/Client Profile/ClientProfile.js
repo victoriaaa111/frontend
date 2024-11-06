@@ -24,7 +24,7 @@ const ClientProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(`http://3.70.72.246:3001/user/${userId}`);
+        const response = await axios.get(`http://localhost:3001/user/${userId}`);
         const userData = response.data;
 
         // Set user data

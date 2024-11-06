@@ -52,7 +52,7 @@ const WorkerProfile = () => {
     useEffect(() => {
         const fetchWorkerProfile = async () => {
             try {
-                const response = await axios.get(`http://3.70.72.246:3001/worker/${workerId}`);
+                const response = await axios.get(`http://localhost:3001/worker/${workerId}`);
                 const workerData = response.data;
                 let contact = workerData.contact;
                 contact = `+${contact}`;
@@ -74,7 +74,7 @@ const WorkerProfile = () => {
     }, [workerId]);
     const fetchServices = async () => {
     try {
-        const response = await axios.get(`http://3.70.72.246:3001/worker/${workerId}`);
+        const response = await axios.get(`http://localhost:3001/worker/${workerId}`);
         const serviceData = response.data.services.map(service => ({
             id: service._id,
             service: service.service,
@@ -126,7 +126,7 @@ const WorkerProfile = () => {
         if (validateFields()) {
             try {
                 const response = await axios.put(
-                    `http://3.70.72.246:3001/worker/edit/${workerId}`,
+                    `http://localhost:3001/worker/edit/${workerId}`,
                     JSON.stringify(updatedWorker),
                     {
                         headers: {
@@ -216,7 +216,7 @@ const WorkerProfile = () => {
 
     try {
         const response = await axios.post(
-            `http://3.70.72.246:3001/worker/add/${workerId}`,
+            `http://localhost:3001/worker/add/${workerId}`,
             JSON.stringify({ id: null, service, description, price: Number(price) }),
             {
                 headers: { 'Content-Type': 'application/json' },
@@ -313,7 +313,7 @@ const WorkerProfile = () => {
             console.log(editServiceData);
             console.log(editServiceId);
         const response = await axios.post(
-            `http://3.70.72.246:3001/worker/add/${workerId}`,
+            `http://localhost:3001/worker/add/${workerId}`,
             JSON.stringify({
                 id: editServiceId,
                 service: editServiceData.service,
@@ -357,7 +357,7 @@ const WorkerProfile = () => {
     const handleDeleteService = async (serviceId) => {
     try {
         await axios.delete(
-            `http://3.70.72.246:3001/worker/${workerId}/service/${serviceId}`,
+            `http://localhost:3001/worker/${workerId}/service/${serviceId}`,
             {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true

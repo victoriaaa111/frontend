@@ -25,7 +25,7 @@ const UserCalendarCreateOrder = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://3.70.72.246:3001/user/orders/${userId}`);
+        const response = await axios.get(`http://localhost:3001/user/orders/${userId}`);
         const orders = response.data
           .filter(order => order.status !== 'Declined') 
           .map(order => ({
@@ -77,7 +77,7 @@ const UserCalendarCreateOrder = () => {
           description: newEvent.title,
         };
 
-        const response = await axios.post(`http://3.70.72.246:3001/user/create-order`, orderData);
+        const response = await axios.post(`http://localhost:3001/user/create-order`, orderData);
 
         setEvents([
           ...events,
