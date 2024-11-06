@@ -1,23 +1,21 @@
-import React, { useState } from "react";
-import "./Header.css";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../../context/AuthProvider"; // Adjust the import path as needed
+import "./Header.css";
 
 const Header = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-  };
+  const { auth, setAuth } = useContext(AuthContext);
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
+    setAuth({}); // Clear auth state
+    localStorage.removeItem("auth"); // Remove auth data from localStorage
   };
 
   return (
     <section className="header-wrapper">
       <div className="flexCenter paddings innerWidth header-container">
         <div className="move-logo">
-        <img src="/logo3.png" alt="logo" className="logo" width={100} />
+          <img src="/logo3.png" alt="logo" className="logo" width={100} />
           <div className="logo-name">
             <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
               <h1>fixer.md</h1>
@@ -35,8 +33,8 @@ const Header = () => {
 
         {/* Right Aligned Buttons */}
         <div className="header-right-buttons">
-          {isAuthenticated ? (
-            <button className="button1"> 
+          {auth?.accessToken ? (
+            <button className="button1">
               <Link to="/" style={{ color: "white" }} onClick={handleLogout}>
                 Logout
               </Link>
@@ -44,7 +42,7 @@ const Header = () => {
           ) : (
             <>
               <button className="button1">
-                <Link to="/chooselogin" style={{ color: "white" }} onClick={handleLogin}>
+                <Link to="/chooselogin" style={{ color: "white" }}>
                   Log In
                 </Link>
               </button>
