@@ -8,7 +8,7 @@ import clientApi from "axios";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const LOGIN_CLIENT_URL = 'http://3.70.72.246:3001/auth/login';
+const LOGIN_CLIENT_URL = 'http://localhost:3001/auth/login';
 
 const LogInClient = () => {
     const { setAuth } = useContext(AuthContext);

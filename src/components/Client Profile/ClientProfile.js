@@ -24,7 +24,7 @@ const ClientProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(`http://3.70.72.246:3001/user/${userId}`);
+        const response = await axios.get(`http://localhost:3001/user/${userId}`);
         const userData = response.data;
 
         // Set user data
@@ -73,39 +73,6 @@ const ClientProfile = () => {
                 <span>{user.contact || 'N/A'}</span>
               </div>
             </div>
-          </div>
-
-          {/* User Orders or Activities */}
-          <div className="profile-column">
-            <h3>Orders</h3>
-
-            {/* Blue Button above the table */}
-            <button className="blue-btn" onClick={() => navigate('/')}>Find Workers</button>
-
-            <table className="info-table">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Order Date</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.length > 0 ? (
-                  orders.map((order) => (
-                    <tr key={order.id}>
-                      <td>{order.id}</td>
-                      <td>{new Date(order.date).toLocaleDateString()}</td>
-                      <td>{order.status}</td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="3">No orders available</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
           </div>
         </div>
       </div>

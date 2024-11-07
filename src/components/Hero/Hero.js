@@ -17,7 +17,7 @@ const Hero = () => {
 
     const fetchData = async (value) => {
     try {
-        const response = await axios.get("http://3.70.72.246:3001/shareable/search", {
+        const response = await axios.get("http://localhost:3001/shareable/search", {
             params: { service: value, sortOrder },
         });
         console.log(response);

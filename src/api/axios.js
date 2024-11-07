@@ -1,16 +1,16 @@
 import axios from 'axios';
 
 const adminApi = axios.create({
-    baseURL: 'http://3.70.72.246:3001/admin/login'
+    baseURL: 'http://localhost:3001/admin/login'
 });
 
 
 const clientApi = axios.create({
-    baseURL: 'http://3.70.72.246:3001/auth/login'
+    baseURL: 'http://localhost:3001/auth/login'
 });
 
 const clientSignUpApi = axios.create({
-    baseURL: 'http://3.70.72.246:3001/auth/signup'
+    baseURL: 'http://localhost:3001/auth/signup'
 });
 
 // const workerSignUpApi = (workerId) => {
@@ -20,52 +20,52 @@ const clientSignUpApi = axios.create({
 // } 
 
 const workerSignUpApi = axios.create({
-    baseURL: `http://3.70.72.246:3001/auth/worker/signup`
+    baseURL: `http://localhost:3001/auth/worker/signup`
 });
 
 const workerSignInApi = axios.create({
-    baseURL:'http://3.70.72.246:3001/auth/worker/login'
+    baseURL:'http://localhost:3001/auth/worker/login'
 })
 
 const workerPrfileAPI = axios.create({
-    baseURL: 'http://3.70.72.246:3001/worker/edit/:workerid'
+    baseURL: 'http://localhost:3001/worker/edit/:workerid'
 });
 
 
 const workerGetDataApi = (workerId) =>{
-    return axios.get(`http://3.70.72.246:3001/worker/${workerId}`);
+    return axios.get(`http://localhost:3001/worker/${workerId}`);
 }
 
 const workerPutUpdateDataApi = (workerId) =>{
     return axios.create({
-        baseURL: `http://3.70.72.246:3001/worker/edit/${workerId}`
+        baseURL: `http://localhost:3001/worker/edit/${workerId}`
     });
 }
 
 const serviceApi = (workerId) =>{
     return axios.create({
-        baseURL: `http://3.70.72.246:3001/worker/add/${workerId}`
+        baseURL: `http://localhost:3001/worker/add/${workerId}`
     });
 }
 const Rating = (workerId) => {
     return axios.create({
-        baseURL: `http://3.70.72.246:3001/worker/${workerId}`
+        baseURL: `http://localhost:3001/worker/${workerId}`
     })
 }
 
 const deleteService = (workerId, serviceId) => {
     return axios.create({
-        baseURL: `http://3.70.72.246:3001/worker/${workerId}/service/${serviceId}`
+        baseURL: `http://localhost:3001/worker/${workerId}/service/${serviceId}`
     })
 }
 
 const searchAPI = axios.create({
-    baseURL: 'http://3.70.72.246:3001/shareable/search',})
+    baseURL: 'http://localhost:3001/shareable/search',})
 
 
 
 const workerGetOrdersApi = axios.create({
-    baseURL: 'http://3.70.72.246:3001',
+    baseURL: 'http://localhost:3001',
 })
 
 axios.defaults.withCredentials = true;
@@ -89,7 +89,7 @@ axios.interceptors.response.use(
             try {
                 const refreshToken = localStorage.getItem('refreshToken'); // Retrieve the stored refresh token.
                 // Make a request to your auth server to refresh the token.
-                const response = await axios.post('https:3.70.72.246:3001/auth/refresh', {
+                const response = await axios.post('http://localhost:3001/auth/refresh', {
                     refreshToken,
                 });
                 const { accessToken, refreshToken: newRefreshToken } = response.data;
