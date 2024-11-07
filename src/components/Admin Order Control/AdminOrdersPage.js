@@ -66,12 +66,6 @@ const AdminOrdersPage = () => {
   // Handle reschedule click
   const handleRescheduleClick = (order) => {
     setSelectedOrder(order);
-    const formattedStartDate = new Date(order.date).toISOString().slice(0, 16);
-    const formattedEndDate = new Date(order.endDate).toISOString().slice(0, 16);
-  
-    setStartDate(formattedStartDate);
-    setEndDate(formattedEndDate);
-    
     setIsRescheduleModalOpen(true);
   };
 
@@ -166,7 +160,7 @@ const AdminOrdersPage = () => {
         <table>
           <thead>
             <tr>
-              <th>Order ID</th>
+              <th className='order-id'>Order ID</th>
               <th>Worker</th>
               <th>User</th>
               <th>Service Type</th>

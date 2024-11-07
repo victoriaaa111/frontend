@@ -240,9 +240,8 @@ const AdminSignUpWorker = () => {
               Must match the first password.
             </p>
           </div>
-
-
-          <button className='button1' type="submit" disabled={!validFullName || !validEmail || !validPwd || !validMatchPwd}>
+          <br/>
+          <button className='buton1' type="submit" disabled={!validFullName || !validEmail || !validPwd || !validMatchPwd}>
           Create Worker
           </button>
         </form>
@@ -278,12 +277,12 @@ const AdminSignUpWorker = () => {
                   <td>{user.role}</td>
                   <td>{user.status}</td>
                   <td>
-                    <button className='button1' onClick={() => toggleUserStatus(user.id)}>
+                    <button className='buton1' onClick={() => toggleUserStatus(user.id)}>
                       {user.status === 'Active' ? 'Deactivate' : 'Activate'}
                     </button>
                 </td>
                 <td>
-                  <button className='button1' onClick={() => navigate(`/admin/dashboard/worker/reviews`, { state: { workerId: user.id } })}>View Ratings</button>
+                  <button className='buton1' onClick={() => navigate(`/admin/dashboard/worker/reviews`, { state: { workerId: user.id } })}>View Ratings</button>
                 </td>
                 </tr>
             ))}

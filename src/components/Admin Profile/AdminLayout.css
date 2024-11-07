@@ -44,7 +44,7 @@
 }
 
 .sidebar ul li a:hover {
-    background-color: #34495e; /* Culoare de fundal la hover */
+    background-color: var(--blue); /* Culoare de fundal la hover */
     color: #ffffff; /* Culoare text la hover */
 }
 
@@ -57,7 +57,7 @@
 .main-content h1 {
     font-size: 2rem;
     margin-bottom: 20px;
-    color: #34495e; /* Culoare text */
+    color: var(--blue2); /* Culoare text */
 }
 
 .overview {
@@ -67,9 +67,9 @@
 .overview h2 {
     font-size: 1.5rem;
     margin-bottom: 20px;
-    border-bottom: 2px solid #34495e; /* Linie sub titlu */
+    border-bottom: 2px solid var(--blue2); /* Linie sub titlu */
     padding-bottom: 10px;
-    color: #34495e; /* Culoare text */
+    color: var(--blue2); /* Culoare text */
 }
 
 .overview-card {
@@ -83,7 +83,7 @@
 .overview-card h3 {
     font-size: 1.2rem;
     margin-bottom: 10px;
-    color: #34495e; /* Culoare text */
+    color: var(--blue); /* Culoare text */
 }
 
 .overview-card p {
@@ -93,7 +93,7 @@
 
 .overview-card a {
     text-decoration: none;
-    color: #3498db; /* Culoare link */
+    color: var(--blue); /* Culoare link */
     font-weight: bold;
 }
 
@@ -104,9 +104,9 @@
 .quick-links h2 {
     font-size: 1.5rem;
     margin-bottom: 20px;
-    border-bottom: 2px solid #34495e; /* Linie sub titlu */
+    border-bottom: 2px solid var(--blue); /* Linie sub titlu */
     padding-bottom: 10px;
-    color: #34495e; /* Culoare text */
+    color: var(--blue); /* Culoare text */
 }
 
 .quick-links ul {

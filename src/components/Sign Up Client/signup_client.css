@@ -1,155 +1,125 @@
-.cover-signup{
-    width: 40em;
-   height: 45em;
-   position: relative;
-   border-radius: 2em;
-   border: 0.15em solid var(--blue);
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   justify-content:center;
-   padding: 2em 1em;
-   background-color: white;
-   margin:auto;
-}
-.input-admin{
-   background-color: white;
-   font-size: 0.8em;
-   height: 1.8em;
-   border: 1px solid var(--blue);
-   padding: 0.5em;
-   margin-top: 0.1em;
-   border-radius: 0.15em;
-   flex-shrink: 0;
-   width: 100%;
-   box-sizing: border-box;
-
-}
-.signup-client-btn{
-        background-color: var(--blue);
-        color: white;
-        width: 10em;
-        margin-top: 3em;
-}
-.form-container-signup {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+/* Container principal */
+.signup-client-container {
     width: 100%;
-    max-width: 600px;
-    padding: 20px;
-    box-shadow: none;
+    max-width: 400px;
+    margin: auto;
+    padding: 2em;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-.title-signup{
-   color: rgb(105,127,249);
-   margin-bottom: none;
-   font-size: 2.5em;
-}
-.hide {
-    display: none;
+/* Titlu */
+.signup-client-header {
+    text-align: center;
+    margin-bottom: 1.5em;
 }
 
+.signup-client-text {
+    font-size: 1.8em;
+    color: var(--blue);
+    font-weight: bold;
+}
 
+.signup-client-underline {
+    width: 50px;
+    height: 3px;
+    background-color: var(--blue);
+    margin: 0.5em auto;
+}
+
+/* Input-uri */
+.signup-client-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.signup-client-input-group {
+    display: flex;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 0.8em 1em;
+    border-radius: 8px;
+    position: relative;
+    gap: 10px;
+}
+
+.signup-client-input-group input {
+    border: none;
+    outline: none;
+    background: transparent;
+    flex: 1;
+    font-size: 1rem;
+    color: var(--blue);
+}
+
+.signup-client-input-group img {
+    width: 24px;
+    height: 24px;
+}
+
+/* Icone de validare */
 .valid {
     color: green;
-    margin-left: 8px;
-}
-
-.errmsg{
-    color:red;
-    text-align: center;
+    margin-left: auto;
 }
 
 .invalid {
     color: red;
-    margin-left: 8px;
-    margin-bottom:3px;
+    margin-left: auto;
 }
 
+/* Mesaj de eroare */
+.errmsg {
+    color: red;
+    font-size: 0.9em;
+    text-align: center;
+    margin-bottom: 1em;
+}
 
+/* Instructiuni */
 .instructions {
-    color: rgb(53, 53, 53);
-    font-size: 0.85rem;
-    margin-top: 4px;
+    font-size: 0.8em;
+    color: #555;
+    margin-top: -5px;
 }
 
-
-.offscreen {
-    position: absolute;
-    left: -9999px;
+/* Buton de submit */
+.signup-client-submit-container {
+    display: flex;
+    justify-content: center;
 }
 
-.invalid-input {
-    border: 2px solid red;
+.signup-client-submit {
+    background-color: var(--blue);
+    color: white;
+    padding: 0.8em 2em;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    border: none;
 }
 
-@media(max-width: 800px){
-    .cover-signup{
-        width:30em;
+.signup-client-submit:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.signup-client-submit:hover:not(:disabled) {
+    background-color: var(--blue2);
+    box-shadow: 0px 4px 10px rgba(106, 27, 154, 0.3);
+}
+
+/* Responsivitate */
+@media (max-width: 600px) {
+    .signup-client-container {
+        padding: 1.5em;
     }
-}
-
-@media(max-width: 560px) {
-    .cover-signup {
-        width: 22em;
-    }
-    .title{
-        font-size: 2.3em;
-    }
-    input {
-            width: 93%;
-            padding: 0.5em;
-            margin-top: 0.2em;
-            border-radius: 0.15em;
-        }
-    .description-field {
-            color: rgb(53, 53, 53);
-            font-size: 0.85em;
-            margin-bottom: 0.08em;
-            margin-top: 0.5em;
-        }
-    .forgot-password {
-            text-decoration: none;
-            color: rgb(198, 153, 254);
-            font-size: 0.7em;
-            cursor: pointer;
-        }
-    
-    .fgtpass-btn {
-            margin-top: 0.09em;
-        }
-    .login-btn {
-            background-color: rgb(198, 153, 254);
-            color: white;
-            width: 7em;
-            font-size: 0.8em;
-        }
-    .signup-btn {
-            width: 80%;
-            color: rgb(53, 53, 53);
-            background: none;
-            font-size: 0.7em;
-            cursor: pointer;
-        }
-        .signup-btn:hover {
-            width: 80%;
-            color: white;
-            background: none;
-            font-size: 0.7em;
-            cursor: pointer;
-        }
-    .cover {
-            height: 30em;
-            position: relative;
-            padding-bottom: 1.2em;
-            color: white;
-        }
-}
-
-@media(max-width:380px){
-    .cover-signup{
-        width:18em;
+    .signup-client-text {
+        font-size: 1.6em;
     }
 }

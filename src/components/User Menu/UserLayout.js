@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -8,7 +9,7 @@ const UserLayout = () => {
         <div className="worker-container">
             <aside className="sidebar">
                 <div className="sidebar-header">
-                    <h2>Worker Menu</h2>
+                    <h2>User Menu</h2>
                 </div>
                 <nav>
                     <ul>

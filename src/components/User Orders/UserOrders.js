@@ -123,7 +123,7 @@ const UserOrders = () => {
                   </div>
 
                   {event.status === 'Done' && (
-                    <button onClick={() => handleReview(event.userId, event.orderId)}>Leave Review</button>
+                    <button className='search-button' onClick={() => handleReview(event.userId, event.orderId)}>Leave Review</button>
                   )}
                 </div>
               </li>

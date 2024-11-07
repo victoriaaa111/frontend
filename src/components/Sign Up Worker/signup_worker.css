@@ -1,136 +1,132 @@
-.cover-signup{
-            width: 40em;
-            height: 51em;
-            position: relative;
-            border-radius: 2em;
-            border: 0.15em solid rgb(255, 203, 67);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content:center;
-            padding: 2em 1em;
-            background-color: white;
-}
-.signup-client-btn{
-        background-color: rgb(198, 153, 254);
-        color: white;
-        width: 10em;
-        margin-top: 3em;
-}
-.form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+/* Container principal */
+.signup-worker-container {
     width: 100%;
-    max-width: 600px;
-    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+    padding: 2em;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
 }
-.signupw-btn {
-    width: 10em;
-    color:rgb(53,53,53);
-    background: white;
-    font-size: 0.8em;
-    cursor: pointer;
+
+/* Titlu */
+.signup-worker-header {
     text-align: center;
-    margin-top: 0.2em;
+    margin-bottom: 1.5em;
 }
 
-.hide {
-    display: none;
+.signup-worker-text {
+    font-size: 1.8em;
+    color: var(--blue);
+    font-weight: bold;
 }
 
-
-.errmsg{
-    color:red;
-    text-align: center;
+.signup-worker-underline {
+    width: 50px;
+    height: 3px;
+    background-color: var(--blue);
+    margin: 0.5em auto;
 }
+
+/* Input-uri */
+.signup-worker-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.signup-worker-input-group {
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f0f0;
+    padding: 0.8em 1em;
+    border-radius: 8px;
+    position: relative;
+}
+
+.signup-worker-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: var(--blue);
+    width: 100%;
+    padding: 0.5em 0;
+}
+
+/* Icone de validare */
 .valid {
     color: green;
-    margin-left: 8px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 }
-
 
 .invalid {
     color: red;
-    margin-left: 8px;
-    margin-bottom:3px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
+/* Mesaj de eroare */
+.errmsg {
+    color: red;
+    font-size: 0.9em;
+    text-align: center;
+    margin-bottom: 1em;
+}
 
+/* Instructiuni */
 .instructions {
-    color: rgb(53, 53, 53);
-    font-size: 0.85rem;
-    margin-top: 4px;
+    font-size: 0.8em;
+    color: #d9534f;
+    margin-top: 0.3em;
+    margin-left: 0.5em;
 }
-
 
 .offscreen {
     position: absolute;
     left: -9999px;
 }
 
-.invalid-input {
-    border: 2px solid red;
+/* Buton de submit */
+.signup-worker-submit-container {
+    display: flex;
+    justify-content: center;
 }
 
-@media(max-width: 800px){
-    .cover-signup{
-        width:30em;
-    }
+.signup-worker-submit {
+    background-color: var(--blue);
+    color: white;
+    padding: 0.8em 2em;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    border: none;
 }
 
-@media(max-width: 560px) {
-    .cover-signup {
-        width: 22em;
-    }
-    .title{
-        font-size: 2.3em;
-    }
-    input {
-            width: 93%;
-            padding: 0.5em;
-            margin-top: 0.2em;
-            border-radius: 0.15em;
-        }
-    .description-field {
-            color: rgb(53, 53, 53);
-            font-size: 0.85em;
-            margin-bottom: 0.08em;
-            margin-top: 0.5em;
-        }
-    .forgot-password {
-            text-decoration: none;
-            color: rgb(198, 153, 254);
-            font-size: 0.7em;
-            cursor: pointer;
-        }
-    
-    .fgtpass-btn {
-            margin-top: 0.09em;
-        }
-    .login-btn {
-            background-color: rgb(198, 153, 254);
-            color: white;
-            width: 7em;
-            font-size: 0.8em;
-        }
-    .signup-btn {
-            width: 80%;
-            color: rgb(53, 53, 53);
-            background: none;
-            font-size: 0.7em;
-            cursor: pointer;
-        }
-    .cover {
-            height: 30em;
-            position: relative;
-            padding-bottom: 1.2em;
-        }
+.signup-worker-submit:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
-@media(max-width:380px){
-    .cover-signup{
-        width:18em;
+.signup-worker-submit:hover:not(:disabled) {
+    background-color: var(--blue2);
+    box-shadow: 0px 4px 10px rgba(106, 27, 154, 0.3);
+}
+
+/* Responsivitate */
+@media (max-width: 600px) {
+    .signup-worker-container {
+        padding: 1.5em;
+    }
+    .signup-worker-text {
+        font-size: 1.6em;
     }
 }

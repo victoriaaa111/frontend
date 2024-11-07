@@ -240,9 +240,8 @@ const AdminSignUpClient = () => {
                         Must match the first password.
                     </p>
                 </div>
-
-
-                <button className='button1' type="submit" disabled={!validFullName || !validEmail || !validPwd || !validMatchPwd}>
+                <br/>
+                <button className='buton1' type="submit" disabled={!validFullName || !validEmail || !validPwd || !validMatchPwd}>
                 Create User
                 </button>
             </form>
@@ -277,7 +276,7 @@ const AdminSignUpClient = () => {
                             <td>{user.role}</td>
                             <td>{user.status}</td>
                             <td>
-                                <button className='button1' onClick={() => toggleUserStatus(user.id)}>
+                                <button className='buton1' onClick={() => toggleUserStatus(user.id)}>
                                     {user.status === 'Active' ? 'Deactivate' : 'Activate'}
                                 </button>
                             </td>

@@ -122,3 +122,5 @@ const OurWorkers = () => {
 };
 
 export default OurWorkers;
+
+// Trebuie de adaugat mesterii din baza de date
