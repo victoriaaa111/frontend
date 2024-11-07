@@ -13,10 +13,11 @@ const Hero = () => {
     const navigate = useNavigate();
     const { auth } = useContext(AuthContext);
     const { userId } = auth;
+    
 
     const fetchData = async (value) => {
     try {
-        const response = await axios.get("http://3.70.72.246:3001/shareable/search", {
+        const response = await axios.get("http://localhost:3001/shareable/search", {
             params: { service: value, sortOrder },
         });
         console.log(response);
@@ -38,14 +39,13 @@ const Hero = () => {
                 }))
         );
 
-        // Sorting based on workerRating
         if (sortOrder === "lowToHigh") {
             filteredResults.sort((a, b) => a.workerRating - b.workerRating);
         } else if (sortOrder === "highToLow") {
             filteredResults.sort((a, b) => b.workerRating - a.workerRating);
         }
 
-        // Handling no results found
+
         if (filteredResults.length === 0 && value) {
             setResults([{ serviceName: "No results found" }]);
         } else {
@@ -58,7 +58,6 @@ const Hero = () => {
 };
 
 
-    // Updated handleMakeOrder to accept serviceId
     const handleMakeOrder = (workerId, serviceId) => {
         navigate(`/user/calendar`, { state: {workerId, serviceId } });
     };

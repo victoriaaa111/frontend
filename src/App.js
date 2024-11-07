@@ -29,6 +29,8 @@ import WorkerCalendar from './components/Worker User/Worker Calendar/WorkerCalen
 import ReviewsWorker from './components/Worker User/Reviews/Reviews.js';
 import ReviewsAdmin from './components/Admin User Worker/Reviews Admin/ReviewsAdmin.js';
 import UserCalendarCreateOrder from './components/User Calendar/UserCalendarCreateOrder';
+import UserLayout from './components/UserMenu/UserLayout.js';
+import UserOrders from './components/UserOrders/UserOrders.js';
 
 import ClientProfile from './components/Client Profile/ClientProfile';
 import Rating from './components/Review/Review';
@@ -51,17 +53,20 @@ function App() {
               <Route path="/signupworker" element={<SignUpWorker />} />
               <Route path="/loginadmin" element={<LogInAdmin />} />
 
-              <Route path="/client-profile" element={<ClientProfile/>}/>
+            <Route path="/client" element = {<UserLayout/>}>
+              <Route path="/client/profile" element={<ClientProfile />} />
+              <Route path="/client/orders" element={<UserOrders/>}/>
+            </Route>
               <Route path="/rating" element={<Rating />} />
 
               {/* Protected Route */}
             <Route path="/usermanagement" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
             <Route path="/user/calendar" element={<UserCalendarCreateOrder/>}/>
-
+            <Route path="/worker/profile/management" element={<WorkerProfile />} /> 
               {/* Worker Routes */}
               <Route path="/worker" element={<WorkerLayout/>}>
                 <Route path="/worker/profile" element={<WorkerManagement />} />
-                <Route path="/worker/profile/management" element={<WorkerProfile />} />
+                
                 <Route path="/worker/profile/orders" element={<WorkerCalendar />} />
                 <Route path="/worker/profile/reviews" element={<ReviewsWorker />} />
               </Route>

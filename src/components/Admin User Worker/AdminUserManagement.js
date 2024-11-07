@@ -10,9 +10,9 @@ import { clientSignUpApi } from "../../api/axios";
 const NAME_REGEX = /^[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const SIGNUP_CLIENT_URL = 'http://3.70.72.246:3001/auth/signup';
-const GET_USERS_URL = 'http://3.70.72.246:3001/admin/users';
-const CHANGE_STATUS_URL = 'http://3.70.72.246:3001/admin/user/change-status';
+const SIGNUP_CLIENT_URL = 'http://localhost:3001/auth/signup';
+const GET_USERS_URL = 'http://localhost:3001/admin/users';
+const CHANGE_STATUS_URL = 'http://localhost:3001/admin/user/change-status';
 
 const AdminSignUpClient = () => {
     const userRef = useRef();

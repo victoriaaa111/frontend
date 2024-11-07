@@ -15,17 +15,17 @@ const UserCalendarCreateOrder = () => {
   const [events, setEvents] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
   const [editEvent, setEditEvent] = useState({ title: '', start: new Date(), end: new Date() });
-  const [newEvent, setNewEvent] = useState(null);
+  const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '', contact: '' });
   const [error, setError] = useState('');
-
   const { workerId, serviceId } = location.state;
   const { auth } = useContext(AuthContext);
   const { userId } = auth;
+  const [apiError, setApiError] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://3.70.72.246:3001/user/orders/${userId}`);
+        const response = await axios.get(`http://localhost:3001/user/orders/${userId}`);
         const orders = response.data
           .filter(order => order.status !== 'Declined') 
           .map(order => ({
@@ -43,23 +43,8 @@ const UserCalendarCreateOrder = () => {
     fetchData();
   }, [userId]);
 
-  const today = moment().startOf('day');
-
   const handleSlotSelected = ({ start, end }) => {
-    setNewEvent({ title: '', start, end });
-  };
-
-  const checkAvailability = async (start) => {
-    try {
-      const availabilityResponse = await axios.post(
-        `http://3.70.72.246:3001/user/worker/availability/${workerId}`,
-        { date: new Date(start).toISOString() }
-      );
-      return availabilityResponse.data.available;
-    } catch (error) {
-      console.error("Error checking availability:", error);
-      return false; // Assume not available if there's an error
-    }
+    setNewEvent({ title: '', start, end, contact: '' }); 
   };
 
   const validateEvent = (event) => {
@@ -71,63 +56,64 @@ const UserCalendarCreateOrder = () => {
       setError("Start and end times are required.");
       return false;
     }
+    if (!event.contact) {
+      setError("Contact is required.");
+      return false;
+    }
     return true;
   };
 
   const handleSaveNewEvent = async () => {
+    setApiError('');
+    setError('');
     if (newEvent && validateEvent(newEvent)) {
       try {
-        console.log("Creating a new order with event data:", newEvent);
-
-        // Check worker availability for the selected start time
-        const isAvailable = await checkAvailability(newEvent.start);
-        if (!isAvailable) {
-          setError("The worker is not available at the selected time. Please choose another time slot.");
-          return;
-        }
-
-        // Fetch user data using the /user/:userId API
-        const userResponse = await axios.get(`http://3.70.72.246:3001/user/${userId}`);
-        const userData = userResponse.data;
-        const userContact = userData.contact || "+37368126027"; // Replace with actual contact
-        
-        // Prepare order data
         const orderData = {
           userId: userId,
           serviceId: serviceId,
-          userContact: userContact,
-          startDate: new Date(newEvent.start).toISOString(),
-          endDate: new Date(newEvent.end).toISOString(),
+          userContact: newEvent.contact,
+          startDate: (newEvent.start).toISOString(),
+          endDate: (newEvent.end).toISOString(), 
           description: newEvent.title,
         };
 
-        const response = await axios.post(`http://3.70.72.246:3001/user/create-order`, orderData);
-        console.log("Order created successfully:", response.data);
+        const response = await axios.post(`http://localhost:3001/user/create-order`, orderData);
 
-        // Update events state
         setEvents([
           ...events,
           {
             ...newEvent,
-            start: new Date(newEvent.start).toISOString(),
-            end: new Date(newEvent.end).toISOString(),
-            status: 'pending',
+            start: newEvent.start, 
+            end: newEvent.end,
+            status: 'Pending',
           },
         ]);
-        setNewEvent(null);
-        setError(''); // Clear any previous error messages
-      } catch (error) {
-        console.error("Error creating new order:", error);
-      }
+
+        setNewEvent({ title: '', start: '', end: '', contact: '' });
+        setError(''); 
+      } 
+        catch (error) {
+
+    setApiError(error.response?.data?.message || "An error occurred while creating the order.");
+}
     }
   };
 
   const handleInputChange = (e, isNewEvent = false) => {
     const { name, value } = e.target;
-    if (isNewEvent) {
-      setNewEvent({ ...newEvent, [name]: value });
+    if (name === 'start' || name === 'end') {
+      const dateValue = new Date(value);
+      if (isNewEvent) {
+        setNewEvent({ ...newEvent, [name]: dateValue });
+      } else {
+        setEditEvent({ ...editEvent, [name]: dateValue });
+      }
     } else {
-      setEditEvent({ ...editEvent, [name]: value });
+      if (isNewEvent) {
+        setNewEvent({ ...newEvent, [name]: value });
+      } else {
+        setEditEvent({ ...editEvent, [name]: value });
+      }
     }
   };
 
@@ -142,7 +128,7 @@ const UserCalendarCreateOrder = () => {
       updatedEvents[editIndex] = editEvent;
       setEvents(updatedEvents);
       setEditIndex(null);
-      setError(''); // Clear any previous error messages
+      setError(''); 
     }
   };
 
@@ -154,44 +140,50 @@ const UserCalendarCreateOrder = () => {
     }
   };
 
-  const groupEventsByDay = () => {
-    const eventCountByDay = {};
-    events.forEach(event => {
+  const groupEventsByDay = (events) => {
+    const groupedEvents = events.reduce((acc, event) => {
       const day = moment(event.start).format('YYYY-MM-DD');
-      eventCountByDay[day] = (eventCountByDay[day] || 0) + 1;
-    });
-    return eventCountByDay;
+      if (!acc[day]) {
+        acc[day] = { count: 0, start: event.start, end: event.end };
+      }
+      acc[day].count += 1;
+      return acc;
+    }, {});
+  
+    return Object.keys(groupedEvents).map(day => ({
+      ...groupedEvents[day],
+      title: `${groupedEvents[day].count} ${groupedEvents[day].count === 1 ? 'order' : 'orders'}`,
+    }));
   };
 
-  const generateEventColor = (status, index) => {
-    switch (status) {
-      case 'Done':
-        return 'green';
-      case 'Pending':
-        return '#FFCB64'
-      default:
-        const blueShade = 60 + (index * 10);
-        return `hsl(210, 100%, ${blueShade}%)`;
-    }
-  };
+  const groupedEvents = groupEventsByDay(events);
 
-  const eventCountByDay = groupEventsByDay();
-
-  // Custom event component to display number of events per day
   const EventComponent = ({ event }) => {
-    const day = moment(event.start).format('YYYY-MM-DD');
-    const eventCount = eventCountByDay[day];
     return (
       <div>
-        {eventCount} {eventCount === 1 ? 'order' : 'orders'}
+        {event.title}
       </div>
     );
   };
 
-
   const handleReview = (userId, orderId) => {
-    navigate(`/rating`, { state: {userId, orderId} });
-};
+    navigate(`/rating`, { state: { userId, orderId } });
+  };
+
+  const generateEventColor = (status, index) => {
+    switch (status) {
+      case 'Pending':
+        return 'orange';
+      case 'Declined':
+        return 'red';
+      case 'In Progress':
+            return 'blue';
+      case 'Done':
+        return 'green';
+      default:
+        return 'gray';
+    }
+  };
 
   return (
     <div className="calendar-container">
@@ -199,71 +191,100 @@ const UserCalendarCreateOrder = () => {
 
       <Calendar
         localizer={localizer}
-        events={events}
+        events={groupedEvents.map(event => ({
+          ...event,
+          start: new Date(event.start),
+          end: new Date(event.end),
+        }))}
         startAccessor="start"
         endAccessor="end"
         style={{ height: 500 }}
+        selectable={true}
+        onSelectSlot={handleSlotSelected}
         components={{
-          event: EventComponent, 
+          event: EventComponent,
         }}
         views={['month', 'week', 'day']}
       />
 
-      {newEvent && (
+      {/* New event form */}
+      {newEvent.start && (
         <div className="new-event-form">
+          {apiError && <p className="error" style={{ color: 'red', marginBottom:`10px`}}>{apiError}</p>}
           <h3>Create New Order</h3>
           <label>
             Title:
-            <input type="text" name="title" value={newEvent.title} onChange={(e) => handleInputChange(e, true)} />
+            <input 
+              type="text" 
+              name="title" 
+              value={newEvent.title} 
+              onChange={(e) => handleInputChange(e, true)} 
+            />
           </label>
           <label>
-            Start Time:
-            <input type="datetime-local" name="start" value={moment(newEvent.start).format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, true)} />
+            Start Date:
+            <input 
+              type="datetime-local" 
+              name="start" 
+              value={moment(newEvent.start).format("YYYY-MM-DDTHH:mm")} 
+              onChange={(e) => handleInputChange(e, true)} 
+            />
           </label>
           <label>
-            End Time:
-            <input type="datetime-local" name="end" value={moment(newEvent.end).format('YYYY-MM-DDTHH:mm')} onChange={(e) => handleInputChange(e, true)} />
+            End Date:
+            <input 
+              type="datetime-local" 
+              name="end" 
+              value={moment(newEvent.end).format("YYYY-MM-DDTHH:mm")} 
+              onChange={(e) => handleInputChange(e, true)} 
+            />
           </label>
-          <div className="button-container">
-            <button className="buton" onClick={handleSaveNewEvent}>Save</button>
-            <button className="buton" onClick={() => setNewEvent(null)} style={{ marginLeft: '10px' }}>Cancel</button>
-          </div>
+          <label>
+            Contact:
+            <input 
+              type="text" 
+              name="contact" 
+              value={newEvent.contact} 
+              onChange={(e) => handleInputChange(e, true)} 
+            />
+          </label>
+          {error && <p className="error">{error}</p>}
+          <button onClick={handleSaveNewEvent}>Save Order</button>
         </div>
       )}
 
-<div className="orders-list">
-  <h3>Orders</h3>
-  {events.length > 0 ? (
-    <ul>
-      {events.map((event, index) => (
-        <li key={index} style={{ borderLeft: `4px solid ${generateEventColor(event.status, index)}` }}>
-          <div className="left">
-            <strong>{event.title}</strong>
-          </div>
-          <div className="right">
-            <div className="info">
-              Start: {new Date(event.start).toLocaleString()}
-            </div>
-            <div className="info">
-              End: {new Date(event.end).toLocaleString()}
-            </div>
-            <div className="info">
-              Status: <span style={{color:`${generateEventColor(event.status, index)}`}}> {event.status}</span>
-            </div>
+      {/* Orders list */}
+      <div className="orders-list">
+        <h3>Orders</h3>
+        {events.length > 0 ? (
+          <ul>
+            {events.map((event, index) => (
+              <li key={index} style={{ borderLeft: `4px solid ${generateEventColor(event.status, index)}` }}>
+                <div className="left">
+                  <strong>{event.title}</strong>
+                </div>
+                <div className="right">
+                  <div className="info">
+                    Start: {new Date(event.start).toLocaleString()}
+                  </div>
+                  <div className="info">
+                    End: {new Date(event.end).toLocaleString()}
+                  </div>
+                  <div className="info">
+                    Status: <span style={{ color: `${generateEventColor(event.status, index)}` }}> {event.status}</span>
+                  </div>
 
-            {/* Butonul apare doar când statusul este 'Done' */}
-            {event.status === 'Done' && (
-              <button onClick={()=>handleReview(event.userId, event.orderId)}>Leave Review</button>
-            )}
-          </div>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p>No orders available.</p>
-  )}
-</div>
-
+                  {event.status === 'Done' && (
+                    <button onClick={() => handleReview(event.userId, event.orderId)}>Leave Review</button>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No orders available.</p>
+        )}
+      </div>
     </div>
   );
 };

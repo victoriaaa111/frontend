@@ -12,7 +12,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const PHONE_REGEX = /^\+(\d{1,3})?[-. (]?(\d{1,4})?[). -]?(\d{3})[-. ]?(\d{3,4})$/;
 
-const SIGNUP_WORKER_URL = 'http://3.70.72.246:3001/auth/worker/signup';
+const SIGNUP_WORKER_URL = 'http://localhost:3001/auth/worker/signup';
 
 
 

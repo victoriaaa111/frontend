@@ -1,0 +1,201 @@
+.calendar-title{
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: var(--blue);
+}
+
+.calendar-container {
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  max-width: 900px;
+  margin: 20px auto;
+  transition: all 0.3s ease;
+}
+
+.calendar-container:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Calendar */
+.rbc-calendar {
+  height: 400px;
+  border-radius: 8px;
+}
+
+.error-message{
+  color:red;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.rbc-event {
+  background-color: rgb(105,127,249);
+  color: white;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.rbc-event:hover {
+  background-color: rgb(105,127,249) ;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.rbc-calendar .rbc-button-link:hover {
+  background-color: var(--blue); 
+  color: white;
+}
+
+/* Orders List Below Calendar */
+.orders-list {
+  margin-top: 30px;
+}
+
+.orders-list h3 {
+  font-size: 1.5em;
+  color: var(--blue);
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.orders-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.orders-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: none;
+}
+
+.right{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.left{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.orders-list li strong {
+
+  font-size: 16px;
+}
+
+.orders-list .left-section {
+  flex: 1;
+}
+
+.orders-list .right-section {
+  text-align: right;
+  flex: 1;
+}
+
+.orders-list .info {
+  margin: 5px 0;
+  color: #555;
+}
+
+.orders-list {
+  margin-top: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+
+
+.buton {
+  padding: 8px;
+  width: 100px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.buton:hover {
+  background-color: #0056b3;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.buton:active {
+  background-color: #00448c;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.buton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4), 0 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+.edit-form, .new-event-form {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.edit-form input, .new-event-form input {
+  display: block;
+  margin-bottom: 12px;
+  padding: 10px;
+  width: 100%;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.2s ease;
+}
+
+.edit-form input:focus, .new-event-form input:focus {
+  border-color: #007bff;
+}
+
+@media (max-width: 768px) {
+  .calendar-container {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .rbc-calendar {
+    height: 350px;
+  }
+
+  .orders-list li {
+    padding: 10px;
+    border-radius: 4px;
+  }
+
+  .edit-form, .new-event-form {
+    padding: 15px;
+    max-width: 100%;
+  }
+}

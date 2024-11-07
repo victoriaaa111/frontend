@@ -19,7 +19,7 @@ const ReviewsAdmin = () => {
   useEffect(() => {
     const fetchRating = async () => {
       try {
-        const response = await axios.get(`http://3.70.72.246:3001/worker/${workerId}`);
+        const response = await axios.get(`http://localhost:3001/worker/${workerId}`);
         const rating = response.data.rating; // Assuming 'rating' field in API response
         setOverallRating(rating);
         setNewOverallRating(rating); // Initialize with current rating for editing
@@ -44,7 +44,7 @@ const ReviewsAdmin = () => {
   const fetchReviews = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://3.70.72.246:3001/admin/reviews/${workerId}`);
+      const response = await axios.get(`http://localhost:3001/admin/reviews/${workerId}`);
       const reviewsData = response.data;
       setReviews(reviewsData);
     } catch (err) {
@@ -65,7 +65,7 @@ const ReviewsAdmin = () => {
       return;
     }
     try {
-      await axios.put(`http://3.70.72.246:3001/admin/worker/update-rating/${workerId}`, {
+      await axios.put(`http://localhost:3001/admin/worker/update-rating/${workerId}`, {
         rating: newOverallRating,
       });
       setOverallRating(newOverallRating); // Update overall rating state
@@ -92,7 +92,7 @@ const ReviewsAdmin = () => {
     }
 
     try {
-      await axios.put(`http://3.70.72.246:3001/admin/edit/review/${reviewId}`, {
+      await axios.put(`http://localhost:3001/admin/edit/review/${reviewId}`, {
         rating: updatedRating,
       });
       fetchReviews(); // Refresh reviews after editing
@@ -107,7 +107,7 @@ const ReviewsAdmin = () => {
     const confirmDelete = window.confirm('Are you sure you want to delete this review?');
     if (confirmDelete) {
       try {
-        await axios.delete(`http://3.70.72.246:3001/admin/delete/review/${reviewId}`);
+        await axios.delete(`http://localhost:3001/admin/delete/review/${reviewId}`);
         fetchReviews(); // Refresh reviews after deletion
       } catch (err) {
         setError('Failed to delete review. Please try again.');

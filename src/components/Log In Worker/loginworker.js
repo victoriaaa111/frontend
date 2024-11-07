@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AuthContext from "../../context/AuthProvider";
 import workerSignInApi from "axios";
-const LOGIN_WORKER_URL='http://3.70.72.246:3001/auth/worker/login'
+const LOGIN_WORKER_URL='http://localhost:3001/auth/worker/login'
 
 
 const LogInWorker = () => {
