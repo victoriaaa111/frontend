@@ -37,9 +37,39 @@ This change is part of our ongoing efforts to improve the design and user friend
 
 ![Order History page for Users](./changelogPictures/orderhistory.png)
 
+### Choose Role, Log In and Sign Up Design
+
+- We designed the Choose Role, Log In and Sign Up parts: 
+
+Before: 
+
+![Choose role 1](./changelogPictures/chooserole1.png)
+
+![Sign up 1](./changelogPictures/signup1.png)
+
+![Login 1](./changelogPictures/login1.png)
+
+After: 
+
+![Choose role 2](./changelogPictures/chooserole2.png)
+
+![Sign up 2](./changelogPictures/signup2.png)
+
+![Login 2](./changelogPictures/login2.png)
+
+### Search Bar Modifications
+
+- We designed the Search Order on the main page from this:
+
+![Hero 1](./changelogPictures/hero1.png)
+
+to this: 
+
+![Hero 2](./changelogPictures/hero2.png)
+
 
 ## Fixes
-### Fix Log In Sig Up button reappearing after each refresh
+### Fix Log In Sign Up button reappearing after each refresh
 
 - The Log In and Sign Up buttons were reappearing instead of showing LogOut button after each refresh, even if the user was logged in. This was due to authentification state not being used properly. Fixed this and now the LogOut button stays after refresh.
 
