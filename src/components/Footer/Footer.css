@@ -17,7 +17,7 @@ footer{
     justify-content: space-between;
   }
   footer .content p,a{
-    color: black;
+    color: var(--blue2);
   }
   footer .content .part{
     width: 33%;
@@ -49,7 +49,7 @@ footer{
     height: 45px;
     width: 95%;
     outline: none;
-    color: #d9d9d9;
+    color: var(--blue);
     background: white;
     border-radius: 5px;
     padding-left: 10px;

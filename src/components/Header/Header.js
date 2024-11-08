@@ -1,3 +1,4 @@
+
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthProvider"; // Adjust the import path as needed
@@ -15,7 +16,6 @@ const Header = () => {
     <section className="header-wrapper">
       <div className="flexCenter paddings innerWidth header-container">
         <div className="move-logo">
-          <img src="/logo3.png" alt="logo" className="logo" width={100} />
           <div className="logo-name">
             <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
               <h1>fixer.md</h1>
@@ -25,9 +25,9 @@ const Header = () => {
 
         {/* Centered Menu */}
         <div className="header-center-menu">
-          <Link to="/workers">Our workers</Link>
+          {/* <Link to="/workers">Our workers</Link>
           <Link to="/about">About us</Link>
-          <Link to="/contact">Contact</Link>
+          <Link to="/contact">Contact</Link> */}
           <Link to="/client">My Cabinet</Link>
         </div>
 

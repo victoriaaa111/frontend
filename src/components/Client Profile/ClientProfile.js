@@ -62,11 +62,11 @@ const ClientProfile = () => {
             <div className="info-block">
               <div className="info-row">
                 <span>Name:</span>
-                <span>{user.fullName || 'John Doe'}</span>
+                <span>{user.fullName || 'Name Surname'}</span>
               </div>
               <div className="info-row">
                 <span>Email:</span>
-                <span>{user.email || 'john.doe@gmail.com'}</span>
+                <span>{user.email || 'email@gmail.com'}</span>
               </div>
               <div className="info-row">
                 <span>Phone Number:</span>

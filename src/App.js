@@ -7,9 +7,8 @@ import SignUpWorker from './components/Sign Up Worker/signup_worker';
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Hero from './components/Hero/Hero.js'
-import Contact from "./components/Contact/Contact";
 import LogInAdmin from './components/AdminLogin/adminlogin';
-import LogInClient from './components/Log In Form/loginform';
+import LogInClient from './components/Log In Client/loginclient';
 import UserManagement from './components/Admin User Worker/AdminWorkerManagement';
 import ProtectedRoute from './components/AdminLogin/ProtectedRoute';
 import LogInWorker from './components/Log In Worker/loginworker';
@@ -29,8 +28,8 @@ import WorkerCalendar from './components/Worker User/Worker Calendar/WorkerCalen
 import ReviewsWorker from './components/Worker User/Reviews/Reviews.js';
 import ReviewsAdmin from './components/Admin User Worker/Reviews Admin/ReviewsAdmin.js';
 import UserCalendarCreateOrder from './components/User Calendar/UserCalendarCreateOrder';
-import UserLayout from './components/UserMenu/UserLayout.js';
-import UserOrders from './components/UserOrders/UserOrders.js';
+import UserLayout from './components/User Menu/UserLayout.js';
+import UserOrders from './components/User Orders/UserOrders.js';
 
 import ClientProfile from './components/Client Profile/ClientProfile';
 import Rating from './components/Review/Review';
@@ -46,7 +45,6 @@ function App() {
               <Route path="/" element={<Hero />} />
               <Route path="/choose" element={<ChooseRole />} />
               <Route path="/chooselogin" element={<ChooseLogin />} />
-              <Route path="/contact" element={<Contact />} />
               <Route path="/loginclient" element={<LogInClient />} />
               <Route path="/loginworker" element={<LogInWorker />} />
               <Route path="/signupclient" element={<SignUpClient />} />

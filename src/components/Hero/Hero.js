@@ -13,7 +13,6 @@ const Hero = () => {
     const navigate = useNavigate();
     const { auth } = useContext(AuthContext);
     const { userId } = auth;
-    
 
     const fetchData = async (value) => {
     try {
@@ -39,13 +38,14 @@ const Hero = () => {
                 }))
         );
 
+        // Sorting based on workerRating
         if (sortOrder === "lowToHigh") {
             filteredResults.sort((a, b) => a.workerRating - b.workerRating);
         } else if (sortOrder === "highToLow") {
             filteredResults.sort((a, b) => b.workerRating - a.workerRating);
         }
 
-
+        // Handling no results found
         if (filteredResults.length === 0 && value) {
             setResults([{ serviceName: "No results found" }]);
         } else {
@@ -58,6 +58,7 @@ const Hero = () => {
 };
 
 
+    // Updated handleMakeOrder to accept serviceId
     const handleMakeOrder = (workerId, serviceId) => {
         navigate(`/user/calendar`, { state: {workerId, serviceId } });
     };
@@ -88,9 +89,9 @@ const Hero = () => {
                 <div className="flexColStart hero-left">
                     <div className="hero-title">
                         <h1>
-                            <span style={{ fontWeight: '700', fontSize: '2.5rem' }}>Choose the best worker</span>
+                            <span style={{ fontWeight: '700', fontSize: '2.5rem', color: 'var(--blue2)' }}>Choose the best worker</span>
                             <span></span><br />
-                            <span style={{ fontWeight: '700', fontSize: '1.5rem' }}>At the perfect time and site!</span><br />
+                            <span style={{ fontWeight: '700', fontSize: '1.5rem', color: 'var(--blue2)' }}>At the perfect time and site!</span><br />
                         </h1>
                     </div>
 
@@ -134,10 +135,10 @@ const Hero = () => {
                 <p className="rating">Rating: {result.workerRating}</p>
             </div>
             <div className="button-container">
-                <button className="button-service profile-button" onClick={() => handleWorkerNameClick(result.workerId, result.serviceId)}>
+                <button className="button-service profile-button search-button" onClick={() => handleWorkerNameClick(result.workerId, result.serviceId)}>
                     View Profile
                 </button>
-                <button className="button-service order-button" onClick={() => handleMakeOrder(result.workerId, result.serviceId)}>
+                <button className="button-service order-button search-button" onClick={() => handleMakeOrder(result.workerId, result.serviceId)}>
                     Make an order
                 </button>
             </div>
@@ -155,7 +156,7 @@ const Hero = () => {
                                 <CountUp start={8800} end={10000} duration={4} />
                                 <span>+</span>
                             </span>
-                            <span className='secondaryText'>Specialist workers</span>
+                            <span className='secondaryText'> Specialist workers</span>
                         </div>
 
                         <div className="flexColStart stat">
@@ -163,7 +164,7 @@ const Hero = () => {
                                 <CountUp start={4850} end={5000} duration={4} />
                                 <span>+</span>
                             </span>
-                            <span className='secondaryText'>Requests</span>
+                            <span className='secondaryText'> Requests</span>
                         </div>
 
                         <div className="flexColStart stat">
@@ -171,7 +172,7 @@ const Hero = () => {
                                 <CountUp end={6000} />
                                 <span>+</span>
                             </span>
-                            <span className='secondaryText'>Reviews</span>
+                            <span className='secondaryText'> Reviews</span>
                         </div>
                     </div>
                 </div>

@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import "./loginworker.css";
+import "./loginclient.css";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AuthContext from "../../context/AuthProvider";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const LOGIN_CLIENT_URL = 'http://localhost:3001/auth/worker/login';
+const LOGIN_CLIENT_URL = 'http://localhost:3001/auth/login';
 
 const LoginExample = () => {
     const { setAuth } = useContext(AuthContext);
@@ -77,7 +77,7 @@ const LoginExample = () => {
             ) : (
                 <div className="login-example-container">
                     <div className="login-example-header">
-                        <div className="login-example-text">Login Worker</div>
+                        <div className="login-example-text">Login Client</div>
                         <div className="login-example-underline"></div>
                     </div>
                     <form onSubmit={handleSubmit} className="login-example-inputs">

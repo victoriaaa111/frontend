@@ -13,7 +13,7 @@ const ChooseLogin = () =>{
     };
 
     return(
-    <div className="cover-2 container main-font">
+    <div className="cover-2 container-role main-font">
     <h1 className="titlu">Choose your role:</h1>
 
     <div className="option-cards">
