@@ -37,35 +37,33 @@ This change is part of our ongoing efforts to improve the design and user friend
 
 ![Order History page for Users](./changelogPictures/orderhistory.png)
 
-### Choose Role, Log In and Sign Up Design
+### Redesigned Choose Role, Log In, and Sign Up
 
-- We designed the Choose Role, Log In and Sign Up parts: 
+We have completely revamped the design for the Choose Role, Log In, and Sign Up pages to provide a more streamlined and user-friendly experience.
 
-Before: 
+- **Choose Role**: The previous design was functional but felt cluttered. We have simplified the layout, making it easier for users to select their role with clear and distinct options.
+- **Log In**: The Log In page now features a more modern and minimalistic look, reducing distractions and helping users focus on entering their credentials.
+- **Sign Up**: The Sign Up form has been redesigned for better usability, featuring a cleaner layout and improved input fields for a smoother registration process.
 
-![Choose role 1](./changelogPictures/chooserole1.png)
+| **Choose Role (Before)** | **Choose Role (After)** |
+|--------------------------|-------------------------|
+| <img src="./changelogPictures/chooserole1.png" width="700px"> | <img src="./changelogPictures/chooserole2.png" width="700px"> |
 
-![Sign up 1](./changelogPictures/signup1.png)
+| **Sign Up (Before)**     | **Sign Up (After)**     |
+|--------------------------|-------------------------|
+| <img src="./changelogPictures/signup1.png" width="700px"> | <img src="./changelogPictures/signup2.png" width="700px"> |
 
-![Login 1](./changelogPictures/login1.png)
+| **Log In (Before)**      | **Log In (After)**      |
+|--------------------------|-------------------------|
+| <img src="./changelogPictures/login1.png" width="700px"> | <img src="./changelogPictures/login2.png" width="700px"> |
 
-After: 
+### Enhanced Search Bar Design
 
-![Choose role 2](./changelogPictures/chooserole2.png)
+- We have redesigned the Search Order bar on the main page to offer a cleaner, more intuitive experience.
 
-![Sign up 2](./changelogPictures/signup2.png)
-
-![Login 2](./changelogPictures/login2.png)
-
-### Search Bar Modifications
-
-- We designed the Search Order on the main page from this:
-
-![Hero 1](./changelogPictures/hero1.png)
-
-to this: 
-
-![Hero 2](./changelogPictures/hero2.png)
+| **Search Bar (Before)**      | **Search Bar (After)**      |
+|--------------------------|-------------------------|
+| <img src="./changelogPictures/hero1.png" width="750px"> | <img src="./changelogPictures/hero2.png" width="900px"> |
 
 
 ## Fixes
