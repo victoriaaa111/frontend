@@ -55,7 +55,7 @@ function App() {
             <Route path="/client" element = {<UserLayout/>}>
               <Route path="/client/profile" element={<ClientProfile />} />
               <Route path="/client/orders" element={<UserOrders />} />
-              <Route path="/client/favorites" element={<UserOrders />} />
+              <Route path="/client/favorites" element={<Favorites />} />
             </Route>
               <Route path="/rating" element={<Rating />} />
 
@@ -65,7 +65,7 @@ function App() {
             <Route path="/worker/profile/management" element={<WorkerProfile />} /> 
               {/* Worker Routes */}
               <Route path="/worker" element={<WorkerLayout/>}>
-                <Route path="/worker/profile" element={<WorkerManagement />} />
+                <Route path="/worker/profile/" element={<WorkerManagement />} />
                 
                 <Route path="/worker/profile/orders" element={<WorkerCalendar />} />
                 <Route path="/worker/profile/reviews" element={<ReviewsWorker />} />
