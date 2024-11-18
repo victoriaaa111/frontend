@@ -15,6 +15,7 @@ const UserLayout = () => {
                     <ul>
                         <li><Link to="/client/profile">Profile</Link></li>
                         <li><Link to="/client/orders">Orders</Link></li>
+                        <li><Link to="/client/favorites">Favorites</Link></li>
                     </ul>
                 </nav>
             </aside>

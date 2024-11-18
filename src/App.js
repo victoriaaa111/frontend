@@ -33,6 +33,7 @@ import UserOrders from './components/User Orders/UserOrders.js';
 
 import ClientProfile from './components/Client Profile/ClientProfile';
 import Rating from './components/Review/Review';
+import Favorites from './components/Favorites/Favorites.js';
 
 function App() {
   return (
@@ -53,7 +54,8 @@ function App() {
 
             <Route path="/client" element = {<UserLayout/>}>
               <Route path="/client/profile" element={<ClientProfile />} />
-              <Route path="/client/orders" element={<UserOrders/>}/>
+              <Route path="/client/orders" element={<UserOrders />} />
+              <Route path="/client/favorites" element={<UserOrders />} />
             </Route>
               <Route path="/rating" element={<Rating />} />
 
