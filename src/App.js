@@ -33,6 +33,7 @@ import UserOrders from './components/User Orders/UserOrders.js';
 
 import ClientProfile from './components/Client Profile/ClientProfile';
 import Rating from './components/Review/Review';
+import Favorites from './components/Favorites/Favorites.js';
 
 function App() {
   return (
@@ -53,7 +54,8 @@ function App() {
 
             <Route path="/client" element = {<UserLayout/>}>
               <Route path="/client/profile" element={<ClientProfile />} />
-              <Route path="/client/orders" element={<UserOrders/>}/>
+              <Route path="/client/orders" element={<UserOrders />} />
+              <Route path="/client/favorites" element={<Favorites />} />
             </Route>
               <Route path="/rating" element={<Rating />} />
 
@@ -63,7 +65,7 @@ function App() {
             <Route path="/worker/profile/management" element={<WorkerProfile />} /> 
               {/* Worker Routes */}
               <Route path="/worker" element={<WorkerLayout/>}>
-                <Route path="/worker/profile" element={<WorkerManagement />} />
+                <Route path="/worker/profile/" element={<WorkerManagement />} />
                 
                 <Route path="/worker/profile/orders" element={<WorkerCalendar />} />
                 <Route path="/worker/profile/reviews" element={<ReviewsWorker />} />
