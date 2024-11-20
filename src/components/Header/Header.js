@@ -24,12 +24,11 @@ const Header = () => {
         </div>
 
         {/* Centered Menu */}
-        <div className="header-center-menu">
-          {/* <Link to="/workers">Our workers</Link>
-          <Link to="/about">About us</Link>
-          <Link to="/contact">Contact</Link> */}
-          <Link to="/client">My Cabinet</Link>
-        </div>
+        {auth?.accessToken && (
+          <div className="header-center-menu">
+          <Link to="/client/profile">My Cabinet</Link>
+          </div>
+        )}
 
         {/* Right Aligned Buttons */}
         <div className="header-right-buttons">
