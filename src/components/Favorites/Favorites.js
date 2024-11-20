@@ -32,7 +32,7 @@ const Favorites = () => {
         }));
         setFavorites(favoritesData);
       } catch (err) {
-        setResponseMessage(`Error fetching worker profile: ${err.message}`);
+        setResponseMessage(`Error fetching favorites: ${err.message}`);
       } finally {
         setLoading(false); // set loading to false when data fetch is complete
       }
@@ -59,14 +59,17 @@ const Favorites = () => {
       });
       setFavorites(favorites.filter(favorite => favorite.id !== workerId));
       setResponseMessage('Favorite removed successfully');
+      setTimeout(() => {
+        setResponseMessage('');
+      }, 5000);
     } catch (err) {
       setResponseMessage(`Error removing favorite: ${err.message}`);
     }
   };
 
   return (
-    <div className="profile-container">
-      <div className="profile-column services-info">
+    <div className="favorites-container">
+      <div className="favorite-column services-info">
         <h3 className="calendar-title" style={{ fontSize: `1.5rem` }}>Favorite Workers</h3>
         <div className="favorites-grid">
           {loading ? (
@@ -88,7 +91,15 @@ const Favorites = () => {
           )}
         </div>
       </div>
-      {responseMessage && <p className="response-message">{responseMessage}</p>}
+      <div>
+        {responseMessage && (
+        <p 
+          className={`response-message ${responseMessage.includes('Error') ? 'error' : 'success'}`}
+        >
+          {responseMessage}
+        </p>
+        )}
+      </div>
     </div>
   );
 };
