@@ -92,7 +92,7 @@ const ReviewsAdmin = () => {
     }
 
     try {
-      await axios.put(`http://localhost:3001/admin/edit/review/${reviewId}`, {
+      await axios.put(`http://localhost:3001/admin/review/${reviewId}`, {
         rating: updatedRating,
       });
       fetchReviews(); // Refresh reviews after editing
@@ -107,7 +107,7 @@ const ReviewsAdmin = () => {
     const confirmDelete = window.confirm('Are you sure you want to delete this review?');
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:3001/admin/delete/review/${reviewId}`);
+        await axios.delete(`http://localhost:3001/admin/review/${reviewId}`);
         fetchReviews(); // Refresh reviews after deletion
       } catch (err) {
         setError('Failed to delete review. Please try again.');
