@@ -52,7 +52,7 @@ const Favorites = () => {
 
   const handleDeleteFavorite = async (workerId) => {
     try {
-      await axios.delete(`http://localhost:3001/user/delete-favorites/${userId}`, {
+      await axios.delete(`http://localhost:3001/user/favorites/${userId}`, {
         data: {
           workerId: workerId,
         },
