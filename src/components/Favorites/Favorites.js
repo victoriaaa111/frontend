@@ -1,19 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/AuthProvider";
-import './Favorites.css';
-import axios from 'axios';
+import "./Favorites.css";
+import axios from "axios";
 
 const Favorites = () => {
-  const [user, setUser] = useState({
-    fullName: '',
-    email: '',
-    contact: '',
-    favorites: []
-  });
   const [favorites, setFavorites] = useState([]);
-  const [responseMessage, setResponseMessage] = useState('');
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
+  const [responseMessage, setResponseMessage] = useState("");
   const navigate = useNavigate();
   const { auth } = useContext(AuthContext);
   const { userId } = auth;
@@ -22,26 +16,16 @@ const Favorites = () => {
     const fetchFavorites = async () => {
       try {
         const response = await axios.get(`http://localhost:3001/user/${userId}`);
-        const userData = response.data;
-
-        setUser(userData);
-
-        const favoritesData = userData.favorites.map(favorite => ({
-          id: favorite._id,
-          fullName: favorite.fullName,
-        }));
-        setFavorites(favoritesData);
+        setFavorites(response.data.favorites);
       } catch (err) {
         setResponseMessage(`Error fetching favorites: ${err.message}`);
       } finally {
-        setLoading(false); // set loading to false when data fetch is complete
+        setLoading(false);
       }
     };
 
     if (userId) {
       fetchFavorites();
-    } else {
-      setLoading(false); 
     }
   }, [userId]);
 
@@ -53,53 +37,80 @@ const Favorites = () => {
   const handleDeleteFavorite = async (workerId) => {
     try {
       await axios.delete(`http://localhost:3001/user/favorites/${userId}`, {
-        data: {
-          workerId: workerId,
-        },
+        data: { workerId },
       });
-      setFavorites(favorites.filter(favorite => favorite.id !== workerId));
-      setResponseMessage('Favorite removed successfully');
+      setFavorites(favorites.filter((favorite) => favorite._id !== workerId));
+      setResponseMessage("Favorite removed successfully");
       setTimeout(() => {
-        setResponseMessage('');
-      }, 5000);
+        setResponseMessage("");
+      }, 3000);
     } catch (err) {
       setResponseMessage(`Error removing favorite: ${err.message}`);
     }
   };
 
+  if (loading) return <p>Loading favorites...</p>;
+
   return (
     <div className="favorites-container">
-      <div className="favorite-column services-info">
-        <h3 className="calendar-title" style={{ fontSize: `1.5rem` }}>Favorite Workers</h3>
-        <div className="favorites-grid">
-          {loading ? (
-            <p>Loading favorites...</p> // display loading message while data is being fetched
-          ) : (
-            favorites.length > 0 ? (
-              favorites.map(favorite => (
-                <div key={favorite.id} className="favorite-card">
-                  <h4>{favorite.fullName}</h4>
-                  <div className="card-buttons">
-                    <button className="view-btn" onClick={() => handleViewProfile(favorite.id)}>View Profile</button>
-                    <button className="remove-btn" onClick={() => handleDeleteFavorite(favorite.id)}>Remove</button>
-                  </div>
+      <h3 className="title">Your Favorite Workers</h3>
+      <div className="favorites-grid">
+        {favorites.length > 0 ? (
+          favorites.map((favorite) => (
+            <div key={favorite._id} className="favorite-card">
+              <button
+                className={`favorite-btn ${
+                  favorites.find((f) => f._id === favorite._id) ? "favorited" : ""
+                }`}
+                onClick={() => handleDeleteFavorite(favorite._id)}
+              >
+                <span className="heart">❤️</span>
+              </button>
+              <img
+                className="image"
+                src="/person.jpg"
+                alt={favorite.fullName}
+              />
+              <div className="favorite-card-content">
+                <h4 className="name">{favorite.fullName || "Unknown Name"}</h4>
+                <p className="services">
+                  {favorite.services && favorite.services.length > 0 ? (
+                    <ul>
+                      {favorite.services.map((service) => (
+                        <li key={service._id} className="service">
+                          {service.service}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <span className="no-services">No services listed</span>
+                  )}
+                </p>
+                <br />
+                <div className="card-buttons">
+                  <button
+                    className="view-btn"
+                    onClick={() => handleViewProfile(favorite._id)}
+                  >
+                    View Profile
+                  </button>
                 </div>
-              ))
-            ) : (
-              <p>No favorites available</p>
-            )
-          )}
-        </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No favorites available</p>
+        )}
       </div>
-      <div>
-        {responseMessage && (
-        <p 
-          className={`response-message ${responseMessage.includes('Error') ? 'error' : 'success'}`}
+      {responseMessage && (
+        <p
+          className={`response-message ${
+            responseMessage.includes("Error") ? "error" : "success"
+          }`}
         >
           {responseMessage}
         </p>
-        )}
-      </div>
+      )}
     </div>
   );
 };
