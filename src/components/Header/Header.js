@@ -25,8 +25,8 @@ const Header = () => {
 
         {/* Centered Menu */}
         <div className="header-center-menu">
-          {/* <Link to="/workers">Our workers</Link>
-          <Link to="/about">About us</Link>
+          <Link to="/ourworkers">Our workers</Link>
+          {/* <Link to="/about">About us</Link>
           <Link to="/contact">Contact</Link> */}
           <Link to="/client">My Cabinet</Link>
         </div>

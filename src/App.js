@@ -34,6 +34,7 @@ import UserOrders from './components/User Orders/UserOrders.js';
 import ClientProfile from './components/Client Profile/ClientProfile';
 import Rating from './components/Review/Review';
 import Favorites from './components/Favorites/Favorites.js';
+import OurWorkers from './components/Our Workers/OurWorkers';
 
 function App() {
   return (
@@ -51,6 +52,8 @@ function App() {
               <Route path="/signupclient" element={<SignUpClient />} />
               <Route path="/signupworker" element={<SignUpWorker />} />
               <Route path="/loginadmin" element={<LogInAdmin />} />
+
+              <Route path="/ourworkers" element={<OurWorkers />} /> 
 
             <Route path="/client" element = {<UserLayout/>}>
               <Route path="/client/profile" element={<ClientProfile />} />
