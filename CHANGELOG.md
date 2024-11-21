@@ -72,3 +72,62 @@ We have completely revamped the design for the Choose Role, Log In, and Sign Up 
 - The Log In and Sign Up buttons were reappearing instead of showing LogOut button after each refresh, even if the user was logged in. This was due to authentification state not being used properly. Fixed this and now the LogOut button stays after refresh.
 
 ![Log Out button remains in header as long as logged in](./changelogPictures/logout.png)
+
+---
+## November 22, 2024
+
+### What's New?
+
+We have added the favorite workers and all workers functionality for users.
+
+### Why the Change?
+
+This change is part of our ongoing efforts to improve the user friendliness of our platform.
+
+- We have enhanced the **user friendliness** by adding in the cabinet a favorites page and by adding a workers page in the menu where the user can view all workers.
+
+
+---
+
+### Specific Changes
+
+#### Added Favorites Page in Cabinet
+
+- We have added a new page in the client’s cabinet: Favorite Workers. I displayed there the list of the client’s favorite workers. In each card in the list there can be seen the worker’s name, a View Profile Button and a Remove button. If they click the View Profile button they will be redirected to the worker’s profile with their personal data and offered services. If they click the Remove button the worker will be removed from the list.
+![Favorite Workers Page](./changelogPictures/favorites_page.png)
+- Link to Pull Request for this task: 
+    - https://github.com/victoriaaa111/frontend/pull/23
+
+
+#### Improved message display for Favorites page
+
+- We have added a message in green signaling the success of the delete operation. In case of any errors a message in red will appear.
+
+| **Success Message when removing worker**      | **Error Message**      |
+|--------------------------|-------------------------|
+| <img src="./changelogPictures/success_message.png" width="900px"> | <img src="./changelogPictures/error_message.png" width="930px"> |
+
+- Link to Pull Request: 
+    - https://github.com/victoriaaa111/frontend/pull/26
+
+
+#### Added Loading State message for Worker Profile
+
+- We added a Loading message for when the data for the worker profile is loading.
+![Loading Message when loading worker's profile](./changelogPictures/loading_message.png)
+- Link to Pull Request: 
+    - https://github.com/victoriaaa111/frontend/pull/26
+
+
+### Removed Cabinet from Menu when not logged in
+
+- We removed the Cabinet button from the menu when the user is not logged in and made it so when they click the Cabinet button they are redirected directly to the profile.
+
+| **Menu when Logged In**      | **Menu when Logged Out**      |
+|--------------------------|-------------------------|
+| <img src="./changelogPictures/logged_in.png" width="900px"> | <img src="./changelogPictures/not_logged_in.png" width="930px"> |
+
+
+- Link to Pull Request: 
+    - https://github.com/victoriaaa111/frontend/pull/25
+
