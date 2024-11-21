@@ -43,24 +43,22 @@
     color: #666;
 }
 
-/* Reset general pentru bara de căutare */
 .search-bar,
 .search-input,
 .search-select,
 .search-button {
-    box-sizing: border-box; /* Asigură uniformitatea marginilor */
-    margin: 0; /* Elimină orice margine implicită */
-    padding: 0; /* Elimină orice padding implicit */
-    height: 100%; /* Setează înălțimea completă */
-    line-height: normal; /* Normalizează înălțimea liniei */
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    line-height: normal;
 }
 
-/* Bara de căutare */
 .search-bar {
     display: flex;
     align-items: center;
     border-radius: 50px;
-    padding: 10px; /* Padding general pentru bară */
+    padding: 10px;
     background-color: #e0e7ff;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
     max-width: 600px;
@@ -68,18 +66,16 @@
     gap: 10px;
 }
 
-/* Icon de căutare */
 #search-icon {
     color: var(--blue);
     font-size: 1.2rem;
     margin-left: 10px;
 }
 
-/* Inputul de căutare */
 .search-input {
     border: none;
     outline: none;
-    padding: 10px 14px; /* Ajustează padding-ul pentru aliniere */
+    padding: 10px 14px;
     font-size: 1rem;
     color: #333;
     flex: 1;
@@ -87,21 +83,19 @@
     border-radius: 25px;
 }
 
-/* Select pentru sortare */
 .search-select {
     border: none;
     outline: none;
     font-size: 1rem;
     color: #333;
-    padding: 10px 14px; /* Padding ajustat pentru aliniere */
+    padding: 10px 14px;
     background: #f0f3ff;
     border-radius: 25px;
-    height: 100%; /* Asigură alinierea pe verticală */
-    appearance: none; /* Elimină stilul implicit */
-    -webkit-appearance: none; /* Compatibilitate Webkit */
+    height: 100%;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
-/* Butonul de căutare */
 .search-button {
     background-color: var(--blue);
     color: white;
@@ -125,8 +119,6 @@
     box-shadow: 0px 4px 10px rgba(28, 134, 238, 0.3);
 }
 
-
-/* Results Showcase */
 .results-showcase {
     margin-top: 20px;
     font-size: 1rem;
@@ -136,15 +128,19 @@
 /* Stats Section */
 .stats {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 600px;
-    color: var(--blue);
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
     margin-top: 20px;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .stat {
     text-align: center;
+    flex: 1;
+    min-width: 150px;
+    color:var(--blue);
 }
 
 .stat span:first-child {
