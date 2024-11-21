@@ -1,22 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "./OurWorkers.css";
 import axios from "axios";
+import AuthContext from "../../context/AuthProvider";
 
 const OurWorkers = () => {
   const [allWorkers, setAllWorkers] = useState([]);
   const [filteredWorkers, setFilteredWorkers] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { auth } = useContext(AuthContext);
+  const { userId } = auth;
 
   const categories = ["Show All", "Plumber", "Electrician", "Inspection", "QI", "Locksmith"];
 
   const fetchMesteri = async () => {
     try {
       setLoading(true);
-      setError(null);
       const response = await axios.get("http://localhost:3001/user/workers");
       setAllWorkers(response.data);
-      setFilteredWorkers(response.data)
+      setFilteredWorkers(response.data);
+      const userResponse = await axios.get(`http://localhost:3001/user/${userId}`);
+      setFavorites(userResponse.data.favorites.map((f) => f._id));
     } catch (error) {
       console.error("Error fetching workers:", error);
       setError("Failed to fetch workers. Please try again later.");
@@ -28,13 +33,6 @@ const OurWorkers = () => {
   useEffect(() => {
     fetchMesteri();
   }, []);
-
-  const getProfileImage = (name) => {
-    const maleImage = "/person.jpg";
-    const femaleImage = "/person.jpg";
-    const firstName = name.split(" ")[0].toLowerCase();
-    return ["jane", "emily", "sophia", "alice"].includes(firstName) ? femaleImage : maleImage;
-  };
 
   const handleCategoryClick = (category) => {
     if (category === "Show All") {
@@ -50,6 +48,29 @@ const OurWorkers = () => {
     }
   };
 
+  const toggleFavorite = async (workerId) => {
+    try {
+      if (favorites.includes(workerId)) {
+        await axios.delete(`http://localhost:3001/user/favorites/${userId}`, {
+          data: { workerId },
+        });
+        setFavorites(favorites.filter((id) => id !== workerId));
+      } else {
+        await axios.post(`http://localhost:3001/user/favorites/${userId}`, { workerId });
+        setFavorites([...favorites, workerId]);
+      }
+    } catch (error) {
+      console.error("Error updating favorites:", error);
+    }
+  };
+
+  const getProfileImage = (name) => {
+    const maleImage = "/person.jpg";
+    const femaleImage = "/person.jpg";
+    const firstName = name.split(" ")[0].toLowerCase();
+    return ["jane", "emily", "sophia", "alice"].includes(firstName) ? femaleImage : maleImage;
+  };
+
   if (loading) return <p>Loading workers...</p>;
   if (error) return <p>{error}</p>;
 
@@ -57,7 +78,6 @@ const OurWorkers = () => {
     <div>
       <p className="title">Discover the Best Specialists for Your Needs!</p>
       <div className="container">
-        {/* Sidebar */}
         <div className="sidebar">
           {categories.map((category) => (
             <p
@@ -70,11 +90,16 @@ const OurWorkers = () => {
           ))}
         </div>
 
-        {/* Worker Grid */}
         <div className="grid">
           {filteredWorkers.length > 0 ? (
             filteredWorkers.map((worker) => (
               <div key={worker._id} className="card2">
+                <button
+                  className={`favorite-btn ${favorites.includes(worker._id) ? "favorited" : ""}`}
+                  onClick={() => toggleFavorite(worker._id)}
+                >
+                  <span className="heart">{favorites.includes(worker._id) ? "❤️" : "🤍"}</span>
+                </button>
                 <img
                   className="image"
                   src={getProfileImage(worker.fullName)}
@@ -84,14 +109,18 @@ const OurWorkers = () => {
                   <p className="name">{worker.fullName || "Unknown Name"}</p>
                   <p className="rating">Rating: {worker.rating || "N/A"}</p>
                   <p className="services">
-                    {worker.services.length > 0 ? (
-                      worker.services.map((s) => (
-                        <span key={s._id} className="service">{s.service}</span>
-                      ))
-                    ) : (
-                      <span className="no-services">No services listed</span>
-                    )}
-                  </p>
+                  {worker.services.length > 0 ? (
+                    <ul>
+                      {worker.services.map((service) => (
+                        <li key={service._id} className="service">
+                          {service.service}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <span className="no-services">No services listed</span>
+                  )}
+                </p>
                   <p className="contact">Contact: +{worker.contact || "No contact available"}</p>
                 </div>
               </div>
