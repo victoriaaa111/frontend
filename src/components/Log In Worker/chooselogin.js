@@ -17,7 +17,7 @@ const ChooseLogin = () =>{
     <h1 className="titlu">Choose your role:</h1>
 
     <div className="option-cards">
-        <label className ="card" htmlFor="client">
+        <label className ="card1" htmlFor="client">
         <div>
             <input 
                 type="radio" 
@@ -27,13 +27,13 @@ const ChooseLogin = () =>{
                 onChange={handleRoleChange}
                 />
 
-                <div className="card-content">
+                <div className="card1-content">
                     <span className="icon"></span> 
                     <p>I am a client</p>
                 </div>
         </div>
         </label>
-        <label htmlFor="worker" className="card">
+        <label htmlFor="worker" className="card1">
         <div>
             <input 
                 type="radio" 
@@ -41,7 +41,7 @@ const ChooseLogin = () =>{
                 name="user-type" 
                 value="worker" 
                 onChange={handleRoleChange}/>
-                <div className="card-content">
+                <div className="card1-content">
                     <span className="icon"></span> 
                     <p>I am a worker</p>
                 </div>

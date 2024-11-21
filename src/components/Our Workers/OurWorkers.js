@@ -1,120 +1,104 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import './OurWorkers.css'; // Importăm fișierul CSS
+import React, { useEffect, useState } from "react";
+import "./OurWorkers.css";
+import axios from "axios";
 
 const OurWorkers = () => {
-  const { service } = useParams();
-  const [filterMester, setFilterMester] = useState([]);
-  const navigate = useNavigate();
+  const [allWorkers, setAllWorkers] = useState([]);
+  const [filteredWorkers, setFilteredWorkers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Funcția pentru a prelua lucrătorii din baza de date
+  const categories = ["Show All", "Plumber", "Electrician", "Inspection", "QI", "Locksmith"];
+
   const fetchMesteri = async () => {
     try {
-      const response = await fetch('/api/mesteri'); // Endpoint-ul tău de API
-      const data = await response.json();
-      applyFilter(data);
+      setLoading(true);
+      setError(null);
+      const response = await axios.get("http://localhost:3001/user/workers");
+      setAllWorkers(response.data);
+      setFilteredWorkers(response.data)
     } catch (error) {
-      console.error('Error fetching mesteri:', error);
-    }
-  };
-
-  const applyFilter = (mesteri) => {
-    if (service) {
-      setFilterMester(mesteri.filter((mester) => mester.service === service));
-    } else {
-      setFilterMester(mesteri);
+      console.error("Error fetching workers:", error);
+      setError("Failed to fetch workers. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchMesteri(); // Preluăm datele când componenta este montată
-  }, [service]);
+    fetchMesteri();
+  }, []);
+
+  const getProfileImage = (name) => {
+    const maleImage = "/person.jpg";
+    const femaleImage = "/person.jpg";
+    const firstName = name.split(" ")[0].toLowerCase();
+    return ["jane", "emily", "sophia", "alice"].includes(firstName) ? femaleImage : maleImage;
+  };
+
+  const handleCategoryClick = (category) => {
+    if (category === "Show All") {
+      setFilteredWorkers(allWorkers);
+    } else {
+      const filtered = allWorkers.filter((worker) =>
+        worker.services.some((s) =>
+          s.service.toLowerCase().includes(category.toLowerCase()) ||
+          (s.description && s.description.toLowerCase().includes(category.toLowerCase()))
+        )
+      );
+      setFilteredWorkers(filtered);
+    }
+  };
+
+  if (loading) return <p>Loading workers...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>
-      <p className="text-gray-600">Browse through the mesteri specialist.</p>
+      <p className="title">Discover the Best Specialists for Your Needs!</p>
       <div className="container">
+        {/* Sidebar */}
         <div className="sidebar">
-          <p
-            onClick={() =>
-              service === 'Electrician'
-                ? navigate('/mesteri')
-                : navigate('/mesteri/Electrician')
-            }
-            className={`sidebar-item ${service === 'Electrician' ? 'active' : ''}`}
-          >
-            Electrician
-          </p>
-          <p
-            onClick={() =>
-              service === 'Plumber'
-                ? navigate('/mesteri')
-                : navigate('/mesteri/Plumber')
-            }
-            className={`sidebar-item ${service === 'Plumber' ? 'active' : ''}`}
-          >
-            Plumber
-          </p>
-          <p
-            onClick={() =>
-              service === 'Carpenter'
-                ? navigate('/mesteri')
-                : navigate('/mesteri/Carpenter')
-            }
-            className={`sidebar-item ${service === 'Carpenter' ? 'active' : ''}`}
-          >
-            Carpenter
-          </p>
-          <p
-            onClick={() =>
-              service === 'Locksmith'
-                ? navigate('/mesteri')
-                : navigate('/mesteri/Locksmith')
-            }
-            className={`sidebar-item ${service === 'Locksmith' ? 'active' : ''}`}
-          >
-            Locksmith
-          </p>
-          <p
-            onClick={() =>
-              service === 'Joiner'
-                ? navigate('/mesteri')
-                : navigate('/mesteri/Joiner')
-            }
-            className={`sidebar-item ${service === 'Joiner' ? 'active' : ''}`}
-          >
-            Joiner
-          </p>
-          <p
-            onClick={() =>
-              service === 'Gardener'
-                ? navigate('/mesteri')
-                : navigate('/mesteri/Gardener')
-            }
-            className={`sidebar-item ${service === 'Gardener' ? 'active' : ''}`}
-          >
-            Gardener
-          </p>
+          {categories.map((category) => (
+            <p
+              key={category}
+              onClick={() => handleCategoryClick(category)}
+              className="sidebar-item"
+            >
+              {category}
+            </p>
+          ))}
         </div>
 
+        {/* Worker Grid */}
         <div className="grid">
-          {filterMester.map((item, index) => (
-            <div
-              key={index}
-              onClick={() => navigate(`/appointment/${item._id}`)}
-              className="card"
-            >
-              <img className="image" src={item.image} alt={item.name} />
-              <div className="card-content">
-                <div className="status">
-                  <p className="status-dot"></p>
-                  <p>Available</p>
+          {filteredWorkers.length > 0 ? (
+            filteredWorkers.map((worker) => (
+              <div key={worker._id} className="card2">
+                <img
+                  className="image"
+                  src={getProfileImage(worker.fullName)}
+                  alt={worker.fullName}
+                />
+                <div className="card2-content">
+                  <p className="name">{worker.fullName || "Unknown Name"}</p>
+                  <p className="rating">Rating: {worker.rating || "N/A"}</p>
+                  <p className="services">
+                    {worker.services.length > 0 ? (
+                      worker.services.map((s) => (
+                        <span key={s._id} className="service">{s.service}</span>
+                      ))
+                    ) : (
+                      <span className="no-services">No services listed</span>
+                    )}
+                  </p>
+                  <p className="contact">Contact: +{worker.contact || "No contact available"}</p>
                 </div>
-                <p className="name">{item.name}</p>
-                <p className="service">{item.service}</p>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <span className="no-services">No workers found for this category.</span>
+          )}
         </div>
       </div>
     </div>
@@ -122,5 +106,3 @@ const OurWorkers = () => {
 };
 
 export default OurWorkers;
-
-// Trebuie de adaugat mesterii din baza de date
