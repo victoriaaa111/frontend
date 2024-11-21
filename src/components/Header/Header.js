@@ -26,6 +26,7 @@ const Header = () => {
         {/* Centered Menu */}
         {auth?.accessToken && (
           <div className="header-center-menu">
+          <Link to="/ourworkers">Our Workers</Link>
           <Link to="/client/profile">My Cabinet</Link>
           </div>
         )}
