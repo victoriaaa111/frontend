@@ -136,9 +136,7 @@ This change is part of our ongoing efforts to improve the user friendliness of o
 
 - Replaced the **Remove** button in favorite worker cards with a heart icon in the top-right corner. Users can now click the heart to add or remove workers from their favorites.
 
-| **Heart Button in Favorites** |               
-|----------------------------------------------|
-| <img src="./changelogPictures/favorites_with_heart.png" width="750px">
+![Heart Button in Favorites](./changelogPictures/favorites_with_heart.png)
 
 - Link to Pull Request: 
     - https://github.com/victoriaaa111/frontend/pull/28
@@ -154,9 +152,9 @@ We have added a dedicated All Workers page where users can view a comprehensive 
 This page improves the discoverability of workers and provides a structured way for users to explore and connect with specialists.
 
 
-| **All Workers Displayed** |
-|----------------------------------------------
-| <img src="./changelogPictures/all-workers.png" width="900px"> |
+**All Workers Displayed**
+
+![Heart Button in Favorites](./changelogPictures/all-workers.png)
 
 - Link to Pull Request: 
     - https://github.com/victoriaaa111/frontend/pull/27
@@ -166,9 +164,11 @@ This page improves the discoverability of workers and provides a structured way 
 
 - The debounce function was implemented in the search bar to reduce unnecessary API calls while typing, improving performance and user experience. It delays the execution of the search query until the user stops typing, ensuring fewer, more relevant requests are sent to the server. This prevents server overload and optimizes resource usage, creating a smoother and faster interaction for the user.
 
-| **Searching Procees Video** |
+| **Searching Process Video** |
 |----------------------------------------------
-[![Watch the video](https://raw.githubusercontent.com/victoriaaa111/frontend/blob/Debounce-function/changelogPictures/search-bar.mp4)]
+
+[ The Link for the video](https://drive.google.com/file/d/1MlIOHI7XhuqJXr9yPJuEihn3q_-12e2_/view?usp=drive_link)
+
 
 | **The Search Bar**      | **Searching**      |
 |--------------------------|-------------------------|
