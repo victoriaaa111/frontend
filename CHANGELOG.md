@@ -168,12 +168,12 @@ This page improves the discoverability of workers and provides a structured way 
 
 | **Searching Procees Video** |
 |----------------------------------------------
-<video width="800px" controls>
-  <source src="./changelogVideos/search-bar.mp4" type="video/mp4">
-</video> 
+[![Watch the video](https://raw.githubusercontent.com/victoriaaa111/frontend/blob/Debounce-function/changelogPictures/search-bar.mp4)]
 
-| **The Seatch Bar**      | **Searching**      |
+| **The Search Bar**      | **Searching**      |
 |--------------------------|-------------------------|
  | <img src="./changelogPictures/search1.png" width="750px"> | <img src="./changelogPictures/search2.png" width="750px"> |
 
+- Link to Pull Request: 
+    - https://github.com/victoriaaa111/frontend/pull/29
 
