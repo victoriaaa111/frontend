@@ -131,3 +131,49 @@ This change is part of our ongoing efforts to improve the user friendliness of o
 - Link to Pull Request: 
     - https://github.com/victoriaaa111/frontend/pull/25
 
+
+### Enhanced Favorites Page Functionality
+
+- Replaced the **Remove** button in favorite worker cards with a heart icon in the top-right corner. Users can now click the heart to add or remove workers from their favorites.
+
+| **Heart Button in Favorites** |               
+|----------------------------------------------|
+| <img src="./changelogPictures/favorites_with_heart.png" width="750px">
+
+- Link to Pull Request: 
+    - https://github.com/victoriaaa111/frontend/pull/28
+
+### All Workers are displayed in a separate page
+
+We have added a dedicated All Workers page where users can view a comprehensive list of all available workers on the platform.
+ - Each worker is displayed as a card featuring their name, rating, and services provided. Users can click the "View Profile" button to navigate to the worker's detailed profile page.
+ - The page includes a search bar with sorting options, allowing users to filter workers by service type and sort them by rating (low to high or high to low).
+ - Users can mark workers as favorites by clicking the heart icon in the top-right corner of each card, adding them to their favorites list.
+ - The page is optimized for all devices, ensuring a seamless experience on desktop and mobile.
+
+This page improves the discoverability of workers and provides a structured way for users to explore and connect with specialists.
+
+
+| **All Workers Displayed** |
+|----------------------------------------------
+| <img src="./changelogPictures/all-workers.png" width="900px"> |
+
+- Link to Pull Request: 
+    - https://github.com/victoriaaa111/frontend/pull/27
+
+
+### Implemented the Debounce Function for Searching
+
+- The debounce function was implemented in the search bar to reduce unnecessary API calls while typing, improving performance and user experience. It delays the execution of the search query until the user stops typing, ensuring fewer, more relevant requests are sent to the server. This prevents server overload and optimizes resource usage, creating a smoother and faster interaction for the user.
+
+| **Searching Procees Video** |
+|----------------------------------------------
+<video width="800px" controls>
+  <source src="./changelogVideos/search-bar.mp4" type="video/mp4">
+</video> 
+
+| **The Seatch Bar**      | **Searching**      |
+|--------------------------|-------------------------|
+ | <img src="./changelogPictures/search1.png" width="750px"> | <img src="./changelogPictures/search2.png" width="750px"> |
+
+
