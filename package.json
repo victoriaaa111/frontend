@@ -23,8 +23,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start:local": "REACT_APP_API_BASE_URL=http://localhost:3001 npm start",
-    "start:remote": "REACT_APP_API_BASE_URL=https://localhost:3001 npm start",
+    "start:local": "cross-env REACT_APP_API_BASE_URL=http://localhost:3001 npm start",
+    "start:remote": "cross-env REACT_APP_API_BASE_URL=https://localhost:3001 npm start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -46,5 +46,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
