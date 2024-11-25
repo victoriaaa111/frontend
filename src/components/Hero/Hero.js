@@ -35,7 +35,7 @@ const Hero = () => {
 
     try {
       setHasSearched(true);
-      const response = await axios.get("http://localhost:3001/shareable/search", {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/shareable/search`, {
         params: { service: value, sortOrder },
       });
 

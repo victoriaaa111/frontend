@@ -6,7 +6,7 @@ import AuthContext from "../../context/AuthProvider";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const LOGIN_CLIENT_URL = 'http://localhost:3001/auth/worker/login';
+const LOGIN_CLIENT_URL = `${process.env.REACT_APP_API_BASE_URL}/auth/worker/login`;
 
 const LoginExample = () => {
     const { setAuth } = useContext(AuthContext);

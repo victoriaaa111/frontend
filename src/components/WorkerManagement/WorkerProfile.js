@@ -26,7 +26,7 @@ const WorkerProfile = () => {
   useEffect(() => {
     const fetchWorkerProfile = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/worker/${workerId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}`);
         const workerData = response.data;
 
         setWorker(workerData);

@@ -9,7 +9,7 @@ import { useNavigate, Link } from "react-router-dom";
 const NAME_REGEX = /^[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const SIGNUP_CLIENT_URL = 'http://localhost:3001/auth/signup';
+const SIGNUP_CLIENT_URL = `${process.env.REACT_APP_API_BASE_URL}/auth/signup`;
 
 const SignUpClient = () => {
     const { setAuth } = useContext(AuthContext);

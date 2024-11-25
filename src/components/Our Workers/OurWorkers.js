@@ -17,10 +17,10 @@ const OurWorkers = () => {
   const fetchMesteri = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:3001/user/workers");
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/workers`);
       setAllWorkers(response.data);
       setFilteredWorkers(response.data);
-      const userResponse = await axios.get(`http://localhost:3001/user/${userId}`);
+      const userResponse = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/${userId}`);
       setFavorites(userResponse.data.favorites.map((f) => f._id));
     } catch (error) {
       console.error("Error fetching workers:", error);
@@ -51,12 +51,12 @@ const OurWorkers = () => {
   const toggleFavorite = async (workerId) => {
     try {
       if (favorites.includes(workerId)) {
-        await axios.delete(`http://localhost:3001/user/favorites/${userId}`, {
+        await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/user/favorites/${userId}`, {
           data: { workerId },
         });
         setFavorites(favorites.filter((id) => id !== workerId));
       } else {
-        await axios.post(`http://localhost:3001/user/favorites/${userId}`, { workerId });
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/favorites/${userId}`, { workerId });
         setFavorites([...favorites, workerId]);
       }
     } catch (error) {

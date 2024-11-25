@@ -27,7 +27,7 @@ const ReviewsWorker = () => {
   useEffect(() => {
     const fetchRating = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/worker/${workerId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}`);
         const rating = response.data.rating; // Assuming 'rating' field in API response
         setOverallRating(rating);
       } catch (err) {
@@ -44,7 +44,7 @@ const ReviewsWorker = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/worker/reviews/${workerId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker/reviews/${workerId}`);
         const reviewsData = response.data;
 
         setReviews(reviewsData);
