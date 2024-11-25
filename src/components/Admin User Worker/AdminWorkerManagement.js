@@ -10,9 +10,9 @@ import { workerSignUpApi } from "../../api/axios";
 const NAME_REGEX = /^[a-zA-Z]+(?:[-' ][a-zA-Z]+)*$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const SIGNUP_WORKER_URL = 'http://localhost:3001/auth/worker/signup';
-const GET_USERS_URL = 'http://localhost:3001/admin/workers';
-const CHANGE_STATUS_URL = 'http://localhost:3001/admin/worker/change-status';
+const SIGNUP_WORKER_URL = `${process.env.REACT_APP_API_BASE_URL}/auth/worker/signup`;
+const GET_USERS_URL = `${process.env.REACT_APP_API_BASE_URL}/admin/workers`;
+const CHANGE_STATUS_URL = `${process.env.REACT_APP_API_BASE_URL}/admin/worker/change-status`;
 
 const AdminSignUpWorker = () => {
   const userRef = useRef();

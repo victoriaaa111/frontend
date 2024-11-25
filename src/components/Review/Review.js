@@ -44,7 +44,7 @@ const Rating = () => {
 
       console.log('Submitting review:', data); // Log the data being sent
       
-      const response = await axios.post('http://localhost:3001/user/add-review', data, {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/add-review`, data, {
         headers: {
           'Content-Type': 'application/json',
         },

@@ -15,7 +15,7 @@ const AdminOrdersPage = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/admin/orders');
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/admin/orders`);
         
         // Format the response data
         const formattedOrders = response.data.map(order => ({
@@ -45,7 +45,7 @@ const AdminOrdersPage = () => {
   // Handle status change
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      const response = await axios.put(`http://localhost:3001/admin/order/change-status/${orderId}`, { status: newStatus });
+      const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/admin/order/change-status/${orderId}`, { status: newStatus });
       
       if (response.status === 200) {
         setOrders(orders.map(order => 
@@ -80,7 +80,7 @@ const AdminOrdersPage = () => {
       const formattedStartDate = new Date(startDate).toISOString();
       const formattedEndDate = new Date(endDate).toISOString();
 
-      const response = await axios.put(`http://localhost:3001/admin/order/reschedule/${selectedOrder._id}`, {
+      const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/admin/order/reschedule/${selectedOrder._id}`, {
         startDate: formattedStartDate,
         endDate: formattedEndDate
       });

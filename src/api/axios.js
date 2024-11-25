@@ -1,16 +1,16 @@
 import axios from 'axios';
 
 const adminApi = axios.create({
-    baseURL: 'http://localhost:3001/admin/login'
+    baseURL: `${process.env.REACT_APP_API_BASE_URL}/admin/login`
 });
 
 
 const clientApi = axios.create({
-    baseURL: 'http://localhost:3001/auth/login'
+    baseURL: `${process.env.REACT_APP_API_BASE_URL}/auth/login`
 });
 
 const clientSignUpApi = axios.create({
-    baseURL: 'http://localhost:3001/auth/signup'
+    baseURL: `${process.env.REACT_APP_API_BASE_URL}/auth/signup`
 });
 
 // const workerSignUpApi = (workerId) => {
@@ -20,52 +20,52 @@ const clientSignUpApi = axios.create({
 // } 
 
 const workerSignUpApi = axios.create({
-    baseURL: `http://localhost:3001/auth/worker/signup`
+    baseURL: `${process.env.REACT_APP_API_BASE_URL}/auth/worker/signup`
 });
 
 const workerSignInApi = axios.create({
-    baseURL:'http://localhost:3001/auth/worker/login'
+    baseURL:`${process.env.REACT_APP_API_BASE_URL}/auth/worker/login`
 })
 
 const workerPrfileAPI = axios.create({
-    baseURL: 'http://localhost:3001/worker/edit/:workerid'
+    baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/edit/:workerid`
 });
 
 
 const workerGetDataApi = (workerId) =>{
-    return axios.get(`http://localhost:3001/worker/${workerId}`);
+    return axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}`);
 }
 
 const workerPutUpdateDataApi = (workerId) =>{
     return axios.create({
-        baseURL: `http://localhost:3001/worker/edit/${workerId}`
+        baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/edit/${workerId}`
     });
 }
 
 const serviceApi = (workerId) =>{
     return axios.create({
-        baseURL: `http://localhost:3001/worker/add/${workerId}`
+        baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/add/${workerId}`
     });
 }
 const Rating = (workerId) => {
     return axios.create({
-        baseURL: `http://localhost:3001/worker/${workerId}`
+        baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}`
     })
 }
 
 const deleteService = (workerId, serviceId) => {
     return axios.create({
-        baseURL: `http://localhost:3001/worker/${workerId}/service/${serviceId}`
+        baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}/service/${serviceId}`
     })
 }
 
 const searchAPI = axios.create({
-    baseURL: 'http://localhost:3001/shareable/search',})
+    baseURL: `${process.env.REACT_APP_API_BASE_URL}/shareable/search`,})
 
 
 
 const workerGetOrdersApi = axios.create({
-    baseURL: 'http://localhost:3001',
+    baseURL: `${process.env.REACT_APP_API_BASE_URL}`,
 })
 
 axios.defaults.withCredentials = true;
@@ -89,7 +89,7 @@ axios.interceptors.response.use(
             try {
                 const refreshToken = localStorage.getItem('refreshToken'); // Retrieve the stored refresh token.
                 // Make a request to your auth server to refresh the token.
-                const response = await axios.post('http://localhost:3001/auth/refresh', {
+                const response = await axios.post('${process.env.REACT_APP_API_BASE_URL}/auth/refresh', {
                     refreshToken,
                 });
                 const { accessToken, refreshToken: newRefreshToken } = response.data;
