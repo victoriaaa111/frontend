@@ -15,7 +15,7 @@ const Favorites = () => {
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/${userId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/`);
         setFavorites(response.data.favorites);
       } catch (err) {
         setResponseMessage(`Error fetching favorites: ${err.message}`);
@@ -36,7 +36,7 @@ const Favorites = () => {
 
   const handleDeleteFavorite = async (workerId) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/user/favorites/${userId}`, {
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/user/favorites`, {
         data: { workerId },
       });
       setFavorites(favorites.filter((favorite) => favorite._id !== workerId));

@@ -12,7 +12,7 @@ const Rating = () => {
   const [isSubmitted, setIsSubmitted] = useState(false); // State to track if the review was submitted successfully
   const location = useLocation();
   const navigate = useNavigate(); // Hook to handle navigation
-  const { userId, orderId } = location.state;
+  const { orderId } = location.state;
 
   // useEffect to handle the redirection after 3 seconds
   useEffect(() => {
@@ -36,7 +36,6 @@ const Rating = () => {
 
     try {
       const data = {
-        userId: userId,
         orderId: orderId,
         rating: rating, // Include the rating
         comment: reviewText // Include the review text
