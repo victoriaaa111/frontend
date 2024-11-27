@@ -25,7 +25,7 @@ const UserCalendarCreateOrder = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/orders/${userId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/orders`);
         const orders = response.data
           .filter(order => order.status !== 'Declined') 
           .map(order => ({
@@ -69,7 +69,6 @@ const UserCalendarCreateOrder = () => {
     if (newEvent && validateEvent(newEvent)) {
       try {
         const orderData = {
-          userId: userId,
           serviceId: serviceId,
           userContact: newEvent.contact,
           startDate: (newEvent.start).toISOString(),
@@ -77,7 +76,7 @@ const UserCalendarCreateOrder = () => {
           description: newEvent.title,
         };
 
-        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/create-order`, orderData);
+        const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/orders`, orderData);
 
         setEvents([
           ...events,
@@ -166,8 +165,8 @@ const UserCalendarCreateOrder = () => {
     );
   };
 
-  const handleReview = (userId, orderId) => {
-    navigate(`/rating`, { state: { userId, orderId } });
+  const handleReview = (orderId) => {
+    navigate(`/rating`, { state: { orderId } });
   };
 
   const generateEventColor = (status, index) => {

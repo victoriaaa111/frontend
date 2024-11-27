@@ -24,7 +24,7 @@ const ClientProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/${userId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/`);
         const userData = response.data;
 
         // Set user data
