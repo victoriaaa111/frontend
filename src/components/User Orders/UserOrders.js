@@ -61,8 +61,8 @@ const UserOrders = () => {
     );
   };
 
-  const handleReview = (userId, orderId) => {
-    navigate(`/rating`, { state: { userId, orderId } });
+  const handleReview = (orderId) => {
+    navigate(`/rating`, { state: {orderId } });
   };
 
   const generateEventColor = (status) => {
