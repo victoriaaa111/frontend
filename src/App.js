@@ -36,6 +36,8 @@ import Rating from './components/Review/Review';
 import Favorites from './components/Favorites/Favorites.js';
 import OurWorkers from './components/Our Workers/OurWorkers';
 
+import ChooseCabinet from './components/User Menu/ChooseRoleCabinet.js';
+
 function App() {
   return (
       <Router>
@@ -53,7 +55,8 @@ function App() {
               <Route path="/signupworker" element={<SignUpWorker />} />
               <Route path="/loginadmin" element={<LogInAdmin />} />
 
-              <Route path="/ourworkers" element={<OurWorkers />} /> 
+            <Route path="/ourworkers" element={<OurWorkers />} /> 
+            <Route path="/choosecabinet" element={<ChooseCabinet />} /> 
 
             <Route path="/client" element = {<UserLayout/>}>
               <Route path="/client/profile" element={<ClientProfile />} />

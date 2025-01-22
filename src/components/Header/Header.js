@@ -27,7 +27,7 @@ const Header = () => {
         {auth?.accessToken && (
           <div className="header-center-menu">
           <Link to="/ourworkers">Our Workers</Link>
-          <Link to="/client/profile">My Cabinet</Link>
+          <Link to="/choosecabinet">My Cabinet</Link>
           </div>
         )}
 
