@@ -17,7 +17,7 @@ const WorkerCalendar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker/orders/${workerId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker/orders`);
         const orders = response.data.map(order => ({
           ...order,
           start: new Date(order.startDate),
@@ -55,7 +55,7 @@ const WorkerCalendar = () => {
   const handleStatusChange = async (index, newStatus) => {
     try {
       const updatedEvent = { status: newStatus };  // Body format for the request
-      await axios.put(`${process.env.REACT_APP_API_BASE_URL}/worker/executed-status-change/${events[index]._id}`, updatedEvent);
+      await axios.put(`${process.env.REACT_APP_API_BASE_URL}/worker/executed-status-change`, updatedEvent);
 
       const updatedEvents = [...events];
       if (newStatus === 'Declined') {
@@ -104,6 +104,7 @@ const WorkerCalendar = () => {
           <option value="Done">Done</option>
         </select>
       </div>
+      <br/>
 
       <Calendar
         localizer={localizer}

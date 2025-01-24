@@ -28,34 +28,34 @@ const workerSignInApi = axios.create({
 })
 
 const workerPrfileAPI = axios.create({
-    baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/edit/:workerid`
+    baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/edit`
 });
 
 
 const workerGetDataApi = (workerId) =>{
-    return axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}`);
+    return axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker`);
 }
 
 const workerPutUpdateDataApi = (workerId) =>{
     return axios.create({
-        baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/edit/${workerId}`
+        baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/edit`
     });
 }
 
 const serviceApi = (workerId) =>{
     return axios.create({
-        baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/add/${workerId}`
+        baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/add`
     });
 }
 const Rating = (workerId) => {
     return axios.create({
-        baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}`
+        baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker`
     })
 }
 
 const deleteService = (workerId, serviceId) => {
     return axios.create({
-        baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}/service/${serviceId}`
+        baseURL: `${process.env.REACT_APP_API_BASE_URL}/worker/service`
     })
 }
 

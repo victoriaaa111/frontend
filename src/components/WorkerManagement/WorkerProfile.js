@@ -26,7 +26,7 @@ const WorkerProfile = () => {
   useEffect(() => {
     const fetchWorkerProfile = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker`);
         const workerData = response.data;
 
         setWorker(workerData);
@@ -138,3 +138,5 @@ const WorkerProfile = () => {
 };
 
 export default WorkerProfile;
+
+//TODO: Nu face update la date

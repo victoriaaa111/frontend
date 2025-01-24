@@ -52,7 +52,7 @@ const WorkerProfile = () => {
     useEffect(() => {
         const fetchWorkerProfile = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker}`);
                 const workerData = response.data;
                 let contact = workerData.contact;
                 contact = `+${contact}`;
@@ -74,7 +74,7 @@ const WorkerProfile = () => {
     }, [workerId]);
     const fetchServices = async () => {
     try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker`);
         const serviceData = response.data.services.map(service => ({
             id: service._id,
             service: service.service,
@@ -126,7 +126,7 @@ const WorkerProfile = () => {
         if (validateFields()) {
             try {
                 const response = await axios.put(
-                    `${process.env.REACT_APP_API_BASE_URL}/worker/edit/${workerId}`,
+                    `${process.env.REACT_APP_API_BASE_URL}/worker/edit`,
                     JSON.stringify(updatedWorker),
                     {
                         headers: {
@@ -216,7 +216,7 @@ const WorkerProfile = () => {
 
     try {
         const response = await axios.post(
-            `${process.env.REACT_APP_API_BASE_URL}/worker/add/${workerId}`,
+            `${process.env.REACT_APP_API_BASE_URL}/worker/service`,
             JSON.stringify({ id: null, service, description, price: Number(price) }),
             {
                 headers: { 'Content-Type': 'application/json' },
@@ -313,7 +313,7 @@ const WorkerProfile = () => {
             console.log(editServiceData);
             console.log(editServiceId);
         const response = await axios.post(
-            `${process.env.REACT_APP_API_BASE_URL}/worker/add/${workerId}`,
+            `${process.env.REACT_APP_API_BASE_URL}/worker/service`,
             JSON.stringify({
                 id: editServiceId,
                 service: editServiceData.service,
@@ -357,7 +357,7 @@ const WorkerProfile = () => {
     const handleDeleteService = async (serviceId) => {
     try {
         await axios.delete(
-            `${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}/service/${serviceId}`,
+            `${process.env.REACT_APP_API_BASE_URL}/worker/service/${serviceId}`, //TODO: Sa mearga functia delete service
             {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
@@ -604,7 +604,7 @@ const WorkerProfile = () => {
                                 Enter the price for the service in numeric format. You may include up to two decimal
                                 places.
                             </p>
-                                        <button type="submit">Save</button>
+                                        <button className='edit' type="submit">Save</button>
                                     </form>
                                 ) : (
                                     <>

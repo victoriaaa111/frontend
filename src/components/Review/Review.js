@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import Axios
+import axios from 'axios';
 import './Review.css';
 
 const Rating = () => {
@@ -8,40 +8,37 @@ const Rating = () => {
   const [hover, setHover] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [message, setMessage] = useState('');
-  const [isError, setIsError] = useState(false); // State to track if it's an error
-  const [isSubmitted, setIsSubmitted] = useState(false); // State to track if the review was submitted successfully
+  const [isError, setIsError] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate(); // Hook to handle navigation
+  const navigate = useNavigate();
   const { orderId } = location.state;
 
-  // useEffect to handle the redirection after 3 seconds
   useEffect(() => {
     if (isSubmitted) {
       const timer = setTimeout(() => {
-        navigate('/'); // Redirect to homepage
-      }, 3000); // 3 seconds
+        navigate('/');
+      }, 3000);
 
-      // Cleanup the timeout if component unmounts or if isSubmitted changes
       return () => clearTimeout(timer);
     }
   }, [isSubmitted, navigate]);
 
   const handleSubmit = async () => {
-    // Basic validation
     if (rating === 0 || reviewText.trim() === '') {
       setMessage('Please provide a rating and a review text.');
       setIsError(true);
-      return; // Stop execution if validation fails
+      return; 
     }
 
     try {
       const data = {
         orderId: orderId,
-        rating: rating, // Include the rating
-        comment: reviewText // Include the review text
+        rating: rating,
+        comment: reviewText
       };
 
-      console.log('Submitting review:', data); // Log the data being sent
+      console.log('Submitting review:', data);
       
       const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/add-review`, data, {
         headers: {
@@ -49,23 +46,23 @@ const Rating = () => {
         },
       });
 
-      console.log('Response:', response.data); // Log the response from the server
+      //TODO: DE facut ca review-ul sa mearga.
 
-      // If the review is successfully submitted
+      console.log('Response:', response.data);
+
       if (response.status === 200 || response.status === 201) {
         setMessage('Review was sent successfully!');
-        setIsError(false); // It's not an error
-        setIsSubmitted(true); // Mark the review as submitted
+        setIsError(false);
+        setIsSubmitted(true);
       } else {
         setMessage('Something went wrong. Please try again.');
-        setIsError(true); // Mark as error
+        setIsError(true);
       }
 
     } catch (error) {
-      // Display a user-friendly error message
       console.error('Error submitting review:', error.response ? error.response.data : error.message);
       setMessage('Error submitting review. Please check your input and try again.');
-      setIsError(true); // Mark as error
+      setIsError(true);
     }
   };
 
@@ -74,7 +71,7 @@ const Rating = () => {
       <h1>FIXER.MD</h1>
 
       {isSubmitted ? (
-        <p className="message-success">{message}</p> // Display the success message after submission
+        <p className="message-success">{message}</p>
       ) : (
         <>
           <div className="rating-stars">
