@@ -82,8 +82,8 @@ const AdminOrdersPage = () => {
     try {
       const formattedStartDate = new Date(startDate).toISOString();
       const formattedEndDate = new Date(endDate).toISOString();
-
-      const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/admin/order/reschedule`, {
+      console.log(selectedOrder._id);
+      const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/admin/order/reschedule/${selectedOrder._id}`, {
         startDate: formattedStartDate,
         endDate: formattedEndDate
       });
