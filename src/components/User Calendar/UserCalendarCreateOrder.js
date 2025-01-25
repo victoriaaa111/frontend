@@ -17,7 +17,7 @@ const UserCalendarCreateOrder = () => {
   const [editEvent, setEditEvent] = useState({ title: '', start: new Date(), end: new Date() });
   const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '', contact: '' });
   const [error, setError] = useState('');
-  const { workerId, serviceId } = location.state;
+  const { workerId, serviceId } = location.state || {};
   const { auth } = useContext(AuthContext);
   const { userId } = auth;
   const [apiError, setApiError] = useState('');
@@ -248,7 +248,7 @@ const UserCalendarCreateOrder = () => {
             />
           </label>
           {error && <p className="error">{error}</p>}
-          <button onClick={handleSaveNewEvent}>Save Order</button>
+          <button className='button1' onClick={handleSaveNewEvent}>Save Order</button>
         </div>
       )}
 
@@ -274,7 +274,7 @@ const UserCalendarCreateOrder = () => {
                   </div>
 
                   {event.status === 'Done' && (
-                    <button onClick={() => handleReview(event.userId, event.orderId)}>Leave Review</button>
+                    <button className='button1' onClick={() => handleReview(event.userId, event.orderId)}>Leave Review</button>
                   )}
                 </div>
               </li>
