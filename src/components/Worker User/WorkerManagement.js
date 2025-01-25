@@ -47,13 +47,14 @@ const WorkerProfile = () => {
         description: '',
         price: ''
     });
-    
+
 
     useEffect(() => {
         const fetchWorkerProfile = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker`);
                 const workerData = response.data;
+
                 let contact = workerData.contact;
                 contact = `+${contact}`;
 
@@ -62,37 +63,35 @@ const WorkerProfile = () => {
                     fullName: workerData.fullName,
                     contact: contact,
                     startWork: workerData.startWork,
-                    endWork: workerData.endWork
+                    endWork: workerData.endWork,
                 });
             } catch (err) {
                 setResponseMessage(`Error fetching worker profile: ${err.message}`);
             }
         };
-        if (workerId) {
-            fetchWorkerProfile();
-        }
-    }, [workerId]);
-    const fetchServices = async () => {
-    try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker`);
-        const serviceData = response.data.services.map(service => ({
-            id: service._id,
-            service: service.service,
-            description: service.description,
-            price: Number(service.price)
-        }));
-        setServices(serviceData);
-    } catch (err) {
-        console.log("Error fetching services: ", err);
-    }
-};
 
+        fetchWorkerProfile();
+    }, []);
+
+    const fetchServices = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker`);
+            const serviceData = response.data.services.map(service => ({
+                id: service._id,
+                service: service.service,
+                description: service.description,
+                price: Number(service.price),
+            }));
+            setServices(serviceData);
+        } catch (err) {
+            console.log("Error fetching services: ", err);
+        }
+    };
 
     useEffect(() => {
-    if (workerId) {
-        fetchServices();
-    }
-}, [workerId]);
+        fetchServices(); // Fetch services on component mount
+    }, []); // Empty dependency array to ensure it runs only once
+
 
 
     const validatePhone = (contact) => {
@@ -126,7 +125,7 @@ const WorkerProfile = () => {
         if (validateFields()) {
             try {
                 const response = await axios.put(
-                    `${process.env.REACT_APP_API_BASE_URL}/worker/edit`,
+                    `${process.env.REACT_APP_API_BASE_URL}/worker`,
                     JSON.stringify(updatedWorker),
                     {
                         headers: {
@@ -357,10 +356,11 @@ const WorkerProfile = () => {
     const handleDeleteService = async (serviceId) => {
     try {
         await axios.delete(
-            `${process.env.REACT_APP_API_BASE_URL}/worker/service/${serviceId}`, //TODO: Sa mearga functia delete service
+            `${process.env.REACT_APP_API_BASE_URL}/worker/service`,
             {
                 headers: { 'Content-Type': 'application/json' },
-                withCredentials: true
+                withCredentials: true,
+                data: { serviceId: serviceId }, // Send the serviceId in the body
             }
         );
 

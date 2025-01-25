@@ -28,7 +28,6 @@ const WorkerProfile = () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker`);
         const workerData = response.data;
-
         setWorker(workerData);
         setRating(workerData.rating);
 
