@@ -46,7 +46,7 @@ const Rating = () => {
         },
       });
 
-      //TODO: DE facut ca review-ul sa mearga.
+      //TODO: De facut ca review-ul sa mearga.
 
       console.log('Response:', response.data);
 
@@ -117,7 +117,6 @@ const Rating = () => {
             </button>
           </div>
 
-          {/* Display success or error message */}
           {message && (
             <p className={isError ? 'message-error' : 'message-success'}>
               {message}

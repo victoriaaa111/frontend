@@ -1,5 +1,5 @@
 .signup-container {
-    max-width: 800px;
+    max-width: 875px;
     margin: 0 auto;
     padding: 20px;
     background-color: #ffffff;
@@ -15,7 +15,6 @@
     margin-bottom: 20px;
 }
 
-/* Form Group */
 .form-group {
     margin-bottom: 20px;
     position: relative;
@@ -46,14 +45,12 @@
     font-weight: 500;
 }
 
-/* Instruction/Error Message Styling */
 .form-group p {
-    margin-top: 8px; /* Space between input and message */
+    margin-top: 8px;
     font-size: 0.9rem;
     color: #666;
 }
 
-/* Error Message Specific Styling */
 .errmsg {
     color: #dc3545;
     font-size: 0.9rem;

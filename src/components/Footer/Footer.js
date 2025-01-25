@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="left part">
           <div className="upper">
             <div className="title">About us</div>
-            <p>We are the best service providers.</p>
+            <p>We are the best service providers</p>
           </div>
           <div className="lower">
             <div className="title">Contacts</div>
