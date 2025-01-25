@@ -45,7 +45,10 @@ const AdminOrdersPage = () => {
   // Handle status change
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/admin/order/change-status`, { status: newStatus });
+      const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/admin/order/${orderId}`,
+          {
+            status: newStatus
+          });
       
       if (response.status === 200) {
         setOrders(orders.map(order => 
