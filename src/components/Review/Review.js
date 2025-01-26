@@ -46,7 +46,6 @@ const Rating = () => {
         },
       });
 
-      //TODO: De facut ca review-ul sa mearga.
 
       console.log('Response:', response.data);
 

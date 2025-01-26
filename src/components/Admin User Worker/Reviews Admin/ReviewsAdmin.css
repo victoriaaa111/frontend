@@ -1,0 +1,237 @@
+/* Container general */
+.reviews-list {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #f9f9f9, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+  
+  /* Titlu principal */
+  #title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  /* Overall rating */
+  .reviews-list > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .reviews-list input[type="number"] {
+    width: 80px;
+    padding: 8px;
+    margin: 10px 0;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+  }
+  
+  .reviews-list input[type="number"]:focus {
+    border-color: #3498db;
+    outline: none;
+  }
+  
+  /* Buton general */
+  .reviews-list {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--blue2);
+    background-color: #3498db;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+    margin-left: 10px;
+  }
+  
+  .reviews-list button:hover {
+    background-color: #1d6fa5;
+    transform: translateY(-2px);
+  }
+  
+  .reviews-list button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+  }
+
+  /* Buton de editare */
+.edit-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #3498db; /* Albastru */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+  }
+  
+  .edit-button:hover {
+    background-color: #1d6fa5; /* Albastru mai închis la hover */
+    transform: translateY(-2px);
+  }
+  
+  .edit-button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+  }
+  
+  
+  /* Buton de ștergere */
+  .delete-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #e74c3c; /* Roșu */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+  }
+  
+  .delete-button:hover {
+    background-color: #c0392b; /* Roșu mai închis la hover */
+    transform: translateY(-2px);
+  }
+  
+  .delete-button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+  }
+  
+  /* Lista de review-uri */
+  .reviews-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .reviews-list li {
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: white;
+    border-radius: 8px;
+    border-left: 6px solid #ccc; /* Schimbat dinamic pe baza ratingului */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .reviews-list li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Informațiile principale din review */
+  .review-main {
+    cursor: pointer;
+  }
+  
+  .review-main strong {
+    font-size: 14px;
+    color: #34495e;
+  }
+  
+  .review-main p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #7f8c8d;
+  }
+  
+  .review-main:hover {
+    color: #2c3e50;
+  }
+  
+  /* Secțiunea de detalii extinse */
+  .review-details {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    border: 1px dashed #ccc;
+  }
+  
+  .review-details p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  /* Butoane secțiune */
+  .buttons-section {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .buttons-section button {
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  
+  /* Rating input */
+  .review-main input[type="number"] {
+    width: 60px;
+    padding: 6px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    text-align: center;
+    transition: border-color 0.3s ease;
+  }
+  
+  .review-main input[type="number"]:focus {
+    border-color: #1abc9c;
+    outline: none;
+  }
+  
+  /* Culoare dinamică pe baza ratingului */
+  .reviews-list li[style*="green"] {
+    border-left-color: #2ecc71;
+  }
+  
+  .reviews-list li[style*="yellow"] {
+    border-left-color: #f1c40f;
+  }
+  
+  .reviews-list li[style*="red"] {
+    border-left-color: #e74c3c;
+  }
+  
+  /* Responsivitate */
+  @media (max-width: 768px) {
+    .reviews-list {
+      padding: 15px;
+    }
+  
+    #title {
+      font-size: 20px;
+    }
+  
+    .reviews-list li {
+      padding: 12px;
+    }
+  
+    .buttons-section {
+      flex-direction: column;
+      gap: 5px;
+    }
+  }
+  

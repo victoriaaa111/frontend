@@ -20,10 +20,10 @@ const ReviewsAdmin = () => {
   useEffect(() => {
     const fetchRating = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker/${workerId}`);
-        const rating = response.data.rating; // Assuming 'rating' field in API response
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/admin/worker/${workerId}`);
+        const rating = response.data.rating;
         setOverallRating(rating);
-        setNewOverallRating(rating); // Initialize with current rating for editing
+        setNewOverallRating(rating);
       } catch (err) {
         setError('Failed to fetch overall rating. Please try again later.');
       } finally {
@@ -140,7 +140,7 @@ const ReviewsAdmin = () => {
             max={5}
             step={0.1}
           />
-          <button onClick={handleUpdateOverallRating}>Update Overall Rating</button>
+          <button className='edit-button' onClick={handleUpdateOverallRating}>Update Overall Rating</button>
         </div>
       ) : (
         <p>No overall rating available yet.</p>
@@ -181,17 +181,22 @@ const ReviewsAdmin = () => {
                 )}
               </div>
 
-              {/* Always visible buttons */}
               <div className="buttons-section" style={{ marginTop: expandedReviewId === review._id ? '10px' : '0' }}>
-                {!editingRating[review._id] && (
-                  <>
-                    <button onClick={() => setEditingRating((prev) => ({ ...prev, [review._id]: true }))}>
-                      Edit
-                    </button>
-                    <button onClick={() => handleDeleteRating(review._id)}>Delete</button>
-                  </>
-                )}
-              </div>
+              {!editingRating[review._id] && (
+                <>
+                  <button className='edit-button' onClick={() => setEditingRating((prev) => ({ ...prev, [review._id]: true }))}>
+                    Edit
+                  </button>
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteRating(review._id)}
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
+            </div>
+
             </li>
           ))}
         </ul>
