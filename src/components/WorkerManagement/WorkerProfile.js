@@ -26,7 +26,7 @@ const WorkerProfile = () => {
   useEffect(() => {
     const fetchWorkerProfile = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/worker`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/worker/${workerId}`);
         const workerData = response.data;
         setWorker(workerData);
         setRating(workerData.rating);
@@ -48,6 +48,7 @@ const WorkerProfile = () => {
     if (workerId) {
       fetchWorkerProfile();
     } else {
+      console.log(workerId);
       setLoading(false); // Set loading to false if no workerId is present
     }
   }, [workerId]);
@@ -83,15 +84,15 @@ const WorkerProfile = () => {
                 <div className="info-block">
                   <div className="info-row">
                     <span className="info-label">Name and Surname:</span>
-                    <span className="info-value">{worker.fullName || 'Ion Popescu'}</span>
+                    <span className="info-value">{worker.fullName}</span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Email:</span>
-                    <span className="info-value">{worker.email || 'ionpopescu@gmail.com'}</span>
+                    <span className="info-value">{worker.email}</span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Phone Number:</span>
-                    <span className="info-value">{worker.contact || '073 980 123'}</span>
+                    <span className="info-value">{worker.contact}</span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Ratings:</span>
